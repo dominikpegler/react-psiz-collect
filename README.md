@@ -1,5 +1,5 @@
-# react-app-script-tags
-Template for creating a simple React App
+# react-psiz-collect
+React version of psiz-collect experiment
 * with `<script>` tags only
 * no toolchains, no bundler necessary
 * conversion from JSX to browser compatible JavaScript is done by running watcher script `jsx_preprocessor.sh`. This requires the following 2 steps:  
