@@ -1,0 +1,85 @@
+/* some example style */
+
+:root {
+  font-family: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --default-font-size: large;
+  --font-mono: "Fira Mono", monospace;
+  --pure-white: #ffffff;
+  --primary-color: #b9c6d2;
+  --secondary-color: #d0dde9;
+  --tertiary-color: #edf0f8;
+  --accent-color: #0063a6;
+  --heading-color: rgba(0, 0, 0, 0.7);
+  --text-color: #444444;
+  --background-without-opacity: rgba(255, 255, 255, 0.7);
+  --column-width: 42rem;
+  --column-margin-top: 4rem;
+  font-size: var(--default-font-size);
+}
+
+button {
+  transition-duration: 0.1s;
+  border-radius: 10px;
+  font-size: var(--default-font-size);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+  background-color: var(--pure-white);
+  border-width: 1px;
+  border-style: solid;
+  padding: 0.75rem;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+button:active {
+  /* box-shadow: 0px 0px 0px; */
+  /* transform: translate(1px, 1px); */
+  background-color: #eaeaea;
+}
+
+/* classes */
+
+.imgmat-container {
+  padding: 0.75rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  margin-right: auto;
+  margin-left: auto;
+  box-shadow: 1px 1px 4px #444444ab;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
