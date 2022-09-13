@@ -1,4 +1,8 @@
 "use strict";
 const ProgressBar = () => {
-  return <div>Here comes the progress bar.</div>;
+  return (
+    <div className={"progress-bar"}>
+      Progress: <code>{"[●●●●●●●●●●●●●●●●●●●●●●●○○○○○○○○○○○○○○○]"}</code>
+    </div>
+  );
 };

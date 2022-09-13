@@ -47,6 +47,10 @@ button:active {
   padding: 0.75rem;
 }
 
+.progress-bar {
+  padding: 0.75rem;
+}
+
 .container {
   display: flex;
   flex-direction: column;
