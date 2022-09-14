@@ -9,6 +9,6 @@ var Button1 = function Button1(_ref) {
     { onClick: function onClick() {
         return onClickButton();
       } },
-    "Submit"
+    "Submit Selection"
   );
 };
