@@ -1,8 +1,11 @@
 "use strict";
-const ProgressBar = () => {
+
+const ProgressBar = ({ trials, nTrials }) => {
   return (
     <div className={"progress-bar"}>
-      Progress: <code>{"[●●●●●●●●●●●●●●●●●●●●●●●○○○○○○○○○○○○○○○]"}</code>
+      Progress: {trials} / {nTrials}
+      <br />
+      <code>{"●".repeat(trials) + "○".repeat(nTrials - trials)}</code>
     </div>
   );
 };

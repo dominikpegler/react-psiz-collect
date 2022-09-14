@@ -3,7 +3,14 @@
 var Instructions = function Instructions() {
   return React.createElement(
     "div",
-    null,
-    "Select the 2 tiles you consider most similar to the center tile."
+    { className: "instructions" },
+    "Select the 2 tiles you consider most similar to the",
+    " ",
+    React.createElement(
+      "span",
+      { className: "instructions-txt" },
+      "center tile"
+    ),
+    "."
   );
 };

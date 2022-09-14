@@ -1,21 +1,28 @@
 "use strict";
 
+const nTrials = 40;
+
 // Base container
 const BaseContainer = () => {
   {
-    const [buttonClicks, setButtonClicks] = React.useState(0);
+    const [trials, setTrials] = React.useState(0);
 
     const onClickButton = () => {
-      setButtonClicks(buttonClicks + 1);
+      setTrials(trials + 1);
     };
 
     return (
-      <div className={"container"}>
-        <ProgressBar />
-        <Instructions />
-        <ImageContainer />
-        <Button1 onClickButton={() => onClickButton()} />
-        <p>Button was clicked {buttonClicks} times</p>
+      <div>
+        {trials < nTrials ? (
+          <div className={"container"}>
+            <ProgressBar nTrials={nTrials} trials={trials} />
+            <Instructions />
+            <ImageContainer />
+            <Button1 onClickButton={() => onClickButton()} />
+          </div>
+        ) : (
+          <div className={"container"}>Vielen Dank für die Teilnahme!</div>
+        )}
       </div>
     );
   }
