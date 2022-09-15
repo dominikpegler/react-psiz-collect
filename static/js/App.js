@@ -3,7 +3,7 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var nTrials = 40;
-var transitionTime = 750; // before images are loaded and spinner is shown.
+var transitionTime = 100; // before images are loaded and spinner is shown.
 
 // Base container
 var BaseContainer = function BaseContainer() {
@@ -23,10 +23,21 @@ var BaseContainer = function BaseContainer() {
         imgsLoaded = _React$useState6[0],
         setImgsLoaded = _React$useState6[1];
 
+    var _React$useState7 = React.useState([]),
+        _React$useState8 = _slicedToArray(_React$useState7, 2),
+        selection = _React$useState8[0],
+        setSelection = _React$useState8[1];
+
     var _onClickButton = function _onClickButton() {
       setTrials(trials + 1);
       setImgsLoaded(false);
       setStimulusSet(randomIntArray(0, 119, 9));
+      console.log("stimulusSet:", stimulusSet);
+      console.log("selection:", selection.map(function (el) {
+        return stimulusSet[el - 1];
+      }));
+      console.log("submitted!");
+      setSelection([]);
     };
 
     React.useEffect(function () {
@@ -34,7 +45,6 @@ var BaseContainer = function BaseContainer() {
         return new Promise(function (resolve, reject) {
           var loadImg = new Image();
           loadImg.src = imgPaths[imgId];
-          console.log(imgPaths[imgId]);
           loadImg.onload = function () {
             return setTimeout(function () {
               resolve(imgPaths[imgId]);
@@ -67,7 +77,12 @@ var BaseContainer = function BaseContainer() {
         React.createElement(
           React.Suspense,
           { fallback: React.createElement(ImageContainerLoader, null) },
-          React.createElement(ImageContainer, { stimulusSet: stimulusSet, imgsLoaded: imgsLoaded })
+          React.createElement(ImageContainer, {
+            stimulusSet: stimulusSet,
+            imgsLoaded: imgsLoaded,
+            selection: selection,
+            setSelection: setSelection
+          })
         ),
         React.createElement(Button1, { onClickButton: function onClickButton() {
             return _onClickButton();

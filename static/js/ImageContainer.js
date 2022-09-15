@@ -1,15 +1,10 @@
 "use strict";
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var ImageContainer = function ImageContainer(_ref) {
   var stimulusSet = _ref.stimulusSet,
-      imgsLoaded = _ref.imgsLoaded;
-
-  var _React$useState = React.useState([]),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      selected = _React$useState2[0],
-      setSelected = _React$useState2[1];
+      imgsLoaded = _ref.imgsLoaded,
+      selection = _ref.selection,
+      setSelection = _ref.setSelection;
 
   return React.createElement(
     React.Fragment,
@@ -20,23 +15,63 @@ var ImageContainer = function ImageContainer(_ref) {
       React.createElement(
         "div",
         { className: "imgmat-row" },
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[5]] }),
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[3]] }),
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[6]] })
+        React.createElement(Tile, {
+          id: 5,
+          imgPath: imgPaths[stimulusSet[5]],
+          selection: selection,
+          setSelection: setSelection
+        }),
+        React.createElement(Tile, {
+          id: 3,
+          imgPath: imgPaths[stimulusSet[3]],
+          selection: selection,
+          setSelection: setSelection
+        }),
+        React.createElement(Tile, {
+          id: 6,
+          imgPath: imgPaths[stimulusSet[6]],
+          selection: selection,
+          setSelection: setSelection
+        })
       ),
       React.createElement(
         "div",
         { className: "imgmat-row" },
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[1]] }),
+        React.createElement(Tile, {
+          id: 1,
+          imgPath: imgPaths[stimulusSet[1]],
+          selection: selection,
+          setSelection: setSelection
+        }),
         React.createElement(TileQ, { imgPath: imgPaths[stimulusSet[0]] }),
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[2]] })
+        React.createElement(Tile, {
+          id: 2,
+          imgPath: imgPaths[stimulusSet[2]],
+          selection: selection,
+          setSelection: setSelection
+        })
       ),
       React.createElement(
         "div",
         { className: "imgmat-row" },
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[7]] }),
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[4]] }),
-        React.createElement(Tile, { imgPath: imgPaths[stimulusSet[8]] })
+        React.createElement(Tile, {
+          id: 7,
+          imgPath: imgPaths[stimulusSet[7]],
+          selection: selection,
+          setSelection: setSelection
+        }),
+        React.createElement(Tile, {
+          id: 4,
+          imgPath: imgPaths[stimulusSet[4]],
+          selection: selection,
+          setSelection: setSelection
+        }),
+        React.createElement(Tile, {
+          id: 8,
+          imgPath: imgPaths[stimulusSet[8]],
+          selection: selection,
+          setSelection: setSelection
+        })
       )
     ) : React.createElement(ImageContainerLoader, null)
   );

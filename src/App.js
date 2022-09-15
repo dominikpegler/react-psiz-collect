@@ -1,40 +1,49 @@
 "use strict";
 
 const nTrials = 40;
-const transitionTime = 750; // before images are loaded and spinner is shown.
+const transitionTime = 100; // before images are loaded and spinner is shown.
 
 // Base container
 const BaseContainer = () => {
   {
     const [trials, setTrials] = React.useState(0);
-    const [stimulusSet, setStimulusSet] = React.useState(randomIntArray(0, 119, 9));
+    const [stimulusSet, setStimulusSet] = React.useState(
+      randomIntArray(0, 119, 9)
+    );
     const [imgsLoaded, setImgsLoaded] = React.useState(false);
+    const [selection, setSelection] = React.useState([]);
 
     const onClickButton = () => {
       setTrials(trials + 1);
       setImgsLoaded(false);
       setStimulusSet(randomIntArray(0, 119, 9));
+      console.log("stimulusSet:", stimulusSet);
+      console.log(
+        "selection:",
+        selection.map((el) => stimulusSet[el - 1])
+      );
+      console.log("submitted!");
+      setSelection([]);
     };
 
     React.useEffect(() => {
-      const loadImage = imgId => {
+      const loadImage = (imgId) => {
         return new Promise((resolve, reject) => {
-          const loadImg = new Image()
-          loadImg.src = imgPaths[imgId]
-          console.log(imgPaths[imgId])
+          const loadImg = new Image();
+          loadImg.src = imgPaths[imgId];
           loadImg.onload = () =>
             setTimeout(() => {
-              resolve(imgPaths[imgId])
-            }, transitionTime)
+              resolve(imgPaths[imgId]);
+            }, transitionTime);
 
-          loadImg.onerror = err => reject(err)
-        })
-      }
+          loadImg.onerror = (err) => reject(err);
+        });
+      };
 
-      Promise.all(stimulusSet.map(imgId => loadImage(imgId)))
+      Promise.all(stimulusSet.map((imgId) => loadImage(imgId)))
         .then(() => setImgsLoaded(true))
-        .catch(err => console.log("Failed to load images", err))
-    }, [imgsLoaded])
+        .catch((err) => console.log("Failed to load images", err));
+    }, [imgsLoaded]);
 
     return (
       <div>
@@ -43,7 +52,13 @@ const BaseContainer = () => {
             <ProgressBar nTrials={nTrials} trials={trials} />
             <Instructions />
             <React.Suspense fallback={<ImageContainerLoader />}>
-              <ImageContainer stimulusSet={stimulusSet} imgsLoaded={imgsLoaded} /></React.Suspense>
+              <ImageContainer
+                stimulusSet={stimulusSet}
+                imgsLoaded={imgsLoaded}
+                selection={selection}
+                setSelection={setSelection}
+              />
+            </React.Suspense>
             <Button1 onClickButton={() => onClickButton()} />
           </div>
         ) : (

@@ -106,8 +106,14 @@ button:active {
   }
 }
 
-.imgmat-tile:select {
+.imgmat-tile-selected {
   border-color: var(--selected-color);
+  background-color: #d0d0d0;
+}
+
+.imgmat-tile-selected-1 {
+  border-color: var(--selected-color);
+  background-color: #909090;
 }
 
 .imgmat-tile:hover {
@@ -128,7 +134,7 @@ button:active {
 
 .instructions {
   font-size: x-large;
-  text-align: center
+  text-align: center;
 }
 
 .instructions-txt {
