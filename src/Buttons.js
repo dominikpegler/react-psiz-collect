@@ -15,3 +15,11 @@ const TileQ = ({ imgPath }) => (
     <img src={imgPath} className={"imgmat-img"} />
   </div>
 );
+
+const TileSpinner = () => (
+  <div className={"imgmat-tile imgmat-tile-query"}>
+    <div className="spinner-container">
+      <div className="loading-spinner">
+      </div>
+    </div>  </div>
+);

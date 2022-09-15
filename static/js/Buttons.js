@@ -29,3 +29,16 @@ var TileQ = function TileQ(_ref3) {
     React.createElement("img", { src: imgPath, className: "imgmat-img" })
   );
 };
+
+var TileSpinner = function TileSpinner() {
+  return React.createElement(
+    "div",
+    { className: "imgmat-tile imgmat-tile-query" },
+    React.createElement(
+      "div",
+      { className: "spinner-container" },
+      React.createElement("div", { className: "loading-spinner" })
+    ),
+    "  "
+  );
+};

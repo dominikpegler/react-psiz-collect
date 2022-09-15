@@ -50,13 +50,15 @@ button:active {
 .imgmat-container {
   display: flex;
   flex-direction: column;
-  padding: 0.75rem;
-  max-width: 100%;
+  /* padding: 0.75rem; */
+  width: 100%;
 }
 
 .imgmat-row {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: space-around;
   max-width: 100%;
 }
 
@@ -65,18 +67,43 @@ button:active {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  max-width: 100%;
+  width: 33.3333333%;
   border-style: solid;
   border-radius: 5px;
   border-color: #ffffff;
   border-width: thin;
   background-color: #ffffff;
   margin: 10px;
+  min-height: 120px;
   cursor: pointer;
   box-shadow: 2px 2px 8px #0000003b;
   padding: 5px;
   border-radius: 10px;
   transition-duration: 0.1s;
+}
+
+@media (min-width: 576px) {
+  .imgmat-tile {
+    height: 120px;
+  }
+}
+
+@media (min-width: 768px) {
+  .imgmat-tile {
+    height: 140px;
+  }
+}
+
+@media (min-width: 992px) {
+  .imgmat-tile {
+    height: 160px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .imgmat-tile {
+    height: 160px;
+  }
 }
 
 .imgmat-tile:select {
@@ -94,30 +121,6 @@ button:active {
   cursor: default;
 }
 
-@media (min-width: 576px) {
-  .imgmat-tile {
-    max-height: 120px;
-  }
-}
-
-@media (min-width: 768px) {
-  .imgmat-tile {
-    max-height: 140px;
-  }
-}
-
-@media (min-width: 992px) {
-  .imgmat-tile {
-    max-height: 160px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .imgmat-tile {
-    max-height: 160px;
-  }
-}
-
 .imgmat-img {
   max-height: 100%;
   max-width: 100%;
@@ -125,6 +128,7 @@ button:active {
 
 .instructions {
   font-size: x-large;
+  text-align: center
 }
 
 .instructions-txt {
@@ -175,4 +179,25 @@ button:active {
   .container {
     max-width: 1140px;
   }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 10px solid #f3f3f3;
+  /* Light grey */
+  border-top: 10px solid #383636;
+  /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
 }
