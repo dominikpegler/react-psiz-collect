@@ -23,24 +23,24 @@ var Tile = function Tile(_ref2) {
 
   var _React$useState = React.useState(0),
       _React$useState2 = _slicedToArray(_React$useState, 2),
-      isSelected = _React$useState2[0],
-      setIsSelected = _React$useState2[1];
+      selectOrder = _React$useState2[0],
+      setSelectOrder = _React$useState2[1];
 
   var tileClicked = function tileClicked(id) {
-    var selectionTmp = selection;
-    var lengthTmp = selectionTmp.length;
+    var selectionNew = selection;
+    var nSelected = selectionNew.length;
     if (selection.includes(id)) {
-      selectionTmp.splice(selection.indexOf(id), 1);
-      setSelection(selectionTmp);
-    } else if (lengthTmp < 2) {
-      selectionTmp.push(id);
-      setSelection(selectionTmp);
+      selectionNew.splice(selection.indexOf(id), 1);
+      setSelectOrder(selectionNew);
+    } else if (nSelected < 2) {
+      selectionNew.push(id);
+      setSelection(selectionNew);
     }
-    if (isSelected > 0) {
-      setIsSelected(0);
-    } else if (isSelected == 0) {
-      if (lengthTmp < 2) {
-        setIsSelected(lengthTmp + 1);
+    if (selectOrder > 0) {
+      setSelectOrder(0);
+    } else if (selectOrder == 0) {
+      if (nSelected < 2) {
+        setSelectOrder(nSelected + 1);
       }
     }
     console.log("Current selection:", selection);
@@ -53,12 +53,25 @@ var Tile = function Tile(_ref2) {
         2: "imgmat-tile imgmat-tile-selected",
         1: "imgmat-tile imgmat-tile-selected",
         0: "imgmat-tile"
-      }[isSelected],
+      }[selectOrder],
       onClick: function onClick() {
         return tileClicked(id);
       }
     },
-    React.createElement("img", { src: imgPath, className: "imgmat-img" })
+    React.createElement(
+      "div",
+      { className: "imgmat-tile-inner" },
+      React.createElement(
+        "div",
+        { className: "imgmat-tile-inner-inner" },
+        React.createElement("img", { src: imgPath, className: "imgmat-img" })
+      ),
+      React.createElement(
+        "div",
+        { className: "imgmat-img-overlay" },
+        { 0: "", 1: "1st Most Similar", 2: "2nd Most Similar" }[selectOrder]
+      )
+    )
   );
 };
 
@@ -74,7 +87,7 @@ var TileQ = function TileQ(_ref3) {
 var TileSpinner = function TileSpinner() {
   return React.createElement(
     "div",
-    { className: "imgmat-tile imgmat-tile-query" },
+    { className: "imgmat-tile imgmat-tile-query imgmat-tile-spinner" },
     React.createElement(
       "div",
       { className: "spinner-container" },

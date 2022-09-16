@@ -28,16 +28,17 @@ button {
   transition-duration: 0.1s;
   border-radius: 10px;
   font-size: var(--default-font-size);
-  color: var(--accent-color);
-  border-color: var(--accent-color);
+  color: black;
   background-color: var(--pure-white);
+  border-color: black;
   border-width: 1px;
   border-style: solid;
-  padding: 0.75rem;
+  padding: 0.75rem 2.25rem 0.75rem 2.25rem;
 }
 
 button:hover {
   background-color: #f0f0f0;
+  border-color: var(--selected-color);
   cursor: pointer;
 }
 
@@ -63,23 +64,21 @@ button:active {
 }
 
 .imgmat-tile {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 33.3333333%;
-  border-style: solid;
-  border-radius: 5px;
-  border-color: #ffffff;
-  border-width: thin;
-  background-color: #ffffff;
-  margin: 10px;
+  flex: 0 0 33.333333%;
+  max-width: 33.3333333%;
+  position: relative;
+  width: 100%;
   min-height: 120px;
-  cursor: pointer;
-  box-shadow: 2px 2px 8px #0000003b;
   padding: 5px;
   border-radius: 10px;
+  border-color: #ffffff;
+  border-width: thin;
+  border-style: solid;
+  background-color: #ffffff;
   transition-duration: 0.1s;
+  cursor: pointer;
+  box-shadow: 2px 2px 8px #0000003b;
+  margin: 10px;
 }
 
 @media (min-width: 576px) {
@@ -127,9 +126,55 @@ button:active {
   cursor: default;
 }
 
+.imgmat-tile-spinner {
+  display: flex;
+  position: relative;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.imgmat-tile-inner {
+  display: block;
+  position: relative;
+}
+
+.imgmat-tile-inner-inner {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .imgmat-img {
-  max-height: 100%;
+  display: block;
+  position: absolute;
+  max-height: 160px;
   max-width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.imgmat-img-overlay {
+  display: block;
+  position: absolute;
+  background: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    /* black, */ var(--selected-color),
+    rgba(255, 0, 0, 0)
+  );
+  /* opacity: 0.6; */
+  z-index: 5;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  font-size: x-large;
+  text-align: center;
+  color: white;
 }
 
 .instructions {
