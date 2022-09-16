@@ -81,25 +81,25 @@ button:active {
 }
 
 @media (min-width: 576px) {
-  .imgmat-tile {
+  .imgmat-tile .imgmat-tile-inner-inner {
     height: 120px;
   }
 }
 
 @media (min-width: 768px) {
-  .imgmat-tile {
+  .imgmat-tile .imgmat-tile-inner-inner {
     height: 140px;
   }
 }
 
 @media (min-width: 992px) {
-  .imgmat-tile {
+  .imgmat-tile .imgmat-tile-inner-inner {
     height: 160px;
   }
 }
 
 @media (min-width: 1200px) {
-  .imgmat-tile {
+  .imgmat-tile .imgmat-tile-inner-inner {
     height: 160px;
   }
 }
@@ -134,13 +134,10 @@ button:active {
 
 .imgmat-tile-inner {
   display: block;
-  position: relative;
 }
 
 .imgmat-tile-inner-inner {
-  position: relative;
   width: 100%;
-  height: 160px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -148,7 +145,7 @@ button:active {
 .imgmat-img {
   display: block;
   position: absolute;
-  max-height: 160px;
+  max-height: 100%;
   max-width: 100%;
   top: 50%;
   left: 50%;
