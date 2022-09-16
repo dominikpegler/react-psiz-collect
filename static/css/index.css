@@ -64,7 +64,6 @@ button:active {
 }
 
 .imgmat-tile {
-  flex: 0 0 33.333333%;
   max-width: 33.3333333%;
   position: relative;
   width: 100%;
