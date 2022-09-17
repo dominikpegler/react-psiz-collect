@@ -18,13 +18,3 @@ const ProgressBarContainer = ({ trials, nTrials }) => {
     </div>
   );
 };
-
-// const ProgressBarContainer = ({ trials, nTrials }) => {
-//   return (
-//     <div className={"progress-bar-container"}>
-//       Progress: {trials} / {nTrials}
-//       <br />
-//       <code>{"●".repeat(trials) + "○".repeat(nTrials - trials)}</code>
-//     </div>
-//   );
-// };
