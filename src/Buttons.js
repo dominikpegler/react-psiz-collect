@@ -1,6 +1,8 @@
 "use strict";
 
-const Button1 = ({ handleSubmit, disabled }) => {
+const Button1 = ({ handleSubmit, selection }) => {
+  const disabled =
+    selection === undefined ? true : selection.length == 2 ? false : true;
   return (
     <button onClick={() => handleSubmit()} disabled={disabled}>
       Submit Selection

@@ -34,16 +34,23 @@ button {
   border-width: 1px;
   border-style: solid;
   padding: 0.75rem 2.25rem 0.75rem 2.25rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+  border-color: gray;
+  color: gray;
 }
 
 button:hover {
   background-color: #f0f0f0;
   border-color: var(--selected-color);
-  cursor: pointer;
 }
 
-button:active {
-  background-color: #eaeaea;
+button:hover:disabled {
+  background-color: var(--pure-white);
+  border-color: gray;
 }
 
 /* classes */

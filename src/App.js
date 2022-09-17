@@ -15,7 +15,7 @@ const BaseContainer = () => {
     const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. maybe there is a better solution.
-    
+
     const handleSubmit = () => {
       setTrials(trials + 1);
       setImgsLoaded(false);
@@ -37,8 +37,8 @@ const BaseContainer = () => {
         selectionNew.push(id);
       }
       setSelection(selectionNew);
-      setNumberOfUpdates(numberOfUpdates+1)
-    }
+      setNumberOfUpdates(numberOfUpdates + 1);
+    };
 
     React.useEffect(() => {
       const loadImage = (imgId) => {
@@ -73,7 +73,10 @@ const BaseContainer = () => {
                 handleSelect={handleSelect}
               />
             </React.Suspense>
-            <Button1 handleSubmit={() => handleSubmit()} />
+            <Button1
+              handleSubmit={() => handleSubmit()}
+              selection={selection}
+            />
           </div>
         ) : (
           <div className={"container"}>Vielen Dank für die Teilnahme!</div>

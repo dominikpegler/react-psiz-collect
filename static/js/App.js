@@ -102,9 +102,12 @@ var BaseContainer = function BaseContainer() {
             handleSelect: handleSelect
           })
         ),
-        React.createElement(Button1, { handleSubmit: function handleSubmit() {
+        React.createElement(Button1, {
+          handleSubmit: function handleSubmit() {
             return _handleSubmit();
-          } })
+          },
+          selection: selection
+        })
       ) : React.createElement(
         "div",
         { className: "container" },

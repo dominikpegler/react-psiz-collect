@@ -2,8 +2,9 @@
 
 var Button1 = function Button1(_ref) {
   var handleSubmit = _ref.handleSubmit,
-      disabled = _ref.disabled;
+      selection = _ref.selection;
 
+  var disabled = selection === undefined ? true : selection.length == 2 ? false : true;
   return React.createElement(
     "button",
     { onClick: function onClick() {
