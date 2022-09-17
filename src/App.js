@@ -98,9 +98,10 @@ const BaseContainer = () => {
         console.log("stimulusSet:", stimulusSet);
         console.log("choiceSet:", choiceSet);
         console.log("selectionTimes:", selectionTimes);
-        console.log("platform and browser", navigator.userAgent);
         console.log("begin assignment", beginHit);
-        console.log("begin trial", startMs);
+        console.log("begin trial (start_ms)", startMs);
+        console.log("trial time (submit_rt_ms)", new Date() - startMs);
+        console.log("platform and browser", navigator.userAgent);
         console.log("submitted!");
 
         // reset some states
