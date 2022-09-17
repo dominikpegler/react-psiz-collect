@@ -177,11 +177,10 @@ button:hover:disabled {
   background: linear-gradient(
     to right,
     rgba(255, 0, 0, 0),
-    /* black, */ var(--selected-color),
+    var(--selected-color),
     rgba(255, 0, 0, 0)
   );
-  /* opacity: 0.6; */
-  z-index: 5;
+  z-index: 9;
   top: 50%;
   left: 0;
   width: 100%;

@@ -25,11 +25,8 @@ const Tile = ({ id, imgPath, selection, handleSelect }) => {
       : "";
   return (
     <div className={"imgmat-tile" + selectableClass + selectedClass}>
-      <div className={"imgmat-tile-inner"}>
-        <div
-          onClick={() => handleSelect(id)}
-          className={"imgmat-tile-inner-inner"}
-        >
+      <div className={"imgmat-tile-inner"} onClick={() => handleSelect(id)}>
+        <div className={"imgmat-tile-inner-inner"}>
           <img src={imgPath} className={"imgmat-img"} />
         </div>
         {selection &&

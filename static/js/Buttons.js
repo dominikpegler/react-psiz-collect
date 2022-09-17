@@ -27,15 +27,12 @@ var Tile = function Tile(_ref2) {
     { className: "imgmat-tile" + selectableClass + selectedClass },
     React.createElement(
       "div",
-      { className: "imgmat-tile-inner" },
+      { className: "imgmat-tile-inner", onClick: function onClick() {
+          return handleSelect(id);
+        } },
       React.createElement(
         "div",
-        {
-          onClick: function onClick() {
-            return handleSelect(id);
-          },
-          className: "imgmat-tile-inner-inner"
-        },
+        { className: "imgmat-tile-inner-inner" },
         React.createElement("img", { src: imgPath, className: "imgmat-img" })
       ),
       selection && {
