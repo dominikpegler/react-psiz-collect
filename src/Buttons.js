@@ -1,8 +1,8 @@
 "use strict";
 
-const Button1 = ({ onClickButton, disabled }) => {
+const Button1 = ({ handleSubmit, disabled }) => {
   return (
-    <button onClick={() => onClickButton()} disabled={disabled}>
+    <button onClick={() => handleSubmit()} disabled={disabled}>
       Submit Selection
     </button>
   );

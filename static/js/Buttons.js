@@ -1,13 +1,13 @@
 "use strict";
 
 var Button1 = function Button1(_ref) {
-  var onClickButton = _ref.onClickButton,
+  var handleSubmit = _ref.handleSubmit,
       disabled = _ref.disabled;
 
   return React.createElement(
     "button",
     { onClick: function onClick() {
-        return onClickButton();
+        return handleSubmit();
       }, disabled: disabled },
     "Submit Selection"
   );
