@@ -172,7 +172,7 @@ button:hover:disabled {
   );
   /* opacity: 0.6; */
   z-index: 5;
-  top: 0%;
+  top: 50%;
   left: 0;
   width: 100%;
   font-size: x-large;
