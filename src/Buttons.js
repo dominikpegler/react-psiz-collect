@@ -9,21 +9,32 @@ const Button1 = ({ handleSubmit, disabled }) => {
 };
 
 const Tile = ({ id, imgPath, selection, handleSelect }) => {
-  const selectedClass = selection === undefined ? "" : selection.indexOf(id)>-1 ? " imgmat-tile-selected" : ""
+  const selectableClass =
+    selection === undefined
+      ? ""
+      : selection.length < 2
+      ? " imgmat-tile-selectable"
+      : "";
+  const selectedClass =
+    selection === undefined
+      ? ""
+      : selection.indexOf(id) > -1
+      ? " imgmat-tile-selected"
+      : "";
   return (
-    <div
-      className=
-      {"imgmat-tile" + selectedClass}
-    >
+    <div className={"imgmat-tile" + selectableClass + selectedClass}>
       <div className={"imgmat-tile-inner"}>
-        <div onClick={()=>handleSelect(id)} className={"imgmat-tile-inner-inner"}>
-        <img src={imgPath} className={"imgmat-img"} />
+        <div
+          onClick={() => handleSelect(id)}
+          className={"imgmat-tile-inner-inner"}
+        >
+          <img src={imgPath} className={"imgmat-img"} />
         </div>
-        {selection &&  {
-          0:<div className="imgmat-img-overlay">1st Most Similar</div>,
-          1:<div className="imgmat-img-overlay">2nd Most Similar</div>
-          }[selection.indexOf(id)]
-          }
+        {selection &&
+          {
+            0: <div className="imgmat-img-overlay">1st Most Similar</div>,
+            1: <div className="imgmat-img-overlay">2nd Most Similar</div>,
+          }[selection.indexOf(id)]}
       </div>
     </div>
   );

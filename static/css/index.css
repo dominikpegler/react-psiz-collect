@@ -75,7 +75,7 @@ button:active {
   border-style: solid;
   background-color: #ffffff;
   transition-duration: 0.1s;
-  cursor: pointer;
+  cursor: default;
   box-shadow: 2px 2px 8px #0000003b;
   margin: 10px;
 }
@@ -107,14 +107,14 @@ button:active {
 .imgmat-tile-selected {
   border-color: var(--selected-color);
   background-color: #d0d0d0;
+  cursor: pointer;
 }
 
-.imgmat-tile-selected-1 {
-  border-color: var(--selected-color);
-  background-color: #909090;
+.imgmat-tile-selectable {
+  cursor: pointer;
 }
 
-.imgmat-tile:hover {
+.imgmat-tile-selectable:hover {
   border-color: var(--selected-color);
 }
 

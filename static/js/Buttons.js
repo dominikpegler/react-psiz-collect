@@ -19,20 +19,22 @@ var Tile = function Tile(_ref2) {
       selection = _ref2.selection,
       handleSelect = _ref2.handleSelect;
 
+  var selectableClass = selection === undefined ? "" : selection.length < 2 ? " imgmat-tile-selectable" : "";
   var selectedClass = selection === undefined ? "" : selection.indexOf(id) > -1 ? " imgmat-tile-selected" : "";
   return React.createElement(
     "div",
-    {
-      className: "imgmat-tile" + selectedClass
-    },
+    { className: "imgmat-tile" + selectableClass + selectedClass },
     React.createElement(
       "div",
       { className: "imgmat-tile-inner" },
       React.createElement(
         "div",
-        { onClick: function onClick() {
+        {
+          onClick: function onClick() {
             return handleSelect(id);
-          }, className: "imgmat-tile-inner-inner" },
+          },
+          className: "imgmat-tile-inner-inner"
+        },
         React.createElement("img", { src: imgPath, className: "imgmat-img" })
       ),
       selection && {
