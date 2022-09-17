@@ -1,14 +1,18 @@
 "use strict";
 
-var Instructions = function Instructions() {
+var Prompt = function Prompt() {
   return React.createElement(
     "div",
-    { className: "instructions" },
-    "Select the 2 tiles you consider most similar to the",
-    " ",
+    { className: "prompt" },
     React.createElement(
       "span",
-      { className: "instructions-txt" },
+      { className: "prompt-txt-1" },
+      "Select the 2 tiles you consider most similar to the",
+      " "
+    ),
+    React.createElement(
+      "span",
+      { className: "prompt-txt-2" },
       "center tile"
     ),
     "."
