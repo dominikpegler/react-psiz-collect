@@ -28,7 +28,14 @@ var BaseContainer = function BaseContainer() {
         selection = _React$useState8[0],
         setSelection = _React$useState8[1];
 
-    var _onClickButton = function _onClickButton() {
+    var _React$useState9 = React.useState(0),
+        _React$useState10 = _slicedToArray(_React$useState9, 2),
+        numberOfUpdates = _React$useState10[0],
+        setNumberOfUpdates = _React$useState10[1];
+    // numberOfUpdates is needed only because without it the child components (<Tile/>)
+    // would not update. maybe there is a better solution.
+
+    var _handleSubmit = function _handleSubmit() {
       setTrials(trials + 1);
       setImgsLoaded(false);
       setStimulusSet(randomIntArray(0, 119, 9));
@@ -38,6 +45,17 @@ var BaseContainer = function BaseContainer() {
       }));
       console.log("submitted!");
       setSelection([]);
+    };
+
+    var handleSelect = function handleSelect(id) {
+      var selectionNew = selection;
+      if (selection.includes(id)) {
+        selectionNew.splice(selection.indexOf(id), 1);
+      } else if (selectionNew.length < 2) {
+        selectionNew.push(id);
+      }
+      setSelection(selectionNew);
+      setNumberOfUpdates(numberOfUpdates + 1);
     };
 
     React.useEffect(function () {
@@ -81,11 +99,11 @@ var BaseContainer = function BaseContainer() {
             stimulusSet: stimulusSet,
             imgsLoaded: imgsLoaded,
             selection: selection,
-            setSelection: setSelection
+            handleSelect: handleSelect
           })
         ),
-        React.createElement(Button1, { onClickButton: function onClickButton() {
-            return _onClickButton();
+        React.createElement(Button1, { handleSubmit: function handleSubmit() {
+            return _handleSubmit();
           } })
       ) : React.createElement(
         "div",

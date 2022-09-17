@@ -12,8 +12,11 @@ const BaseContainer = () => {
     );
     const [imgsLoaded, setImgsLoaded] = React.useState(false);
     const [selection, setSelection] = React.useState([]);
-
-    const onClickButton = () => {
+    const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
+    // numberOfUpdates is needed only because without it the child components (<Tile/>)
+    // would not update. maybe there is a better solution.
+    
+    const handleSubmit = () => {
       setTrials(trials + 1);
       setImgsLoaded(false);
       setStimulusSet(randomIntArray(0, 119, 9));
@@ -25,6 +28,17 @@ const BaseContainer = () => {
       console.log("submitted!");
       setSelection([]);
     };
+
+    const handleSelect = (id) => {
+      var selectionNew = selection;
+      if (selection.includes(id)) {
+        selectionNew.splice(selection.indexOf(id), 1);
+      } else if (selectionNew.length < 2) {
+        selectionNew.push(id);
+      }
+      setSelection(selectionNew);
+      setNumberOfUpdates(numberOfUpdates+1)
+    }
 
     React.useEffect(() => {
       const loadImage = (imgId) => {
@@ -56,10 +70,10 @@ const BaseContainer = () => {
                 stimulusSet={stimulusSet}
                 imgsLoaded={imgsLoaded}
                 selection={selection}
-                setSelection={setSelection}
+                handleSelect={handleSelect}
               />
             </React.Suspense>
-            <Button1 onClickButton={() => onClickButton()} />
+            <Button1 handleSubmit={() => handleSubmit()} />
           </div>
         ) : (
           <div className={"container"}>Vielen Dank für die Teilnahme!</div>

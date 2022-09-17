@@ -4,7 +4,7 @@ const ImageContainer = ({
   stimulusSet,
   imgsLoaded,
   selection,
-  setSelection,
+  handleSelect,
 }) => {
   return (
     <React.Fragment>
@@ -15,19 +15,19 @@ const ImageContainer = ({
               id={5}
               imgPath={imgPaths[stimulusSet[5]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
             <Tile
               id={3}
               imgPath={imgPaths[stimulusSet[3]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
             <Tile
               id={6}
               imgPath={imgPaths[stimulusSet[6]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
           </div>
           <div className={"imgmat-row"}>
@@ -35,14 +35,14 @@ const ImageContainer = ({
               id={1}
               imgPath={imgPaths[stimulusSet[1]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
             <TileQ imgPath={imgPaths[stimulusSet[0]]} />
             <Tile
               id={2}
               imgPath={imgPaths[stimulusSet[2]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
           </div>
           <div className={"imgmat-row"}>
@@ -50,19 +50,19 @@ const ImageContainer = ({
               id={7}
               imgPath={imgPaths[stimulusSet[7]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
             <Tile
               id={4}
               imgPath={imgPaths[stimulusSet[4]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
             <Tile
               id={8}
               imgPath={imgPaths[stimulusSet[8]]}
               selection={selection}
-              setSelection={setSelection}
+              handleSelect={handleSelect}
             />
           </div>
         </div>
