@@ -17,16 +17,18 @@ const BaseContainer = () => {
     // would not update. maybe there is a better solution.
 
     const handleSubmit = () => {
-      setTrials(trials + 1);
-      setImgsLoaded(false);
-      setStimulusSet(randomIntArray(0, 119, 9));
-      console.log("stimulusSet:", stimulusSet);
-      console.log(
-        "selection:",
-        selection.map((el) => stimulusSet[el - 1])
-      );
-      console.log("submitted!");
-      setSelection([]);
+      if (selection.length == 2) {
+        setTrials(trials + 1);
+        setImgsLoaded(false);
+        setStimulusSet(randomIntArray(0, 119, 9));
+        console.log("stimulusSet:", stimulusSet);
+        console.log(
+          "selection:",
+          selection.map((el) => stimulusSet[el - 1])
+        );
+        console.log("submitted!");
+        setSelection([]);
+      }
     };
 
     const handleSelect = (id) => {
@@ -73,10 +75,12 @@ const BaseContainer = () => {
                 handleSelect={handleSelect}
               />
             </React.Suspense>
-            <Button1
-              handleSubmit={() => handleSubmit()}
-              selection={selection}
-            />
+            <div className={"submit-button-tile"}>
+              <SubmitButton
+                handleSubmit={() => handleSubmit()}
+                selection={selection}
+              />
+            </div>
           </div>
         ) : (
           <div className={"container"}>Vielen Dank für die Teilnahme!</div>

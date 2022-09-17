@@ -36,15 +36,17 @@ var BaseContainer = function BaseContainer() {
     // would not update. maybe there is a better solution.
 
     var _handleSubmit = function _handleSubmit() {
-      setTrials(trials + 1);
-      setImgsLoaded(false);
-      setStimulusSet(randomIntArray(0, 119, 9));
-      console.log("stimulusSet:", stimulusSet);
-      console.log("selection:", selection.map(function (el) {
-        return stimulusSet[el - 1];
-      }));
-      console.log("submitted!");
-      setSelection([]);
+      if (selection.length == 2) {
+        setTrials(trials + 1);
+        setImgsLoaded(false);
+        setStimulusSet(randomIntArray(0, 119, 9));
+        console.log("stimulusSet:", stimulusSet);
+        console.log("selection:", selection.map(function (el) {
+          return stimulusSet[el - 1];
+        }));
+        console.log("submitted!");
+        setSelection([]);
+      }
     };
 
     var handleSelect = function handleSelect(id) {
@@ -102,12 +104,16 @@ var BaseContainer = function BaseContainer() {
             handleSelect: handleSelect
           })
         ),
-        React.createElement(Button1, {
-          handleSubmit: function handleSubmit() {
-            return _handleSubmit();
-          },
-          selection: selection
-        })
+        React.createElement(
+          "div",
+          { className: "submit-button-tile" },
+          React.createElement(SubmitButton, {
+            handleSubmit: function handleSubmit() {
+              return _handleSubmit();
+            },
+            selection: selection
+          })
+        )
       ) : React.createElement(
         "div",
         { className: "container" },

@@ -25,22 +25,27 @@ body {
 }
 
 button {
-  transition-duration: 0.1s;
-  border-radius: 10px;
-  font-size: var(--default-font-size);
+  font-size: x-large;
   color: black;
   background-color: var(--pure-white);
   border-color: black;
-  border-width: 1px;
+  border-width: thin;
   border-style: solid;
-  padding: 0.75rem 2.25rem 0.75rem 2.25rem;
+  border-radius: 10px;
+  padding: 10px 5px 10px 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 100%;
+  transition-duration: 0.1s;
+  box-shadow: 2px 2px 8px #0000003b;
   cursor: pointer;
 }
 
 button:disabled {
   cursor: default;
-  border-color: gray;
-  color: gray;
+  border-color: lightgray;
+  color: lightgray;
+  box-shadow: 0px 0px 0px;
 }
 
 button:hover {
@@ -50,10 +55,15 @@ button:hover {
 
 button:hover:disabled {
   background-color: var(--pure-white);
-  border-color: gray;
+  border-color: lightgray;
 }
 
 /* classes */
+
+.submit-button-tile {
+  display: flex;
+  width: calc(33.33333% - 20px);
+}
 
 .imgmat-container {
   display: flex;

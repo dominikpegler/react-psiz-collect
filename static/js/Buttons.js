@@ -1,6 +1,6 @@
 "use strict";
 
-var Button1 = function Button1(_ref) {
+var SubmitButton = function SubmitButton(_ref) {
   var handleSubmit = _ref.handleSubmit,
       selection = _ref.selection;
 
