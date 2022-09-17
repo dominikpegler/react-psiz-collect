@@ -1,21 +1,36 @@
 "use strict";
 
-const nTrials = 40;
 const transitionTime = 100; // before images are loaded and spinner is shown.
 
-// Base container
 const BaseContainer = () => {
   {
     const [trials, setTrials] = React.useState(0);
+    const [imgsLoaded, setImgsLoaded] = React.useState(false);
+    const [selection, setSelection] = React.useState([]);
+    const [selectionTimes, setSelectionTimes] = React.useState([]);
+    const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
+    // numberOfUpdates is needed only because without it the child components (<Tile/>)
+    // would not update. There might be a better solution.
+
+    // TODO set to 1 if all trials finished, set to 2 if ...
+    const [statusCode, setStatusCode] = React.useState(0);
+
+    // TODO fetch the following in the future fetch from API
     const [stimulusSet, setStimulusSet] = React.useState(
       randomIntArray(0, 119, 9)
     );
-    const [imgsLoaded, setImgsLoaded] = React.useState(false);
-    const [selection, setSelection] = React.useState([]);
-    const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
-    // numberOfUpdates is needed only because without it the child components (<Tile/>)
-    // would not update. maybe there is a better solution.
+    const assignmentId = 0;
+    const nTrials = 40;
+    const protocol_id = "";
+    const project_id = "";
+    const [beginHit, _] = React.useState(new Date());
+    const [startMs, setStartMs] = React.useState(new Date());
+    const endHit = new Date();
 
+    // TODO fetch from browser
+    const worker_id = ""; // through prolific link
+
+    //
     const handleSubmit = () => {
       if (selection.length == 2) {
         // TODO
@@ -82,19 +97,32 @@ const BaseContainer = () => {
         const choiceSet = computeChoiceSet();
         console.log("stimulusSet:", stimulusSet);
         console.log("choiceSet:", choiceSet);
+        console.log("selectionTimes:", selectionTimes);
+        console.log("platform and browser", navigator.userAgent);
+        console.log("begin assignment", beginHit);
+        console.log("begin trial", startMs);
         console.log("submitted!");
+
+        // reset some states
         setSelection([]);
+        setSelectionTimes([]);
+        setStartMs(new Date());
       }
     };
 
     const handleSelect = (id) => {
+      const time = new Date() - startMs;
       var selectionNew = selection;
+      var selectionTimesNew = selectionTimes;
       if (selection.includes(id)) {
         selectionNew.splice(selection.indexOf(id), 1);
+        selectionTimesNew.splice(selection.indexOf(id), 1);
       } else if (selectionNew.length < 2) {
         selectionNew.push(id);
+        selectionTimesNew.push(time);
       }
       setSelection(selectionNew);
+      setSelectionTimes(selectionTimesNew);
       setNumberOfUpdates(numberOfUpdates + 1);
     };
 

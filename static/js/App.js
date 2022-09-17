@@ -2,10 +2,8 @@
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var nTrials = 40;
 var transitionTime = 100; // before images are loaded and spinner is shown.
 
-// Base container
 var BaseContainer = function BaseContainer() {
   {
     var _React$useState = React.useState(0),
@@ -13,28 +11,65 @@ var BaseContainer = function BaseContainer() {
         trials = _React$useState2[0],
         setTrials = _React$useState2[1];
 
-    var _React$useState3 = React.useState(randomIntArray(0, 119, 9)),
+    var _React$useState3 = React.useState(false),
         _React$useState4 = _slicedToArray(_React$useState3, 2),
-        stimulusSet = _React$useState4[0],
-        setStimulusSet = _React$useState4[1];
+        imgsLoaded = _React$useState4[0],
+        setImgsLoaded = _React$useState4[1];
 
-    var _React$useState5 = React.useState(false),
+    var _React$useState5 = React.useState([]),
         _React$useState6 = _slicedToArray(_React$useState5, 2),
-        imgsLoaded = _React$useState6[0],
-        setImgsLoaded = _React$useState6[1];
+        selection = _React$useState6[0],
+        setSelection = _React$useState6[1];
 
     var _React$useState7 = React.useState([]),
         _React$useState8 = _slicedToArray(_React$useState7, 2),
-        selection = _React$useState8[0],
-        setSelection = _React$useState8[1];
+        selectionTimes = _React$useState8[0],
+        setSelectionTimes = _React$useState8[1];
 
     var _React$useState9 = React.useState(0),
         _React$useState10 = _slicedToArray(_React$useState9, 2),
         numberOfUpdates = _React$useState10[0],
         setNumberOfUpdates = _React$useState10[1];
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
-    // would not update. maybe there is a better solution.
+    // would not update. There might be a better solution.
 
+    // TODO set to 1 if all trials finished, set to 2 if ...
+
+
+    var _React$useState11 = React.useState(0),
+        _React$useState12 = _slicedToArray(_React$useState11, 2),
+        statusCode = _React$useState12[0],
+        setStatusCode = _React$useState12[1];
+
+    // TODO fetch the following in the future fetch from API
+
+
+    var _React$useState13 = React.useState(randomIntArray(0, 119, 9)),
+        _React$useState14 = _slicedToArray(_React$useState13, 2),
+        stimulusSet = _React$useState14[0],
+        setStimulusSet = _React$useState14[1];
+
+    var assignmentId = 0;
+    var nTrials = 40;
+    var protocol_id = "";
+    var project_id = "";
+
+    var _React$useState15 = React.useState(new Date()),
+        _React$useState16 = _slicedToArray(_React$useState15, 2),
+        beginHit = _React$useState16[0],
+        _ = _React$useState16[1];
+
+    var _React$useState17 = React.useState(new Date()),
+        _React$useState18 = _slicedToArray(_React$useState17, 2),
+        startMs = _React$useState18[0],
+        setStartMs = _React$useState18[1];
+
+    var endHit = new Date();
+
+    // TODO fetch from browser
+    var worker_id = ""; // through prolific link
+
+    //
     var _handleSubmit = function _handleSubmit() {
       if (selection.length == 2) {
         // TODO
@@ -105,19 +140,32 @@ var BaseContainer = function BaseContainer() {
         var choiceSet = computeChoiceSet();
         console.log("stimulusSet:", stimulusSet);
         console.log("choiceSet:", choiceSet);
+        console.log("selectionTimes:", selectionTimes);
+        console.log("platform and browser", navigator.userAgent);
+        console.log("begin assignment", beginHit);
+        console.log("begin trial", startMs);
         console.log("submitted!");
+
+        // reset some states
         setSelection([]);
+        setSelectionTimes([]);
+        setStartMs(new Date());
       }
     };
 
     var handleSelect = function handleSelect(id) {
+      var time = new Date() - startMs;
       var selectionNew = selection;
+      var selectionTimesNew = selectionTimes;
       if (selection.includes(id)) {
         selectionNew.splice(selection.indexOf(id), 1);
+        selectionTimesNew.splice(selection.indexOf(id), 1);
       } else if (selectionNew.length < 2) {
         selectionNew.push(id);
+        selectionTimesNew.push(time);
       }
       setSelection(selectionNew);
+      setSelectionTimes(selectionTimesNew);
       setNumberOfUpdates(numberOfUpdates + 1);
     };
 
