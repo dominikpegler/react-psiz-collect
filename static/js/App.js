@@ -71,7 +71,6 @@ var Experiment = function Experiment() {
     React.useEffect(function () {
       // this runs only once at the beginning of the assignment
       if (trials == 0) {
-        // create entry in db at start of experiment
         console.log("New assignment " + assignmentId + ":");
 
         var assignment = {
@@ -181,6 +180,7 @@ var Experiment = function Experiment() {
       setNumberOfUpdates(numberOfUpdates + 1);
     };
 
+    // runs once before each trial to preload the images
     React.useEffect(function () {
       var loadImage = function loadImage(imgId) {
         return new Promise(function (resolve, reject) {
@@ -191,7 +191,6 @@ var Experiment = function Experiment() {
               resolve(imgPaths[imgId]);
             }, transitionTime);
           };
-
           loadImg.onerror = function (err) {
             return reject(err);
           };
@@ -205,8 +204,9 @@ var Experiment = function Experiment() {
       }).catch(function (err) {
         return console.log("Failed to load images", err);
       });
-    }, [imgsLoaded]);
+    }, [stimulusSet]);
 
+    // rendering
     return React.createElement(
       "div",
       null,

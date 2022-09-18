@@ -31,7 +31,6 @@ const Experiment = () => {
     React.useEffect(() => {
       // this runs only once at the beginning of the assignment
       if (trials == 0) {
-        // create entry in db at start of experiment
         console.log(`New assignment ${assignmentId}:`);
 
         const assignment = {
@@ -137,6 +136,7 @@ const Experiment = () => {
       setNumberOfUpdates(numberOfUpdates + 1);
     };
 
+    // runs once before each trial to preload the images
     React.useEffect(() => {
       const loadImage = (imgId) => {
         return new Promise((resolve, reject) => {
@@ -146,7 +146,6 @@ const Experiment = () => {
             setTimeout(() => {
               resolve(imgPaths[imgId]);
             }, transitionTime);
-
           loadImg.onerror = (err) => reject(err);
         });
       };
@@ -154,8 +153,9 @@ const Experiment = () => {
       Promise.all(stimulusSet.map((imgId) => loadImage(imgId)))
         .then(() => setImgsLoaded(true))
         .catch((err) => console.log("Failed to load images", err));
-    }, [imgsLoaded]);
+    }, [stimulusSet]);
 
+    // rendering
     return (
       <div>
         {trials < nTrials ? (
