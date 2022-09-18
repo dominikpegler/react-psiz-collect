@@ -68,8 +68,8 @@ var Experiment = function Experiment() {
 
     var workerId = ""; // through prolific link
 
+    // runs once at the beginning of the assignment
     React.useEffect(function () {
-      // this runs only once at the beginning of the assignment
       if (trials == 0) {
         console.log("New assignment " + assignmentId + ":");
 

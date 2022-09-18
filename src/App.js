@@ -28,8 +28,8 @@ const Experiment = () => {
     // TODO fetch from browser
     const workerId = ""; // through prolific link
 
+    // runs once at the beginning of the assignment
     React.useEffect(() => {
-      // this runs only once at the beginning of the assignment
       if (trials == 0) {
         console.log(`New assignment ${assignmentId}:`);
 
