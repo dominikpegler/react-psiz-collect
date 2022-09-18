@@ -17,7 +17,7 @@ const BaseContainer = () => {
 
     // TODO fetch the following in the future fetch from API
     const [stimulusSet, setStimulusSet] = React.useState(
-      randomIntArray(0, 119, 9)
+      randomIntArray(0, imgPaths.length - 1, 9)
     );
     const assignmentId = 0;
     const nTrials = 40;

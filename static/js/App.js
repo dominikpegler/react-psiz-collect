@@ -44,7 +44,7 @@ var BaseContainer = function BaseContainer() {
     // TODO fetch the following in the future fetch from API
 
 
-    var _React$useState13 = React.useState(randomIntArray(0, 119, 9)),
+    var _React$useState13 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
         _React$useState14 = _slicedToArray(_React$useState13, 2),
         stimulusSet = _React$useState14[0],
         setStimulusSet = _React$useState14[1];
