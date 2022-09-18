@@ -210,7 +210,7 @@ var Experiment = function Experiment() {
     return React.createElement(
       "div",
       null,
-      !(trials < nTrials) ? React.createElement(
+      trials < nTrials ? React.createElement(
         "div",
         { className: "container" },
         React.createElement(ProgressBarContainer, { nTrials: nTrials, trials: trials }),

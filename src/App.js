@@ -158,7 +158,7 @@ const Experiment = () => {
 
     return (
       <div>
-        {!(trials < nTrials) ? (
+        {trials < nTrials ? (
           <div className={"container"}>
             <ProgressBarContainer nTrials={nTrials} trials={trials} />
             <Prompt />
