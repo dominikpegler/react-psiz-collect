@@ -21,72 +21,42 @@ const BaseContainer = () => {
     );
     const assignmentId = 0;
     const nTrials = 40;
-    const protocol_id = "";
-    const project_id = "";
+    const protocolId = "";
+    const projectId = "rocks";
     const [beginHit, _] = React.useState(new Date());
     const [startMs, setStartMs] = React.useState(new Date());
-    const endHit = new Date();
 
     // TODO fetch from browser
-    const worker_id = ""; // through prolific link
+    const workerId = ""; // through prolific link
 
-    //
+    React.useEffect(() => {
+      // this runs only once at the beginning of the assignment
+      if (trials == 0) {
+        // create entry in db at start of experiment
+        console.log("New assignment:");
+
+        const assignment = {
+          assignment_id: assignmentId,
+          project_id: projectId,
+          protocol_id: protocolId,
+          worker_id: workerId,
+          amt_assignment_id: "", // unclear
+          amt_hit_id: "", // unclear
+          browser: navigator.userAgent, // extract from string
+          platform: navigator.userAgent, // extract from string
+          begin_hit: beginHit,
+          end_hit: beginHit, // will be updated later after each trial
+          status_code: 0, // will be updated after trials
+          ver: 2,
+        };
+        console.log(assignment); // TODO instead of console.log this will be posted to API
+      }
+    }, [trials]);
+
     const handleSubmit = () => {
       if (selection.length == 2) {
-        // TODO
-        // The following fields have to be send to the back-end
-        // for storage in the database.
-        // ------------------------------------------
-        // Fields for table "assignment"  (with example entry):
-        // assignment_id                       2962
-        // project_id                         rocks
-        // protocol_id              protocol_0.json
-        // worker_id                             dp
-        // amt_assignment_id
-        // amt_hit_id
-        // browser                          Firefox
-        // platform                    Linux x86_64
-        // begin_hit            2022-09-17 12:13:50
-        // end_hit              2022-09-17 12:13:50
-        // status_code                            0
-        // ver                                    2
-        // ------------------------------------------
-        // Fields for table "trial" (with example entry):
-        // trial_id                         3088
-        // assignment_id                    2956
-        // n_select                            2
-        // is_ranked                           1
-        // q_idx                              72
-        // r1_idx                            311
-        // r2_idx                             88
-        // r3_idx                            209
-        // r4_idx                            181
-        // r5_idx                            242
-        // r6_idx                            259
-        // r7_idx                            134
-        // r8_idx                            191
-        // c1_idx                            242
-        // c2_idx                            191
-        // c3_idx                            311
-        // c4_idx                             88
-        // c5_idx                            209
-        // c6_idx                            181
-        // c7_idx                            259
-        // c8_idx                            134
-        // start_ms          2022-09-12 12:27:49
-        // c1_rt_ms                          414
-        // c2_rt_ms                          894
-        // c3_rt_ms                            0
-        // c4_rt_ms                            0
-        // c5_rt_ms                            0
-        // c6_rt_ms                            0
-        // c7_rt_ms                            0
-        // c8_rt_ms                            0
-        // submit_rt_ms                     1406
-        // is_catch_trial                      0
-        // rating                           None
-        // -----------------------------------------
-
+        const trialId = 279; // TODO: to be fetched from API in real time to avoid duplicates due to concurrent participants
+        const submitTime = new Date() - startMs;
         setTrials(trials + 1);
         setImgsLoaded(false);
         setStimulusSet(randomIntArray(0, 119, 9));
@@ -95,19 +65,51 @@ const BaseContainer = () => {
           return set.concat(stimulusSet.filter((i) => !set.includes(i)));
         };
         const choiceSet = computeChoiceSet();
-        console.log("stimulusSet:", stimulusSet);
-        console.log("choiceSet:", choiceSet);
-        console.log("selectionTimes:", selectionTimes);
-        console.log("begin assignment", beginHit);
-        console.log("begin trial (start_ms)", startMs);
-        console.log("trial time (submit_rt_ms)", new Date() - startMs);
-        console.log("platform and browser", navigator.userAgent);
-        console.log("submitted!");
 
+        console.log("New trial submitted!");
+        const trial = {
+          trial_id: trialId,
+          assignment_id: assignmentId,
+          n_select: 2, // TODO: comes from API/protocol
+          is_ranked: 1, //
+          q_idx: stimulusSet[0],
+          r1_idx: stimulusSet[1],
+          r2_idx: stimulusSet[2],
+          r3_idx: stimulusSet[3],
+          r4_idx: stimulusSet[4],
+          r5_idx: stimulusSet[5],
+          r6_idx: stimulusSet[5],
+          r7_idx: stimulusSet[7],
+          r8_idx: stimulusSet[8],
+          c1_idx: choiceSet[1],
+          c2_idx: choiceSet[2],
+          c3_idx: choiceSet[3],
+          c4_idx: choiceSet[4],
+          c5_idx: choiceSet[5],
+          c6_idx: choiceSet[6],
+          c7_idx: choiceSet[7],
+          c8_idx: choiceSet[8],
+          start_ms: startMs,
+          c1_rt_ms: selectionTimes[0],
+          c2_rt_ms: selectionTimes[1],
+          c3_rt_ms: 0, // usually 0 with n_select = 2, altern. could write selectionTimes[2]
+          c4_rt_ms: 0,
+          c5_rt_ms: 0,
+          c6_rt_ms: 0,
+          c7_rt_ms: 0,
+          c8_rt_ms: 0,
+          submit_rt_ms: submitTime,
+          is_catch_trial: 0, // TODO unclear
+          rating: "", // TODO unclear
+        };
+
+        console.log(trial); // TODO instead of console.log this will be posted to API
         // reset some states
         setSelection([]);
         setSelectionTimes([]);
         setStartMs(new Date());
+
+        console.log(`Assignment ${assignmentId} updated!`); // TODO instead of console.log update some fields in assignment table via API
       }
     };
 
