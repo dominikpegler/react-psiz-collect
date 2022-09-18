@@ -4,7 +4,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var transitionTime = 100; // before images are loaded and spinner is shown.
 
-var BaseContainer = function BaseContainer() {
+var Experiment = function Experiment() {
   {
     var _React$useState = React.useState(0),
         _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -33,36 +33,35 @@ var BaseContainer = function BaseContainer() {
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
 
-    // TODO set to 1 if all trials finished, set to 2 if ...
-
-
-    var _React$useState11 = React.useState(0),
-        _React$useState12 = _slicedToArray(_React$useState11, 2),
-        statusCode = _React$useState12[0],
-        setStatusCode = _React$useState12[1];
-
     // TODO fetch the following in the future fetch from API
 
 
-    var _React$useState13 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
-        _React$useState14 = _slicedToArray(_React$useState13, 2),
-        stimulusSet = _React$useState14[0],
-        setStimulusSet = _React$useState14[1];
+    var _React$useState11 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
+        _React$useState12 = _slicedToArray(_React$useState11, 2),
+        stimulusSet = _React$useState12[0],
+        setStimulusSet = _React$useState12[1];
 
     var assignmentId = 0;
     var nTrials = 40;
     var protocolId = "";
     var projectId = "rocks";
 
+    var _React$useState13 = React.useState(new Date()),
+        _React$useState14 = _slicedToArray(_React$useState13, 2),
+        beginHit = _React$useState14[0],
+        _ = _React$useState14[1];
+
     var _React$useState15 = React.useState(new Date()),
         _React$useState16 = _slicedToArray(_React$useState15, 2),
-        beginHit = _React$useState16[0],
-        _ = _React$useState16[1];
+        startMs = _React$useState16[0],
+        setStartMs = _React$useState16[1];
+    // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
 
-    var _React$useState17 = React.useState(new Date()),
+
+    var _React$useState17 = React.useState(0),
         _React$useState18 = _slicedToArray(_React$useState17, 2),
-        startMs = _React$useState18[0],
-        setStartMs = _React$useState18[1];
+        statusCode = _React$useState18[0],
+        setStatusCode = _React$useState18[1];
 
     // TODO fetch from browser
 
@@ -73,7 +72,7 @@ var BaseContainer = function BaseContainer() {
       // this runs only once at the beginning of the assignment
       if (trials == 0) {
         // create entry in db at start of experiment
-        console.log("New assignment:");
+        console.log("New assignment " + assignmentId + ":");
 
         var assignment = {
           assignment_id: assignmentId,
@@ -86,7 +85,7 @@ var BaseContainer = function BaseContainer() {
           platform: navigator.userAgent, // extract from string
           begin_hit: beginHit,
           end_hit: beginHit, // will be updated later after each trial
-          status_code: 0, // will be updated after trials
+          status_code: statusCode, // will be updated after trials
           ver: 2
         };
         console.log(assignment); // TODO instead of console.log this will be posted to API
@@ -96,7 +95,14 @@ var BaseContainer = function BaseContainer() {
     var _handleSubmit = function _handleSubmit() {
       if (selection.length == 2) {
         var trialId = 279; // TODO: to be fetched from API in real time to avoid duplicates due to concurrent participants
-        var submitTime = new Date() - startMs;
+        var endHit = new Date();
+        var submitTime = endHit - startMs;
+        if (trials == 0) {
+          setStatusCode(2);
+        }
+        if (trials == nTrials) {
+          setStatusCode(1);
+        }
         setTrials(trials + 1);
         setImgsLoaded(false);
         setStimulusSet(randomIntArray(0, 119, 9));
@@ -110,7 +116,7 @@ var BaseContainer = function BaseContainer() {
         };
         var choiceSet = computeChoiceSet();
 
-        console.log("New trial submitted!");
+        console.log("New trial " + trialId + ":");
         var trial = {
           trial_id: trialId,
           assignment_id: assignmentId,
@@ -146,14 +152,16 @@ var BaseContainer = function BaseContainer() {
           is_catch_trial: 0, // TODO unclear
           rating: "" // TODO unclear
         };
-
         console.log(trial); // TODO instead of console.log this will be posted to API
-        // reset some states
+
+        console.log("Updated assignment " + assignmentId + ":"); // TODO instead of console.log update some fields in assignment table via API
+        var assignmentUpdate = { end_hit: endHit, status_code: statusCode };
+        console.log(assignmentUpdate);
+
+        // reset some states for the next trail
         setSelection([]);
         setSelectionTimes([]);
         setStartMs(new Date());
-
-        console.log("Assignment " + assignmentId + " updated!"); // TODO instead of console.log update some fields in assignment table via API
       }
     };
 
@@ -202,7 +210,7 @@ var BaseContainer = function BaseContainer() {
     return React.createElement(
       "div",
       null,
-      trials < nTrials ? React.createElement(
+      !(trials < nTrials) ? React.createElement(
         "div",
         { className: "container" },
         React.createElement(ProgressBarContainer, { nTrials: nTrials, trials: trials }),
@@ -230,7 +238,15 @@ var BaseContainer = function BaseContainer() {
       ) : React.createElement(
         "div",
         { className: "container" },
-        "Vielen Dank f\xFCr die Teilnahme!"
+        React.createElement(
+          "div",
+          { className: "goodbye" },
+          React.createElement(
+            "span",
+            null,
+            "Thank you for your participation! You can now close this window."
+          )
+        )
       )
     );
   }
@@ -238,4 +254,4 @@ var BaseContainer = function BaseContainer() {
 
 var domContainer = document.querySelector("#react-container");
 var root = ReactDOM.createRoot(domContainer);
-root.render(React.createElement(BaseContainer, null));
+root.render(React.createElement(Experiment, null));

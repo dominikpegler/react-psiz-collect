@@ -224,6 +224,16 @@ button:hover:disabled {
   animation: spinner 1.5s linear infinite;
 }
 
+.goodbye {
+  display: flex;
+  flex-direction: column;
+  font-size: x-large;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
 @media (min-width: 576px) {
   .imgmat-tile-inner {
     height: 120px;

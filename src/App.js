@@ -2,7 +2,7 @@
 
 const transitionTime = 100; // before images are loaded and spinner is shown.
 
-const BaseContainer = () => {
+const Experiment = () => {
   {
     const [trials, setTrials] = React.useState(0);
     const [imgsLoaded, setImgsLoaded] = React.useState(false);
@@ -11,9 +11,6 @@ const BaseContainer = () => {
     const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
-
-    // TODO set to 1 if all trials finished, set to 2 if ...
-    const [statusCode, setStatusCode] = React.useState(0);
 
     // TODO fetch the following in the future fetch from API
     const [stimulusSet, setStimulusSet] = React.useState(
@@ -25,6 +22,8 @@ const BaseContainer = () => {
     const projectId = "rocks";
     const [beginHit, _] = React.useState(new Date());
     const [startMs, setStartMs] = React.useState(new Date());
+    // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
+    const [statusCode, setStatusCode] = React.useState(0);
 
     // TODO fetch from browser
     const workerId = ""; // through prolific link
@@ -33,7 +32,7 @@ const BaseContainer = () => {
       // this runs only once at the beginning of the assignment
       if (trials == 0) {
         // create entry in db at start of experiment
-        console.log("New assignment:");
+        console.log(`New assignment ${assignmentId}:`);
 
         const assignment = {
           assignment_id: assignmentId,
@@ -46,7 +45,7 @@ const BaseContainer = () => {
           platform: navigator.userAgent, // extract from string
           begin_hit: beginHit,
           end_hit: beginHit, // will be updated later after each trial
-          status_code: 0, // will be updated after trials
+          status_code: statusCode, // will be updated after trials
           ver: 2,
         };
         console.log(assignment); // TODO instead of console.log this will be posted to API
@@ -56,7 +55,14 @@ const BaseContainer = () => {
     const handleSubmit = () => {
       if (selection.length == 2) {
         const trialId = 279; // TODO: to be fetched from API in real time to avoid duplicates due to concurrent participants
-        const submitTime = new Date() - startMs;
+        const endHit = new Date();
+        const submitTime = endHit - startMs;
+        if (trials == 0) {
+          setStatusCode(2);
+        }
+        if (trials == nTrials) {
+          setStatusCode(1);
+        }
         setTrials(trials + 1);
         setImgsLoaded(false);
         setStimulusSet(randomIntArray(0, 119, 9));
@@ -66,7 +72,7 @@ const BaseContainer = () => {
         };
         const choiceSet = computeChoiceSet();
 
-        console.log("New trial submitted!");
+        console.log(`New trial ${trialId}:`);
         const trial = {
           trial_id: trialId,
           assignment_id: assignmentId,
@@ -102,14 +108,16 @@ const BaseContainer = () => {
           is_catch_trial: 0, // TODO unclear
           rating: "", // TODO unclear
         };
-
         console.log(trial); // TODO instead of console.log this will be posted to API
-        // reset some states
+
+        console.log(`Updated assignment ${assignmentId}:`); // TODO instead of console.log update some fields in assignment table via API
+        const assignmentUpdate = { end_hit: endHit, status_code: statusCode };
+        console.log(assignmentUpdate);
+
+        // reset some states for the next trail
         setSelection([]);
         setSelectionTimes([]);
         setStartMs(new Date());
-
-        console.log(`Assignment ${assignmentId} updated!`); // TODO instead of console.log update some fields in assignment table via API
       }
     };
 
@@ -150,7 +158,7 @@ const BaseContainer = () => {
 
     return (
       <div>
-        {trials < nTrials ? (
+        {!(trials < nTrials) ? (
           <div className={"container"}>
             <ProgressBarContainer nTrials={nTrials} trials={trials} />
             <Prompt />
@@ -170,7 +178,13 @@ const BaseContainer = () => {
             </div>
           </div>
         ) : (
-          <div className={"container"}>Vielen Dank für die Teilnahme!</div>
+          <div className={"container"}>
+            <div className={"goodbye"}>
+              <span>
+                Thank you for your participation! You can now close this window.
+              </span>
+            </div>
+          </div>
         )}
       </div>
     );
@@ -179,4 +193,4 @@ const BaseContainer = () => {
 
 const domContainer = document.querySelector("#react-container");
 const root = ReactDOM.createRoot(domContainer);
-root.render(<BaseContainer />);
+root.render(<Experiment />);
