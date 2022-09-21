@@ -30,38 +30,43 @@ var Experiment = function Experiment() {
         _React$useState10 = _slicedToArray(_React$useState9, 2),
         numberOfUpdates = _React$useState10[0],
         setNumberOfUpdates = _React$useState10[1];
+
+    var _React$useState11 = React.useState(),
+        _React$useState12 = _slicedToArray(_React$useState11, 2),
+        assignmentId = _React$useState12[0],
+        setAssignmentId = _React$useState12[1];
+
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
 
     // TODO fetch the following in the future fetch from API
 
 
-    var _React$useState11 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
-        _React$useState12 = _slicedToArray(_React$useState11, 2),
-        stimulusSet = _React$useState12[0],
-        setStimulusSet = _React$useState12[1];
+    var _React$useState13 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
+        _React$useState14 = _slicedToArray(_React$useState13, 2),
+        stimulusSet = _React$useState14[0],
+        setStimulusSet = _React$useState14[1];
 
-    var assignmentId = 1;
     var nTrials = 40;
     var protocolId = "internal";
     var projectId = "rocks";
 
-    var _React$useState13 = React.useState(new Date()),
-        _React$useState14 = _slicedToArray(_React$useState13, 2),
-        beginHit = _React$useState14[0],
-        _ = _React$useState14[1];
-
     var _React$useState15 = React.useState(new Date()),
         _React$useState16 = _slicedToArray(_React$useState15, 2),
-        startMs = _React$useState16[0],
-        setStartMs = _React$useState16[1];
+        beginHit = _React$useState16[0],
+        _ = _React$useState16[1];
+
+    var _React$useState17 = React.useState(new Date()),
+        _React$useState18 = _slicedToArray(_React$useState17, 2),
+        startMs = _React$useState18[0],
+        setStartMs = _React$useState18[1];
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
 
 
-    var _React$useState17 = React.useState(0),
-        _React$useState18 = _slicedToArray(_React$useState17, 2),
-        statusCode = _React$useState18[0],
-        setStatusCode = _React$useState18[1];
+    var _React$useState19 = React.useState(0),
+        _React$useState20 = _slicedToArray(_React$useState19, 2),
+        statusCode = _React$useState20[0],
+        setStatusCode = _React$useState20[1];
 
     // TODO fetch from browser
 
@@ -81,17 +86,17 @@ var Experiment = function Experiment() {
           throw new Error(response.statusText);
         }
         return response.json();
-      }).then(function () {
-        console.log("Assignment successful.");
+      }).then(function (res) {
+        setAssignmentId(res.assignment_id);
+        console.log("New assignment " + res.assignment_id + " successful.");
       }).catch(function (err) {
         console.log("Error:", err.toString());
-        console.log("assignment was => ", assignment);
+        console.log("Assignment was => ", assignment);
       });
     };
 
     var _handleSubmit = function _handleSubmit() {
       if (selection.length == 2) {
-        var trialId = 279; // TODO: to be fetched from API in real time to avoid duplicates due to concurrent participants
         var endHit = new Date();
         var submitTime = endHit - startMs;
         if (trials == 0) {
@@ -113,9 +118,7 @@ var Experiment = function Experiment() {
         };
         var choiceSet = computeChoiceSet();
 
-        console.log("New trial " + trialId + ":");
         var trial = {
-          trial_id: trialId,
           assignment_id: assignmentId,
           n_select: 2, // TODO: comes from API/protocol
           is_ranked: 1, //
@@ -161,8 +164,8 @@ var Experiment = function Experiment() {
             throw new Error(response.statusText);
           }
           return response.json();
-        }).then(function () {
-          console.log("Trial submission successful.");
+        }).then(function (res) {
+          console.log("Trial " + res.trial_id + " submission successful.");
         }).catch(function (err) {
           console.log("Error:", err.toString());
           console.log("Trial was => ", trial);
@@ -198,8 +201,6 @@ var Experiment = function Experiment() {
     // runs once at the beginning of the assignment
     React.useEffect(function () {
       if (trials == 0) {
-        console.log("New assignment " + assignmentId + ":");
-
         var assignment = {
           assignment_id: assignmentId,
           project_id: projectId,

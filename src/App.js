@@ -9,6 +9,8 @@ const Experiment = () => {
     const [selection, setSelection] = React.useState([]);
     const [selectionTimes, setSelectionTimes] = React.useState([]);
     const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
+    const [assignmentId, setAssignmentId] = React.useState();
+
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
 
@@ -16,7 +18,6 @@ const Experiment = () => {
     const [stimulusSet, setStimulusSet] = React.useState(
       randomIntArray(0, imgPaths.length - 1, 9)
     );
-    const assignmentId = 1;
     const nTrials = 40;
     const protocolId = "internal";
     const projectId = "rocks";
@@ -43,18 +44,18 @@ const Experiment = () => {
           }
           return response.json();
         })
-        .then(() => {
-          console.log("Assignment successful.");
+        .then((res) => {
+          setAssignmentId(res.assignment_id);
+          console.log(`New assignment ${res.assignment_id} successful.`);
         })
         .catch((err) => {
           console.log("Error:", err.toString());
-          console.log("assignment was => ", assignment);
+          console.log("Assignment was => ", assignment);
         });
     };
 
     const handleSubmit = () => {
       if (selection.length == 2) {
-        const trialId = 279; // TODO: to be fetched from API in real time to avoid duplicates due to concurrent participants
         const endHit = new Date();
         const submitTime = endHit - startMs;
         if (trials == 0) {
@@ -72,9 +73,7 @@ const Experiment = () => {
         };
         const choiceSet = computeChoiceSet();
 
-        console.log(`New trial ${trialId}:`);
         const trial = {
-          trial_id: trialId,
           assignment_id: assignmentId,
           n_select: 2, // TODO: comes from API/protocol
           is_ranked: 1, //
@@ -122,8 +121,8 @@ const Experiment = () => {
             }
             return response.json();
           })
-          .then(() => {
-            console.log("Trial submission successful.");
+          .then((res) => {
+            console.log(`Trial ${res.trial_id} submission successful.`);
           })
           .catch((err) => {
             console.log("Error:", err.toString());
@@ -160,8 +159,6 @@ const Experiment = () => {
     // runs once at the beginning of the assignment
     React.useEffect(() => {
       if (trials == 0) {
-        console.log(`New assignment ${assignmentId}:`);
-
         const assignment = {
           assignment_id: assignmentId,
           project_id: projectId,
