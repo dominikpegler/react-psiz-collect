@@ -41,9 +41,9 @@ var Experiment = function Experiment() {
         stimulusSet = _React$useState12[0],
         setStimulusSet = _React$useState12[1];
 
-    var assignmentId = 0;
+    var assignmentId = 1;
     var nTrials = 40;
-    var protocolId = "";
+    var protocolId = "internal";
     var projectId = "rocks";
 
     var _React$useState13 = React.useState(new Date()),
@@ -66,30 +66,28 @@ var Experiment = function Experiment() {
     // TODO fetch from browser
 
 
-    var workerId = ""; // through prolific link
+    var workerId = randomWorkerId(14); // through prolific link
 
-    // runs once at the beginning of the assignment
-    React.useEffect(function () {
-      if (trials == 0) {
-        console.log("New assignment " + assignmentId + ":");
-
-        var assignment = {
-          assignment_id: assignmentId,
-          project_id: projectId,
-          protocol_id: protocolId,
-          worker_id: workerId,
-          amt_assignment_id: "", // unclear
-          amt_hit_id: "", // unclear
-          browser: navigator.userAgent, // extract from string
-          platform: navigator.userAgent, // extract from string
-          begin_hit: beginHit,
-          end_hit: beginHit, // will be updated later after each trial
-          status_code: statusCode, // will be updated after trials
-          ver: 2
-        };
-        console.log(assignment); // TODO instead of console.log this will be posted to API
-      }
-    }, [trials]);
+    var handleAssigned = function handleAssigned(assignment) {
+      fetch("http://localhost:5000/create-assignment/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(assignment)
+      }).then(function (response) {
+        if (response.status !== 200) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      }).then(function () {
+        console.log("Assignment successful.");
+      }).catch(function (err) {
+        console.log("Error:", err.toString());
+        console.log("assignment was => ", assignment);
+      });
+    };
 
     var _handleSubmit = function _handleSubmit() {
       if (selection.length == 2) {
@@ -151,7 +149,24 @@ var Experiment = function Experiment() {
           is_catch_trial: 0, // TODO unclear
           rating: "" // TODO unclear
         };
-        console.log(trial); // TODO instead of console.log this will be posted to API
+        fetch("http://localhost:5000/create-trial/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(trial)
+        }).then(function (response) {
+          if (response.status !== 200) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        }).then(function () {
+          console.log("Trial submission successful.");
+        }).catch(function (err) {
+          console.log("Error:", err.toString());
+          console.log("Trial was => ", trial);
+        });
 
         console.log("Updated assignment " + assignmentId + ":"); // TODO instead of console.log update some fields in assignment table via API
         var assignmentUpdate = { end_hit: endHit, status_code: statusCode };
@@ -179,6 +194,29 @@ var Experiment = function Experiment() {
       setSelectionTimes(selectionTimesNew);
       setNumberOfUpdates(numberOfUpdates + 1);
     };
+
+    // runs once at the beginning of the assignment
+    React.useEffect(function () {
+      if (trials == 0) {
+        console.log("New assignment " + assignmentId + ":");
+
+        var assignment = {
+          assignment_id: assignmentId,
+          project_id: projectId,
+          protocol_id: protocolId,
+          worker_id: workerId,
+          amt_assignment_id: "", // unclear
+          amt_hit_id: "", // unclear
+          browser: navigator.userAgent, // extract from string
+          platform: navigator.userAgent, // extract from string
+          begin_hit: beginHit,
+          end_hit: beginHit, // will be updated later after each trial
+          status_code: statusCode, // will be updated after trials
+          ver: 2
+        };
+        handleAssigned(assignment);
+      }
+    }, [trials]);
 
     // runs once before each trial to preload the images
     React.useEffect(function () {

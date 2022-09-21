@@ -3,15 +3,15 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
-# not in psiz-collect implemented. maybe delete
-#-----------------------------------------------
-def get_assignment(db: Session, assignment_id: int):
-    return (db.query(models.Assignment).get(assignment_id)
-    )
+# # not in psiz-collect implemented. maybe delete
+# #-----------------------------------------------
+# def get_assignment(db: Session, assignment_id: int):
+#     return (db.query(models.Assignment).get(assignment_id)
+#     )
 
 
 # not in psiz-collect implemented, but makes sense to allow for contiuation of interrupted assignments
-#-----------------------------------------------
+# -----------------------------------------------
 def get_assignment_by_worker_id(db: Session, worker_id: str):
     return (
         db.query(models.Assignment)
@@ -36,7 +36,7 @@ def get_assignments_by_project_id(db: Session, project_id: str):
 # ----------------------------------------------
 # query = "INSERT INTO assignment (worker_id, project_id, protocol_id, amt_assignment_id, amt_hit_id, browser, platform) VALUES (?, ?, ?, ?, ?, ?, ?)";
 def create_assignment(db: Session, assignment: schemas.AssignmentCreate):
-    db_assignment = models.Assignment(worker_id=assignment.worker_id)
+    db_assignment = models.Assignment(**assignment.dict())
     db.add(db_assignment)
     db.commit()
     db.refresh(db_assignment)
@@ -57,7 +57,7 @@ def update_assignment(db: Session, assignment_id: int, end_hit, status_code):
 
 
 # not in psiz-collect implemented. maybe delete
-#-----------------------------------------------
+# -----------------------------------------------
 # def get_trials(db: Session, skip: int = 0, limit: int = 100):
 #     return db.query(models.Trial).offset(skip).limit(limit).all()
 
@@ -73,10 +73,8 @@ def update_assignment(db: Session, assignment_id: int, end_hit, status_code):
 #     ") VALUES ".
 #     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ".
 #     "?, ?, ?, ?, ?, ?, ?, ?)";
-def create_trial(
-    db: Session, trial: schemas.TrialCreate, assignment_id: int
-):
-    db_trial = models.Trial(**trial.dict(), owner_id=assignment_id)
+def create_trial(db: Session, trial: schemas.TrialCreate):
+    db_trial = models.Trial(**trial.dict())
     db.add(db_trial)
     db.commit()
     db.refresh(db_trial)

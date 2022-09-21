@@ -57,6 +57,6 @@ class Trial(Base):
     c8_rt_ms = Column(Float, unique=False, index=False)
     submit_rt_ms = Column(Float, unique=False, index=False)
     is_catch_trial = Column(Boolean, unique=False, index=False)
-    rating = Column(Integer, unique=False, index=False)
+    rating = Column(String, unique=False, index=False)
 
     assignment = relationship("Assignment", back_populates="trial")

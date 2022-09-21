@@ -16,9 +16,9 @@ const Experiment = () => {
     const [stimulusSet, setStimulusSet] = React.useState(
       randomIntArray(0, imgPaths.length - 1, 9)
     );
-    const assignmentId = 0;
+    const assignmentId = 1;
     const nTrials = 40;
-    const protocolId = "";
+    const protocolId = "internal";
     const projectId = "rocks";
     const [beginHit, _] = React.useState(new Date());
     const [startMs, setStartMs] = React.useState(new Date());
@@ -26,30 +26,31 @@ const Experiment = () => {
     const [statusCode, setStatusCode] = React.useState(0);
 
     // TODO fetch from browser
-    const workerId = ""; // through prolific link
+    const workerId = randomWorkerId(14); // through prolific link
 
-    // runs once at the beginning of the assignment
-    React.useEffect(() => {
-      if (trials == 0) {
-        console.log(`New assignment ${assignmentId}:`);
-
-        const assignment = {
-          assignment_id: assignmentId,
-          project_id: projectId,
-          protocol_id: protocolId,
-          worker_id: workerId,
-          amt_assignment_id: "", // unclear
-          amt_hit_id: "", // unclear
-          browser: navigator.userAgent, // extract from string
-          platform: navigator.userAgent, // extract from string
-          begin_hit: beginHit,
-          end_hit: beginHit, // will be updated later after each trial
-          status_code: statusCode, // will be updated after trials
-          ver: 2,
-        };
-        console.log(assignment); // TODO instead of console.log this will be posted to API
-      }
-    }, [trials]);
+    const handleAssigned = (assignment) => {
+      fetch("http://localhost:5000/create-assignment/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(assignment),
+      })
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then(() => {
+          console.log("Assignment successful.");
+        })
+        .catch((err) => {
+          console.log("Error:", err.toString());
+          console.log("assignment was => ", assignment);
+        });
+    };
 
     const handleSubmit = () => {
       if (selection.length == 2) {
@@ -107,7 +108,27 @@ const Experiment = () => {
           is_catch_trial: 0, // TODO unclear
           rating: "", // TODO unclear
         };
-        console.log(trial); // TODO instead of console.log this will be posted to API
+        fetch("http://localhost:5000/create-trial/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(trial),
+        })
+          .then((response) => {
+            if (response.status !== 200) {
+              throw new Error(response.statusText);
+            }
+            return response.json();
+          })
+          .then(() => {
+            console.log("Trial submission successful.");
+          })
+          .catch((err) => {
+            console.log("Error:", err.toString());
+            console.log("Trial was => ", trial);
+          });
 
         console.log(`Updated assignment ${assignmentId}:`); // TODO instead of console.log update some fields in assignment table via API
         const assignmentUpdate = { end_hit: endHit, status_code: statusCode };
@@ -135,6 +156,29 @@ const Experiment = () => {
       setSelectionTimes(selectionTimesNew);
       setNumberOfUpdates(numberOfUpdates + 1);
     };
+
+    // runs once at the beginning of the assignment
+    React.useEffect(() => {
+      if (trials == 0) {
+        console.log(`New assignment ${assignmentId}:`);
+
+        const assignment = {
+          assignment_id: assignmentId,
+          project_id: projectId,
+          protocol_id: protocolId,
+          worker_id: workerId,
+          amt_assignment_id: "", // unclear
+          amt_hit_id: "", // unclear
+          browser: navigator.userAgent, // extract from string
+          platform: navigator.userAgent, // extract from string
+          begin_hit: beginHit,
+          end_hit: beginHit, // will be updated later after each trial
+          status_code: statusCode, // will be updated after trials
+          ver: 2,
+        };
+        handleAssigned(assignment);
+      }
+    }, [trials]);
 
     // runs once before each trial to preload the images
     React.useEffect(() => {
