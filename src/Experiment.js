@@ -20,11 +20,11 @@ const Experiment = ({ workerId }) => {
     );
     const nTrials = 40;
     const protocolId = "internal";
-    const projectId = "rocks";
+    const projectId = "roast"; // should come from link
     const [beginHit, _] = React.useState(new Date());
     const [startMs, setStartMs] = React.useState(new Date());
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
-    const [statusCode, setStatusCode] = React.useState(0);
+    const [statusCode, setStatusCode] = React.useState(2);
 
     const handleAssigned = (assignment) => {
       fetch("http://localhost:5000/create-assignment/", {
@@ -129,15 +129,35 @@ const Experiment = ({ workerId }) => {
           })
           .catch((err) => {
             console.log("Error:", err.toString());
-            console.log("Trial was => ", trial);
           });
 
-        console.log(`Updated assignment ${assignmentId}:`); // TODO instead of console.log update some fields in assignment table via API
+        console.log(`Updated assignment ${assignmentId}:`); // TODO instead of console.log update some fields in assignment table via AP
         const assignmentUpdate = {
+          assignment_id: assignmentId,
           end_hit: endHit,
           status_code: newStatusCode,
         };
         console.log(assignmentUpdate);
+        fetch("http://localhost:5000/update-assignment/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(assignmentUpdate),
+        })
+          .then((response) => {
+            if (response.status !== 200) {
+              throw new Error(response.statusText);
+            }
+            return response.json();
+          })
+          .then((res) => {
+            console.log(`Assignment ${res.assignment_id} update successful.`);
+          })
+          .catch((err) => {
+            console.log("Error:", err.toString());
+          });
 
         // reset some states for the next trail
         setSelection([]);
@@ -176,7 +196,7 @@ const Experiment = ({ workerId }) => {
           platform: navigator.userAgent, // extract from string
           begin_hit: beginHit,
           end_hit: beginHit, // will be updated later after each trial
-          status_code: statusCode, // will be updated after trials
+          status_code: 0, // will be updated after trials
           ver: 2,
         };
         handleAssigned(assignment);

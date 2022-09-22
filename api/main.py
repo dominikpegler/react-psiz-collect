@@ -70,7 +70,9 @@ def test_assignment():
 def create_assignment(
     assignment: schemas.AssignmentCreate, db: Session = Depends(get_db)
 ):
-    db_assignment = crud.get_assignment_by_worker_id(db, worker_id=assignment.worker_id)
+    db_assignment = crud.get_assignment_by_worker_id(
+        db, worker_id=assignment.worker_id, project_id=assignment.project_id
+    )
     if db_assignment:
         print(
             f"INFO:     Worker {db_assignment.worker_id} already assigned. Continuing with trials"
@@ -92,6 +94,21 @@ def create_assignment(
             "trials_completed": trials_completed,
         }
     )
+
+
+@app.post("/update-assignment/", response_model=schemas.Assignment)
+def update_assignment(
+    assignment_update: schemas.AssignmentUpdate, db: Session = Depends(get_db)
+):
+
+    assignment_updated = crud.update_assignment(
+        db=db,
+        assignment_id=assignment_update.assignment_id,
+        end_hit=assignment_update.end_hit,
+        status_code=assignment_update.status_code,
+    )
+
+    return JSONResponse({"assignment_id": assignment_updated.assignment_id})
 
 
 @app.post("/create-trial/", response_model=schemas.Trial)

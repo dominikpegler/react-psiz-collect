@@ -64,6 +64,12 @@ class AssignmentCreate(AssignmentBase):
     ver: int
 
 
+class AssignmentUpdate(BaseModel):
+    assignment_id: int
+    end_hit: datetime
+    status_code: int
+
+
 class Assignment(AssignmentBase):
     assignment_id: int
     trial_id: list[Trial] = []
