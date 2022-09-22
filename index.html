@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Collect - PsiZ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="PsyCybLab" content="Psychological Experiment" />
+    <link rel="stylesheet" type="text/css" href="static/css/index.css" />
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+  </head>
 
-<head>
-  <title>Collect - PsiZ</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="PsyCybLab" content="Psychological Experiment" />
-  <link rel="stylesheet" type="text/css" href="static/css/index.css" />
-  <!-- Load React. -->
-  <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-</head>
-
-<body>
-  <!-- Placeholder for React content. -->
-  <div id="react-container"></div>
-  <!-- Load React container. -->
-  <script src="static/js/App.js"></script>
-  <!-- Load React components -->
-  <script src="static/js/Buttons.js"></script>
-  <script src="static/js/ImageContainer.js"></script>
-  <script src="static/js/Instructions.js"></script>
-  <script src="static/js/ProgressBar.js"></script>
-  <script src="static/js/imgPaths.js"></script>
-  <!-- Load JS functions -->
-  <script src="static/js/functions.js"></script>
-
-</body>
-
+  <body>
+    <!-- Placeholder for React content. -->
+    <div id="react-container"></div>
+    <!-- Load React container. -->
+    <script src="static/js/App.js"></script>
+    <!-- Kiad Experiment -->
+    <script src="static/js/Experiment.js"></script>
+    <!-- Load React components -->
+    <script src="static/js/Buttons.js"></script>
+    <script src="static/js/ImageContainer.js"></script>
+    <script src="static/js/Instructions.js"></script>
+    <script src="static/js/ProgressBar.js"></script>
+    <script src="static/js/imgPaths.js"></script>
+    <!-- Load JS functions -->
+    <script src="static/js/functions.js"></script>
+  </body>
 </html>
