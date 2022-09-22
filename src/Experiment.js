@@ -62,7 +62,7 @@ const Experiment = ({ workerId }) => {
         if (trials == 0) {
           newStatusCode = 2;
           setStatusCode(newStatusCode);
-        } else if (trials == nTrials) {
+        } else if (trials + 1 == nTrials) {
           newStatusCode = 1;
           setStatusCode(newStatusCode);
         }
@@ -131,13 +131,11 @@ const Experiment = ({ workerId }) => {
             console.log("Error:", err.toString());
           });
 
-        console.log(`Updated assignment ${assignmentId}:`); // TODO instead of console.log update some fields in assignment table via AP
         const assignmentUpdate = {
           assignment_id: assignmentId,
           end_hit: endHit,
           status_code: newStatusCode,
         };
-        console.log(assignmentUpdate);
         fetch("http://localhost:5000/update-assignment/", {
           method: "POST",
           headers: {
