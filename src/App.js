@@ -27,7 +27,7 @@ const Experiment = () => {
     const [statusCode, setStatusCode] = React.useState(0);
 
     // TODO fetch from browser
-    const workerId = randomWorkerId(14); // through prolific link
+    const workerId = randomWorkerId(3); // through prolific link
 
     const handleAssigned = (assignment) => {
       fetch("http://localhost:5000/create-assignment/", {
@@ -45,12 +45,15 @@ const Experiment = () => {
           return response.json();
         })
         .then((res) => {
+          console.log("res", res);
           setAssignmentId(res.assignment_id);
-          console.log(`New assignment ${res.assignment_id} successful.`);
+          setTrials(res.trials_completed);
+          console.log(
+            `Success: Worker ${workerId} started assignment ${res.assignment_id}.`
+          );
         })
         .catch((err) => {
           console.log("Error:", err.toString());
-          console.log("Assignment was => ", assignment);
         });
     };
 
@@ -58,12 +61,15 @@ const Experiment = () => {
       if (selection.length == 2) {
         const endHit = new Date();
         const submitTime = endHit - startMs;
+        var newStatusCode = statusCode;
         if (trials == 0) {
-          setStatusCode(2);
+          newStatusCode = 2;
+          setStatusCode(newStatusCode);
+        } else if (trials == nTrials) {
+          newStatusCode = 1;
+          setStatusCode(newStatusCode);
         }
-        if (trials == nTrials) {
-          setStatusCode(1);
-        }
+
         setTrials(trials + 1);
         setImgsLoaded(false);
         setStimulusSet(randomIntArray(0, 119, 9));
@@ -130,7 +136,10 @@ const Experiment = () => {
           });
 
         console.log(`Updated assignment ${assignmentId}:`); // TODO instead of console.log update some fields in assignment table via API
-        const assignmentUpdate = { end_hit: endHit, status_code: statusCode };
+        const assignmentUpdate = {
+          end_hit: endHit,
+          status_code: newStatusCode,
+        };
         console.log(assignmentUpdate);
 
         // reset some states for the next trail

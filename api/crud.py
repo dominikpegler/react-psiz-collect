@@ -81,6 +81,12 @@ def create_trial(db: Session, trial: schemas.TrialCreate):
     return db_trial
 
 
+def get_trials_by_assignment_id(db: Session, assignment_id: int):
+    return (
+        db.query(models.Trial).filter(models.Trial.assignment_id == assignment_id).all()
+    )
+
+
 #######################
 # in post-voucher.php #
 #######################

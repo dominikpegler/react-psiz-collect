@@ -5,6 +5,7 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -71,14 +72,30 @@ def create_assignment(
 ):
     db_assignment = crud.get_assignment_by_worker_id(db, worker_id=assignment.worker_id)
     if db_assignment:
-        print("INFO:     Worker already assigned")
-        raise HTTPException(status_code=400, detail="Worker already assigned")
-    return crud.create_assignment(db=db, assignment=assignment)
+        print(
+            f"INFO:     Worker {db_assignment.worker_id} already assigned. Continuing with trials"
+        )
+        db_trial = crud.get_trials_by_assignment_id(
+            db, assignment_id=db_assignment.assignment_id
+        )
+        trials_completed = len(db_trial)
+        assignment_id = db_assignment.assignment_id
+    else:
+        trials_completed = 0
+        assignment_id = crud.create_assignment(
+            db=db, assignment=assignment
+        ).assignment_id
+
+    return JSONResponse(
+        {
+            "assignment_id": assignment_id,
+            "trials_completed": trials_completed,
+        }
+    )
 
 
 @app.post("/create-trial/", response_model=schemas.Trial)
 def create_trial(trial: schemas.TrialCreate, db: Session = Depends(get_db)):
-    print("\n\n\n", "TEST", "\n\n\n")
     return crud.create_trial(db=db, trial=trial)
 
 
