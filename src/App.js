@@ -9,6 +9,13 @@ const App = () => {
     }
   };
 
+  const inputRef = React.useRef();
+
+  // runs only once at the beginning to set focus on text input
+  React.useEffect(() => {
+    inputRef.current.focus();
+  }, [inputRef]);
+
   return workerId ? (
     <Experiment workerId={workerId} />
   ) : (
@@ -17,8 +24,10 @@ const App = () => {
         <div className={"login"}>
           <span>Please enter your participant ID</span>
           <input
+            type="text"
             className={"login-input"}
             onKeyDown={(e) => handleSubmit(e)}
+            ref={inputRef}
           ></input>
         </div>
       </div>

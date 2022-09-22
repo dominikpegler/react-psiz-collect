@@ -14,6 +14,13 @@ var App = function App() {
     }
   };
 
+  var inputRef = React.useRef();
+
+  // runs only once at the beginning to set focus on text input
+  React.useEffect(function () {
+    inputRef.current.focus();
+  }, [inputRef]);
+
   return workerId ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
     "div",
     { className: "container" },
@@ -29,10 +36,12 @@ var App = function App() {
           "Please enter your participant ID"
         ),
         React.createElement("input", {
+          type: "text",
           className: "login-input",
           onKeyDown: function onKeyDown(e) {
             return handleSubmit(e);
-          }
+          },
+          ref: inputRef
         })
       )
     )
