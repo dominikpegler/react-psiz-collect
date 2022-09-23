@@ -20,7 +20,6 @@ const Experiment = ({ workerId }) => {
     );
     const nTrials = 40;
     const protocolId = "internal";
-    const projectId = "roast"; // should come from link
     const [beginHit, _] = React.useState(new Date());
     const [startMs, setStartMs] = React.useState(new Date());
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
