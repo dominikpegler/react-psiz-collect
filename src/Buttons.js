@@ -61,13 +61,11 @@ const TileMiniS1 = () => {
       <div className={"imgmat-tile-inner-mini"}>
         <div className={"imgmat-tile-inner-inner-mini"}>
           <img
-            src={
-              "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"
-            }
+            src={"static/img/placeholder.png"}
             className={"imgmat-img-mini"}
           />
         </div>
-        <div className="imgmat-img-overlay-mini">1st Most Similar</div>,
+        <div className="imgmat-img-overlay-mini">1st Most Similar</div>
       </div>
     </div>
   );
@@ -79,13 +77,11 @@ const TileMiniS2 = () => {
       <div className={"imgmat-tile-inner-mini"}>
         <div className={"imgmat-tile-inner-inner-mini"}>
           <img
-            src={
-              "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"
-            }
+            src={"static/img/placeholder.png"}
             className={"imgmat-img-mini"}
           />
         </div>
-        <div className="imgmat-img-overlay-mini">2nd Most Similar</div>,
+        <div className="imgmat-img-overlay-mini">2nd Most Similar</div>
       </div>
     </div>
   );
@@ -97,9 +93,7 @@ const TileMini = () => {
       <div className={"imgmat-tile-inner-mini"}>
         <div className={"imgmat-tile-inner-inner-mini"}>
           <img
-            src={
-              "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"
-            }
+            src={"static/img/placeholder.png"}
             className={"imgmat-img-mini"}
           />
         </div>
@@ -110,9 +104,6 @@ const TileMini = () => {
 
 const TileQMini = () => (
   <div className={"imgmat-tile-mini imgmat-tile-query-mini"}>
-    <img
-      src={"https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"}
-      className={"imgmat-img-mini"}
-    />
+    <img src={"static/img/placeholder.png"} className={"imgmat-img-mini"} />
   </div>
 );

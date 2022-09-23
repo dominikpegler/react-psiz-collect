@@ -85,7 +85,7 @@ var TileMiniS1 = function TileMiniS1() {
         "div",
         { className: "imgmat-tile-inner-inner-mini" },
         React.createElement("img", {
-          src: "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png",
+          src: "static/img/placeholder.png",
           className: "imgmat-img-mini"
         })
       ),
@@ -93,8 +93,7 @@ var TileMiniS1 = function TileMiniS1() {
         "div",
         { className: "imgmat-img-overlay-mini" },
         "1st Most Similar"
-      ),
-      ","
+      )
     )
   );
 };
@@ -110,7 +109,7 @@ var TileMiniS2 = function TileMiniS2() {
         "div",
         { className: "imgmat-tile-inner-inner-mini" },
         React.createElement("img", {
-          src: "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png",
+          src: "static/img/placeholder.png",
           className: "imgmat-img-mini"
         })
       ),
@@ -118,8 +117,7 @@ var TileMiniS2 = function TileMiniS2() {
         "div",
         { className: "imgmat-img-overlay-mini" },
         "2nd Most Similar"
-      ),
-      ","
+      )
     )
   );
 };
@@ -135,7 +133,7 @@ var TileMini = function TileMini() {
         "div",
         { className: "imgmat-tile-inner-inner-mini" },
         React.createElement("img", {
-          src: "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png",
+          src: "static/img/placeholder.png",
           className: "imgmat-img-mini"
         })
       )
@@ -147,9 +145,6 @@ var TileQMini = function TileQMini() {
   return React.createElement(
     "div",
     { className: "imgmat-tile-mini imgmat-tile-query-mini" },
-    React.createElement("img", {
-      src: "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png",
-      className: "imgmat-img-mini"
-    })
+    React.createElement("img", { src: "static/img/placeholder.png", className: "imgmat-img-mini" })
   );
 };
