@@ -32,5 +32,21 @@
     <script src="static/js/imgPaths.js"></script>
     <!-- Load JS functions -->
     <script src="static/js/functions.js"></script>
+    <!-- for getting the url params -->
+    <script>
+      function GetURLParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split("&");
+        for (var i = 0; i < sURLVariables.length; i++) {
+          var sParameterName = sURLVariables[i].split("=");
+          if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+          }
+        }
+      }
+      var PROLIFIC_PID = GetURLParameter("PROLIFIC_PID");
+      var STUDY_ID = GetURLParameter("STUDY_ID");
+      var STUDY_ID = GetURLParameter("SESSION_ID");
+    </script>
   </body>
 </html>

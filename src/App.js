@@ -1,7 +1,10 @@
 "use strict";
 
+const redirectURL =
+  "https://app.prolific.co/researcher/submissions/complete?cc=CBVHYLC7";
+
 const App = () => {
-  const [workerId, setWorkerId] = React.useState(); // TODO: through prolific link
+  const [workerId, setWorkerId] = React.useState();
   const [confirmed, setConfirmed] = React.useState(false);
 
   const handleSubmit = (e) => {
@@ -15,10 +18,13 @@ const App = () => {
   };
 
   const inputRef = React.useRef();
-
   // runs only once at the beginning to set focus on text input
+  // and set workerId from url params
   React.useEffect(() => {
     inputRef.current.focus();
+    if (PROLIFIC_PID) {
+      setWorkerId(PROLIFIC_PID);
+    }
   }, [inputRef]);
 
   return workerId ? (

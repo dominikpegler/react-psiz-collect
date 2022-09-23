@@ -180,6 +180,10 @@ const Experiment = ({ workerId }) => {
       setNumberOfUpdates(numberOfUpdates + 1);
     };
 
+    const handleRedirect = () => {
+      window.location.href = redirectURL;
+    };
+
     // runs once at the beginning of the assignment
     React.useEffect(() => {
       if (trials == 0) {
@@ -245,9 +249,15 @@ const Experiment = ({ workerId }) => {
         ) : (
           <div className={"container"}>
             <div className={"goodbye"}>
-              <span>
-                Thank you for your participation! You can now close this window.
-              </span>
+              <div className={"goodbye-msg-btn"}>
+                <span>Thank you for your participation!</span>
+                <button
+                  className={"goodbye-button"}
+                  onClick={() => handleRedirect()}
+                >
+                  Complete the task
+                </button>
+              </div>
             </div>
           </div>
         )}
