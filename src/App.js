@@ -29,6 +29,7 @@ const App = () => {
         <div className={"welcome"}>
           <div className={"instructions"}>
             <Instructions />
+            <ImageContainerMini />
             <button
               type="text"
               className={"proceed-button"}

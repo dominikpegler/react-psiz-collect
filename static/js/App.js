@@ -41,6 +41,7 @@ var App = function App() {
         "div",
         { className: "instructions" },
         React.createElement(Instructions, null),
+        React.createElement(ImageContainerMini, null),
         React.createElement(
           "button",
           {

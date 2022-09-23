@@ -14,7 +14,7 @@ const Prompt = () => {
 const Instructions = () => {
   return (
     <div>
-      <h1 style={{ textAlign: "center" }}>Instructions </h1>
+      <h2 style={{ textAlign: "center" }}>Instructions </h2>
       <ul>
         <li>
           <span className={"instructions-txt-1"}>
@@ -36,6 +36,7 @@ const Instructions = () => {
         <li>When you are happy with your selection, click Submit Selection.</li>
         <li>You can view the instructions at any time by clicking ?.</li>
       </ul>
+      <h3 style={{ textAlign: "center" }}>Example:</h3>
     </div>
   );
 };

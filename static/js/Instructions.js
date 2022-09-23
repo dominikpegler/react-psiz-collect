@@ -24,7 +24,7 @@ var Instructions = function Instructions() {
     "div",
     null,
     React.createElement(
-      "h1",
+      "h2",
       { style: { textAlign: "center" } },
       "Instructions "
     ),
@@ -76,6 +76,11 @@ var Instructions = function Instructions() {
         null,
         "You can view the instructions at any time by clicking ?."
       )
+    ),
+    React.createElement(
+      "h3",
+      { style: { textAlign: "center" } },
+      "Example:"
     )
   );
 };

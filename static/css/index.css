@@ -354,3 +354,85 @@ button:hover:disabled {
     transform: rotate(360deg);
   }
 }
+
+/* For illustration on instructions page */
+
+.imgmat-container-mini {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.imgmat-row-mini {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: space-around;
+  max-width: 100%;
+}
+
+.imgmat-tile-mini {
+  max-width: 33.3333333%;
+  position: relative;
+  width: 100%;
+  padding: 2.5px;
+  border-radius: 5px;
+  border-color: #ffffff;
+  border-width: thin;
+  border-style: solid;
+  background-color: #ffffff;
+  box-shadow: 1px 1px 4px #0000003b;
+  margin: 5px;
+}
+
+.imgmat-tile-selected-mini {
+  border-color: var(--selected-color);
+  background-color: #d0d0d0;
+}
+
+.imgmat-tile-query-mini {
+  border-color: var(--selected-color);
+  background-color: #d0d0d0;
+  border-width: medium;
+}
+
+.imgmat-tile-inner-mini {
+  display: block;
+  min-height: 80px;
+}
+
+.imgmat-tile-inner-inner-mini {
+  height: 50%;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.imgmat-img-mini {
+  display: block;
+  position: absolute;
+  max-width: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.imgmat-img-overlay-mini {
+  display: block;
+  position: absolute;
+  background: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    var(--selected-color),
+    rgba(255, 0, 0, 0)
+  );
+  z-index: 9;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  font-size: small;
+  text-align: center;
+  color: white;
+}

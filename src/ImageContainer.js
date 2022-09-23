@@ -94,3 +94,25 @@ const ImageContainerLoader = () => {
     </div>
   );
 };
+
+const ImageContainerMini = () => {
+  return (
+    <div className={"imgmat-container-mini"}>
+      <div className={"imgmat-row-mini"}>
+        <TileMini />
+        <TileMiniS1 />
+        <TileMini />
+      </div>
+      <div className={"imgmat-row-mini"}>
+        <TileMini />
+        <TileQMini />
+        <TileMiniS2 />
+      </div>
+      <div className={"imgmat-row-mini"}>
+        <TileMini />
+        <TileMini />
+        <TileMini />
+      </div>
+    </div>
+  );
+};

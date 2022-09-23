@@ -104,3 +104,31 @@ var ImageContainerLoader = function ImageContainerLoader() {
     )
   );
 };
+
+var ImageContainerMini = function ImageContainerMini() {
+  return React.createElement(
+    "div",
+    { className: "imgmat-container-mini" },
+    React.createElement(
+      "div",
+      { className: "imgmat-row-mini" },
+      React.createElement(TileMini, null),
+      React.createElement(TileMiniS1, null),
+      React.createElement(TileMini, null)
+    ),
+    React.createElement(
+      "div",
+      { className: "imgmat-row-mini" },
+      React.createElement(TileMini, null),
+      React.createElement(TileQMini, null),
+      React.createElement(TileMiniS2, null)
+    ),
+    React.createElement(
+      "div",
+      { className: "imgmat-row-mini" },
+      React.createElement(TileMini, null),
+      React.createElement(TileMini, null),
+      React.createElement(TileMini, null)
+    )
+  );
+};

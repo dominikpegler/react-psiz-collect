@@ -52,3 +52,67 @@ const TileSpinner = () => (
     </div>
   </div>
 );
+
+// For illustration on instructions page
+
+const TileMiniS1 = () => {
+  return (
+    <div className={"imgmat-tile-mini imgmat-tile-selected-mini"}>
+      <div className={"imgmat-tile-inner-mini"}>
+        <div className={"imgmat-tile-inner-inner-mini"}>
+          <img
+            src={
+              "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"
+            }
+            className={"imgmat-img-mini"}
+          />
+        </div>
+        <div className="imgmat-img-overlay-mini">1st Most Similar</div>,
+      </div>
+    </div>
+  );
+};
+
+const TileMiniS2 = () => {
+  return (
+    <div className={"imgmat-tile-mini imgmat-tile-selected-mini"}>
+      <div className={"imgmat-tile-inner-mini"}>
+        <div className={"imgmat-tile-inner-inner-mini"}>
+          <img
+            src={
+              "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"
+            }
+            className={"imgmat-img-mini"}
+          />
+        </div>
+        <div className="imgmat-img-overlay-mini">2nd Most Similar</div>,
+      </div>
+    </div>
+  );
+};
+
+const TileMini = () => {
+  return (
+    <div className={"imgmat-tile-mini"}>
+      <div className={"imgmat-tile-inner-mini"}>
+        <div className={"imgmat-tile-inner-inner-mini"}>
+          <img
+            src={
+              "https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"
+            }
+            className={"imgmat-img-mini"}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TileQMini = () => (
+  <div className={"imgmat-tile-mini imgmat-tile-query-mini"}>
+    <img
+      src={"https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png"}
+      className={"imgmat-img-mini"}
+    />
+  </div>
+);
