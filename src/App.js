@@ -2,11 +2,16 @@
 
 const App = () => {
   const [workerId, setWorkerId] = React.useState(); // TODO: through prolific link
+  const [confirmed, setConfirmed] = React.useState(false);
 
   const handleSubmit = (e) => {
     if (e.key == "Enter") {
       setWorkerId(e.target.value);
     }
+  };
+
+  const handleConfirmed = () => {
+    setConfirmed(true);
   };
 
   const inputRef = React.useRef();
@@ -17,7 +22,24 @@ const App = () => {
   }, [inputRef]);
 
   return workerId ? (
-    <Experiment workerId={workerId} />
+    confirmed ? (
+      <Experiment workerId={workerId} />
+    ) : (
+      <div className={"container"}>
+        <div className={"welcome"}>
+          <div className={"instructions"}>
+            <Instructions />
+            <button
+              type="text"
+              className={"proceed-button"}
+              onClick={() => handleConfirmed()}
+            >
+              Start
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   ) : (
     <div className={"container"}>
       <div className={"welcome"}>

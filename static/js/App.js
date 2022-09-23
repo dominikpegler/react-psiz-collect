@@ -8,10 +8,20 @@ var App = function App() {
       workerId = _React$useState2[0],
       setWorkerId = _React$useState2[1]; // TODO: through prolific link
 
+
+  var _React$useState3 = React.useState(false),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      confirmed = _React$useState4[0],
+      setConfirmed = _React$useState4[1];
+
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
       setWorkerId(e.target.value);
     }
+  };
+
+  var handleConfirmed = function handleConfirmed() {
+    setConfirmed(true);
   };
 
   var inputRef = React.useRef();
@@ -21,7 +31,30 @@ var App = function App() {
     inputRef.current.focus();
   }, [inputRef]);
 
-  return workerId ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
+  return workerId ? confirmed ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
+    "div",
+    { className: "container" },
+    React.createElement(
+      "div",
+      { className: "welcome" },
+      React.createElement(
+        "div",
+        { className: "instructions" },
+        React.createElement(Instructions, null),
+        React.createElement(
+          "button",
+          {
+            type: "text",
+            className: "proceed-button",
+            onClick: function onClick() {
+              return handleConfirmed();
+            }
+          },
+          "Start"
+        )
+      )
+    )
+  ) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(
