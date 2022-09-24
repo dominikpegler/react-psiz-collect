@@ -24,6 +24,7 @@ const Experiment = ({ workerId }) => {
     const [startMs, setStartMs] = React.useState(new Date());
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
     const [statusCode, setStatusCode] = React.useState(2);
+    const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
 
     const handleAssigned = (assignment) => {
       fetch("http://localhost:5000/create-assignment/", {
@@ -228,6 +229,27 @@ const Experiment = ({ workerId }) => {
       <div>
         {trials < nTrials ? (
           <div className={"container"}>
+            <div
+              className={"overlay overlay-instructions"}
+              style={showOverlay}
+              onClick={() => setShowOverlay({ display: "none" })}
+            >
+              <div className={"container"}>
+                <div className={"welcome"}>
+                  <div className={"instructions"}>
+                    <Instructions />
+                    <ImageContainerMini />
+                    <button
+                      type="text"
+                      className={"proceed-button proceed-button-info"}
+                      onClick={() => setShowOverlay({ display: "none" })}
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <ProgressBarContainer nTrials={nTrials} trials={trials} />
             <Prompt />
             <React.Suspense fallback={<ImageContainerLoader />}>
@@ -238,11 +260,22 @@ const Experiment = ({ workerId }) => {
                 handleSelect={handleSelect}
               />
             </React.Suspense>
-            <div className={"submit-button-tile"}>
-              <SubmitButton
-                handleSubmit={() => handleSubmit()}
-                selection={selection}
-              />
+            <div className={"bottom-tile"}>
+              <div className={"info-button-tile"}>
+                <button
+                  className={"info-button"}
+                  onClick={() => setShowOverlay({ display: "block" })}
+                >
+                  ?
+                </button>
+              </div>
+              <div className={"submit-button-tile"}>
+                <SubmitButton
+                  handleSubmit={() => handleSubmit()}
+                  selection={selection}
+                />
+              </div>
+              <div className={"info-button-tile"}></div>
             </div>
           </div>
         ) : (

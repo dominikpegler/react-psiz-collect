@@ -64,12 +64,40 @@ button:hover:disabled {
   display: flex;
   width: calc(33.33333% - 20px);
 }
-
+.bottom-tile {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
 .imgmat-container {
   display: flex;
   flex-direction: column;
   /* padding: 0.75rem; */
   width: 100%;
+}
+
+.info-button {
+  max-width: 100%;
+}
+
+.info-button-tile {
+  width: 80px;
+  padding-left: 10px;
+}
+
+.overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.overlay-instructions {
+  color: white;
 }
 
 .imgmat-row {
@@ -156,7 +184,7 @@ button:hover:disabled {
     var(--selected-color),
     rgba(255, 0, 0, 0)
   );
-  z-index: 9;
+  z-index: 4;
   top: 50%;
   left: 0;
   width: 100%;
@@ -295,9 +323,9 @@ button:hover:disabled {
   width: calc(100% - 20px);
 }
 
-.instructions-txt-1 {
+/* .instructions-txt-1 {
   color: black;
-}
+} */
 
 .instructions-txt-2 {
   color: var(--selected-color);
@@ -315,6 +343,17 @@ button:hover:disabled {
   margin-bottom: 10px;
   margin-top: 20px;
   max-width: 200px;
+}
+
+.proceed-button-info {
+  color: var(--pure-white);
+  background: rgba(0, 0, 0, 0);
+  border-color: var(--pure-white);
+}
+
+.proceed-button-info:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: var(--selected-color);
 }
 
 @media (min-width: 576px) {
@@ -449,7 +488,7 @@ button:hover:disabled {
     var(--selected-color),
     rgba(255, 0, 0, 0)
   );
-  z-index: 9;
+  z-index: 4;
   top: 50%;
   left: 0;
   width: 100%;
