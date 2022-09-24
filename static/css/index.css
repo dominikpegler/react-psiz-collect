@@ -436,7 +436,7 @@ button:hover:disabled {
   position: relative;
   width: 100%;
   padding: 2.5px;
-  border-radius: 5px;
+  border-radius: 10px;
   border-color: #ffffff;
   border-width: thin;
   border-style: solid;
@@ -492,7 +492,7 @@ button:hover:disabled {
   top: 50%;
   left: 0;
   width: 100%;
-  font-size: small;
+  font-size: medium;
   text-align: center;
   color: white;
 }
