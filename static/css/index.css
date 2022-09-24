@@ -453,7 +453,7 @@ button:hover:disabled {
 .imgmat-tile-query-mini {
   border-color: var(--selected-color);
   background-color: #d0d0d0;
-  border-width: medium;
+  border-width: thick;
 }
 
 .imgmat-tile-inner-mini {
