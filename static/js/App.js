@@ -27,7 +27,6 @@ var App = function App() {
   };
 
   var testConnection = function testConnection() {
-    console.log("testing db ...");
     fetch(SERVER_URL + "/test-backend-connection/").then(function (response) {
       if (response.status !== 200) {
         throw new Error(response.statusText);

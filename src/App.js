@@ -15,7 +15,6 @@ const App = () => {
   };
 
   const testConnection = () => {
-    console.log("testing db ...");
     fetch(SERVER_URL + "/test-backend-connection/")
       .then((response) => {
         if (response.status !== 200) {
