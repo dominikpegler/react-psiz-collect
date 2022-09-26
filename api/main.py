@@ -59,7 +59,6 @@ def get_stimulus_list():
 
 @app.get("/test-backend-connection/")
 def test_assignment():
-    print(models.Base.metadata)
     return JSONResponse(
         {
             "status": "ok",
