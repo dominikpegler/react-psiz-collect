@@ -57,10 +57,14 @@ def get_stimulus_list():
 # DB - TEST #
 
 
-@app.get("/test/")
+@app.get("/test-backend-connection/")
 def test_assignment():
-
-    return "test"
+    print(models.Base.metadata)
+    return JSONResponse(
+        {
+            "status": "ok",
+        }
+    )
 
 
 # DB - WRITE #

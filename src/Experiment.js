@@ -27,7 +27,7 @@ const Experiment = ({ workerId }) => {
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
 
     const handleAssigned = (assignment) => {
-      fetch("http://localhost:5000/create-assignment/", {
+      fetch(SERVER_URL + "/create-assignment/", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -110,7 +110,7 @@ const Experiment = ({ workerId }) => {
           is_catch_trial: 0, // TODO unclear
           rating: "", // TODO unclear
         };
-        fetch("http://localhost:5000/create-trial/", {
+        fetch(SERVER_URL + "/create-trial/", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -136,7 +136,7 @@ const Experiment = ({ workerId }) => {
           end_hit: endHit,
           status_code: newStatusCode,
         };
-        fetch("http://localhost:5000/update-assignment/", {
+        fetch(SERVER_URL + "/update-assignment/", {
           method: "POST",
           headers: {
             Accept: "application/json",

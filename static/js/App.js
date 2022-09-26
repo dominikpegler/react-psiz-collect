@@ -15,10 +15,30 @@ var App = function App() {
       confirmed = _React$useState4[0],
       setConfirmed = _React$useState4[1];
 
+  var _React$useState5 = React.useState(false),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      backendConnected = _React$useState6[0],
+      setBackendConnected = _React$useState6[1];
+
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
       setWorkerId(e.target.value);
     }
+  };
+
+  var testConnection = function testConnection() {
+    console.log("testing db ...");
+    fetch(SERVER_URL + "/test-backend-connection/").then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function () {
+      setBackendConnected(true);
+    }).catch(function (err) {
+      console.log("Connection with backend failed.");
+      console.log("Error:", err.toString());
+    });
   };
 
   var handleConfirmed = function handleConfirmed() {
@@ -29,13 +49,16 @@ var App = function App() {
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
   React.useEffect(function () {
-    inputRef.current.focus();
     if (PROLIFIC_PID) {
       setWorkerId(PROLIFIC_PID);
+      if (backendConnected) {
+        inputRef.current.focus();
+      }
     }
+    testConnection();
   }, [inputRef]);
 
-  return workerId ? confirmed ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
+  return backendConnected ? workerId ? confirmed ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(
@@ -83,7 +106,7 @@ var App = function App() {
         })
       )
     )
-  );
+  ) : React.createElement("div", { className: "container" });
 };
 
 var domContainer = document.querySelector("#react-container");
