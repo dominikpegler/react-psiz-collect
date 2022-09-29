@@ -6,6 +6,8 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from typing import List # needed for python <3.9
+
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
@@ -123,7 +125,8 @@ def create_trial(trial: schemas.TrialCreate, db: Session = Depends(get_db)):
 
 
 @app.get(
-    "/assignments-by-project-id/{project_id}", response_model=list[schemas.Assignment]
+    "/assignments-by-project-id/{project_id}", response_model=List[schemas.Assignment] # "List" needed for python < 3.9, otherwise "list" can be used
+
 )
 def read_assignments_by_project_id(project_id: str, db: Session = Depends(get_db)):
     assignments = crud.get_assignments_by_project_id(db, project_id=project_id)

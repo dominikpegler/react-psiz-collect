@@ -1,14 +1,43 @@
 version: "3.7"
+
 services:
+  web:
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+    image: psiz-r-app
+    hostname: psiz-r-app
+    container_name: psiz-r-app
+    volumes:
+       - .:/app
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      psiz:
+        aliases:
+          - psiz-r-app
+
   db:
     build:
       context: .
       dockerfile: db.Dockerfile
-    container_name: psiz-db
-    hostname: psiz-db
+    image: psiz-r-db
+    container_name: psiz-r-db
+    hostname: psiz-r-db
     restart: always
     volumes:
-      - ./var/pgdata:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      psiz:
+        aliases:
+          - psiz-r-db
+
+volumes:
+  postgres:
+
+networks:
+    psiz:
 

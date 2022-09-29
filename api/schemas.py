@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List # needed for python <3.9
 from datetime import datetime
 
 
@@ -72,7 +73,7 @@ class AssignmentUpdate(BaseModel):
 
 class Assignment(AssignmentBase):
     assignment_id: int
-    trial_id: list[Trial] = []
+    trial_id: List[Trial] = [] # "List" needed for python < 3.9, otherwise "list" can be used
 
     class Config:
         orm_mode = True
