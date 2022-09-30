@@ -36,14 +36,14 @@ const App = () => {
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
   React.useEffect(() => {
+    console.log("Effect, if runs 2x at startup that's fine :)");
     if (typeof PROLIFIC_PID !== "undefined") {
       setWorkerId(PROLIFIC_PID);
-      if (backendConnected) {
-        inputRef.current.focus();
-      }
+    } else if (backendConnected) {
+      inputRef.current.focus();
     }
     testConnection();
-  }, [inputRef]);
+  }, [inputRef, backendConnected]);
 
   return backendConnected ? (
     workerId ? (
