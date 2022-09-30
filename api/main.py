@@ -19,7 +19,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = ["http://localhost:3000", "https://localhost:3000", "http://psiz-r-app:3000"]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
