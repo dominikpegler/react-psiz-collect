@@ -1,8 +1,5 @@
 "use strict";
 
-const redirectURL =
-  "https://app.prolific.co/researcher/submissions/complete?cc=CBVHYLC7";
-
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
   const [confirmed, setConfirmed] = React.useState(false);
