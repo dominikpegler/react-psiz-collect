@@ -9,8 +9,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt install -y nodejs
 RUN npm i -g serve
 
-EXPOSE 5000
 EXPOSE 3000
+EXPOSE 5000
 
 WORKDIR /app
 
