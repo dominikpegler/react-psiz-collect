@@ -20,20 +20,6 @@
   <body>
     <!-- Placeholder for React content. -->
     <div id="react-container"></div>
-    <!-- Load React container. -->
-    <script src="static/js/App.js"></script>
-    <!-- Kiad Experiment -->
-    <script src="static/js/Experiment.js"></script>
-    <!-- Load React components -->
-    <script src="static/js/Buttons.js"></script>
-    <script src="static/js/ImageContainer.js"></script>
-    <script src="static/js/Instructions.js"></script>
-    <script src="static/js/ProgressBar.js"></script>
-    <script src="static/js/imgPaths.js"></script>
-    <!-- Load JS functions -->
-    <script src="static/js/functions.js"></script>
-    <!-- Load front-end configuration (...) -->
-    <script src="config.js"></script>
     <!-- for getting the url params -->
     <script>
       function GetURLParameter(sParam) {
@@ -46,12 +32,26 @@
           }
         }
       }
-      // prolifico params
+      // prolific params
       var PROLIFIC_PID = GetURLParameter("PROLIFIC_PID");
       var STUDY_ID = GetURLParameter("STUDY_ID");
       var STUDY_ID = GetURLParameter("SESSION_ID");
       // experiment params
       var projectId = GetURLParameter("project_id"); // TODO should also affect which stimulus images are shown (project directory?) / paths via API?
     </script>
+    <!-- Kiad Experiment -->
+    <script src="static/js/Experiment.js"></script>
+    <!-- Load React components -->
+    <script src="static/js/Buttons.js"></script>
+    <script src="static/js/ImageContainer.js"></script>
+    <script src="static/js/Instructions.js"></script>
+    <script src="static/js/ProgressBar.js"></script>
+    <script src="static/js/imgPaths.js"></script>
+    <!-- Load JS functions -->
+    <script src="static/js/functions.js"></script>
+    <!-- Load front-end configuration (...) -->
+    <script src="config.js"></script>
+    <!-- Load React container. -->
+    <script src="static/js/App.js"></script>
   </body>
 </html>
