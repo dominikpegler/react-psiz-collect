@@ -25,7 +25,7 @@ var App = function App() {
   };
 
   var testConnection = function testConnection() {
-    fetch(SERVER_URL + "/test-backend-connection/").then(function (response) {
+    fetch("http://127.0.0.1:5000" + "/test-backend-connection/").then(function (response) {
       if (response.status !== 200) {
         throw new Error(response.statusText);
       }
