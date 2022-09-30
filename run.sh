@@ -1,3 +1,2 @@
 #!/bin/sh
-source api/venv/bin/activate
-uvicorn api.main:app --reload --port 5000 & serve -l 3000
+uvicorn api.main:app --host 0.0.0.0 --port 5000 & serve -l 3000
