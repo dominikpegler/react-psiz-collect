@@ -36,7 +36,7 @@ const App = () => {
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
   React.useEffect(() => {
-    if (typeof obj.PROLIFIC_PID !== "undefined") {
+    if (typeof PROLIFIC_PID !== "undefined") {
       setWorkerId(PROLIFIC_PID);
       if (backendConnected) {
         inputRef.current.focus();
