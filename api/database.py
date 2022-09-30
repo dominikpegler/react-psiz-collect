@@ -12,6 +12,7 @@ if os.environ.get("SQLALCHEMY_DATABASE_URL") == None:
     SQLALCHEMY_DATABASE_URL = config["SQLALCHEMY_DATABASE_URL"]
 else:
     SQLALCHEMY_DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres:", "postgresql:")
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
