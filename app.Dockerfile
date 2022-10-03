@@ -1,8 +1,5 @@
 FROM python:3.9-bullseye
 
-ENV http_proxy=http://192.168.10.7:8080
-ENV https_proxy=http://192.168.10.7:8080
-
 COPY requirements.txt /tmp
 
 RUN pip install --no-cache-dir --upgrade -r /tmp/requirements.txt
