@@ -1,6 +1,6 @@
 "use strict";
 
-const SERVER_URL = "http://127.0.0.1:5000"
+const SERVER_URL = "https://roastpsiz-api.herokuapp.com";
 
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
