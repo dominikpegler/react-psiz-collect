@@ -19,7 +19,9 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = ['https://roastpsiz.netlify.app', "http://roastpsiz.netlify.app", "roastpsiz.netlify.app"]
+#origins = ["http://localhost", "localhost", "https://localhost"]
+
+origins = ['*']
 
 app.add_middleware(
     CORSMiddleware,
