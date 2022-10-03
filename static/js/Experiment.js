@@ -74,7 +74,7 @@ var Experiment = function Experiment(_ref) {
         setShowOverlay = _React$useState22[1];
 
     var handleAssigned = function handleAssigned(assignment) {
-      fetch("http://127.0.0.1:5000" + "/create-assignment/", {
+      fetch(SERVER_URL + "/create-assignment/", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -156,7 +156,7 @@ var Experiment = function Experiment(_ref) {
           is_catch_trial: 0, // TODO unclear
           rating: "" // TODO unclear
         };
-        fetch("http://127.0.0.1:5000" + "/create-trial/", {
+        fetch(SERVER_URL + "/create-trial/", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -179,7 +179,7 @@ var Experiment = function Experiment(_ref) {
           end_hit: endHit,
           status_code: newStatusCode
         };
-        fetch("http://127.0.0.1:5000" + "/update-assignment/", {
+        fetch(SERVER_URL + "/update-assignment/", {
           method: "POST",
           headers: {
             Accept: "application/json",

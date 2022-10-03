@@ -1,5 +1,7 @@
 "use strict";
 
+const SERVER_URL = "http://127.0.0.1:5000"
+
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
   const [confirmed, setConfirmed] = React.useState(false);
@@ -12,7 +14,7 @@ const App = () => {
   };
 
   const testConnection = () => {
-    fetch("http://127.0.0.1:5000" + "/test-backend-connection/")
+    fetch(SERVER_URL + "/test-backend-connection/")
       .then((response) => {
         if (response.status !== 200) {
           throw new Error(response.statusText);
