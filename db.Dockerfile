@@ -1,4 +1,4 @@
-FROM library/postgres
+FROM postgres:14-alpine
 
 ENV POSTGRES_USER psiz
 ENV POSTGRES_PASSWORD psiz
