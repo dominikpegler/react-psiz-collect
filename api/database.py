@@ -4,18 +4,18 @@ from sqlalchemy.orm import sessionmaker
 import json
 import os
 
-# SQLALCHEMY_DATABASE_URL = "sqlite:///./psiz-collect.db"
+# DATABASE_URL = "sqlite:///./psiz-collect.db"
 
-if os.environ.get("SQLALCHEMY_DATABASE_URL") == None:
+if os.environ.get("DATABASE_URL") == None:
     with open("config.json") as fp:
         config = json.load(fp)
-    SQLALCHEMY_DATABASE_URL = config["SQLALCHEMY_DATABASE_URL"]
+    DATABASE_URL = config["DATABASE_URL"]
 else:
-    SQLALCHEMY_DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URL")
-    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres:", "postgresql:")
+    DATABASE_URL = os.environ.get("DATABASE_URL")
+    DATABASE_URL = DATABASE_URL.replace("postgres:", "postgresql:")
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
+    DATABASE_URL,
     # connect_args={"check_same_thread": False} # for sqlite
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
