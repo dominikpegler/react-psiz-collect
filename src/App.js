@@ -12,6 +12,7 @@ const App = () => {
   };
 
  // TODO USE A BUNDLER! NO MORE CDNs
+ // also check if the solid app has some calls to non-public ports (only visible inside the docker network). if yes, check how it was done there
 const handleFetchData = async () => {
   const response = await fetch(SERVER_URL + "/test-backend-connection/", {
     mode: "cors",
