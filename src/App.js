@@ -1,6 +1,6 @@
 "use strict";
 
-const SERVER_URL = "http://localhost:5000";
+const SERVER_URL = "psiz-api:5000";
 
 const App = () => {
   const [workerId, setWorkerId] = React.useState();

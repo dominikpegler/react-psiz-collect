@@ -1,23 +1,40 @@
 version: "3.7"
 
 services:
-  app:
+
+  web:
     build:
       context: .
-      dockerfile: app.Dockerfile
-    image: psiz-app
-    hostname: psiz-app
-    container_name: psiz-app
+      dockerfile: web.Dockerfile
+    image: psiz-web
+    hostname: psiz-web
+    container_name: psiz-web
     volumes:
        - .:/app
     restart: always
     ports:
       - "80:80"
+    networks:
+      psiz:
+        aliases:
+          - psiz-web
+
+  api:
+    build:
+      context: .
+      dockerfile: api.Dockerfile
+    image: psiz-api
+    hostname: psiz-api
+    container_name: psiz-api
+    volumes:
+       - .:/app
+    restart: always
+    ports:
       - "5000:5000"
     networks:
       psiz:
         aliases:
-          - psiz-app
+          - psiz-api
 
   db:
     build:
