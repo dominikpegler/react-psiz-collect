@@ -1,6 +1,4 @@
-"use strict";
-
-const SERVER_URL = "psiz-api:5000";
+const SERVER_URL = "http://psiz-api:5000";
 
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
@@ -12,6 +10,15 @@ const App = () => {
       setWorkerId(e.target.value);
     }
   };
+
+ // TODO USE A BUNDLER! NO MORE CDNs
+const handleFetchData = async () => {
+  const response = await fetch(SERVER_URL + "/test-backend-connection/", {
+    mode: "cors",
+  });
+  const data = await response.json();
+  console.log(data);
+};
 
   const testConnection = () => {
     fetch(SERVER_URL + "/test-backend-connection/")
