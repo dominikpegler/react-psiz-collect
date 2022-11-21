@@ -21,12 +21,12 @@ app = FastAPI()
 
 #origins = ['https://roastpsiz.netlify.app', "http://roastpsiz.netlify.app", "https://roastpsiz.netlify.app"]
 
-origins = ['*']
+origins = ['http://psycyb-portia.psy.univie.ac.at', "https://psycyb-portia.psy.univie.ac.at", "psycyb-portia.psy.univie.ac.at", "localhost"]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=True, # if set to True origins can't be set to "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )
