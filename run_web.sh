@@ -1,2 +1,2 @@
 #!/bin/sh
-serve -l 80
+serve -l 8080

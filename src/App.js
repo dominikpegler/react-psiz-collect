@@ -1,5 +1,5 @@
 const SERVER_URL =
-  window.location.protocol + "//" + window.location.hostname + ":5000";
+  window.location.protocol + "//" + window.location.hostname + "/api";
 
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
