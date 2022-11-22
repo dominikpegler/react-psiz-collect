@@ -1,4 +1,5 @@
-const SERVER_URL = "http://psycyb-portia.psy.univie.ac.at:5000";
+const SERVER_URL =
+  window.location.protocol + "//" + window.location.hostname + ":5000";
 
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
