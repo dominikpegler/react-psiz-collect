@@ -19,7 +19,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = ['http://psycyb-portia.psy.univie.ac.at', "https://psycyb-portia.psy.univie.ac.at", "psycyb-portia.psy.univie.ac.at", "localhost", "psiz-web"]
+origins = ['http://psycyb-portia.psy.univie.ac.at', "https://psycyb-portia.psy.univie.ac.at", "psycyb-portia.psy.univie.ac.at", "localhost"]
 
 app.add_middleware(
     CORSMiddleware,
