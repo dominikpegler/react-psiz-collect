@@ -9,4 +9,4 @@ EXPOSE 80
 
 WORKDIR /app
 
-CMD ["./run_web.sh"]
+CMD ["serve", "-l", "8080"]
