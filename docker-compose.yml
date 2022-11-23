@@ -16,6 +16,7 @@ services:
       psiz:
         aliases:
           - psiz-nginx
+    restart: always
     depends_on:
       - web
   
