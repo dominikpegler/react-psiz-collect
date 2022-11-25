@@ -72,7 +72,7 @@ const App = () => {
                 </button>
               </div>
             ) : (
-              <div className={"instructions"}>
+              <div className={"consent"}>
                 <Consent />
                 <button
                   type="text"

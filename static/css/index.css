@@ -323,6 +323,19 @@ button:hover:disabled {
   width: calc(100% - 20px);
 }
 
+.consent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: large;
+  text-align: left;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  width: calc(100%);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 /* .instructions-txt-1 {
   color: black;
 } */

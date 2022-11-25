@@ -88,7 +88,7 @@ var App = function App() {
         )
       ) : React.createElement(
         "div",
-        { className: "instructions" },
+        { className: "consent" },
         React.createElement(Consent, null),
         React.createElement(
           "button",
