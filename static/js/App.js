@@ -15,8 +15,13 @@ var App = function App() {
 
   var _React$useState5 = React.useState(false),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      backendConnected = _React$useState6[0],
-      setBackendConnected = _React$useState6[1];
+      consent = _React$useState6[0],
+      setConsent = _React$useState6[1];
+
+  var _React$useState7 = React.useState(false),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      backendConnected = _React$useState8[0],
+      setBackendConnected = _React$useState8[1];
 
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
@@ -42,6 +47,10 @@ var App = function App() {
     setConfirmed(true);
   };
 
+  var handleConsent = function handleConsent() {
+    setConsent(true);
+  };
+
   var inputRef = React.useRef();
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
@@ -61,7 +70,7 @@ var App = function App() {
     React.createElement(
       "div",
       { className: "welcome" },
-      React.createElement(
+      consent ? React.createElement(
         "div",
         { className: "instructions" },
         React.createElement(Instructions, null),
@@ -76,6 +85,21 @@ var App = function App() {
             }
           },
           "Start"
+        )
+      ) : React.createElement(
+        "div",
+        { className: "instructions" },
+        React.createElement(Consent, null),
+        React.createElement(
+          "button",
+          {
+            type: "text",
+            className: "proceed-button",
+            onClick: function onClick() {
+              return handleConsent();
+            }
+          },
+          "I agree to participate in the study and continue"
         )
       )
     )

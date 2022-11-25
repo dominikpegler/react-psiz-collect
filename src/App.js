@@ -4,6 +4,7 @@ const SERVER_URL =
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
   const [confirmed, setConfirmed] = React.useState(false);
+  const [consent, setConsent] = React.useState(false);
   const [backendConnected, setBackendConnected] = React.useState(false);
 
   const handleSubmit = (e) => {
@@ -34,6 +35,10 @@ const App = () => {
     setConfirmed(true);
   };
 
+    const handleConsent = () => {
+      setConsent(true);
+    };
+
   const inputRef = React.useRef();
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
@@ -54,17 +59,30 @@ const App = () => {
       ) : (
         <div className={"container"}>
           <div className={"welcome"}>
-            <div className={"instructions"}>
-              <Instructions />
-              <ImageContainerMini />
-              <button
-                type="text"
-                className={"proceed-button"}
-                onClick={() => handleConfirmed()}
-              >
-                Start
-              </button>
-            </div>
+            {consent ? (
+              <div className={"instructions"}>
+                <Instructions />
+                <ImageContainerMini />
+                <button
+                  type="text"
+                  className={"proceed-button"}
+                  onClick={() => handleConfirmed()}
+                >
+                  Start
+                </button>
+              </div>
+            ) : (
+              <div className={"instructions"}>
+                <Consent />
+                <button
+                  type="text"
+                  className={"proceed-button"}
+                  onClick={() => handleConsent()}
+                >
+                  I agree to participate in the study and continue
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )
