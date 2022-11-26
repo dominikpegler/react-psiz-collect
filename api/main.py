@@ -19,7 +19,7 @@ models.Base.metadata.create_all(bind=engine)
 # LOAD CONFIG #
 ###############
 
-CONFIG_PATH = "config.json"
+CONFIG_PATH = "config.json" # is defined a second time in database.py
 
 if os.path.exists(CONFIG_PATH):
     with open(CONFIG_PATH) as fp:
