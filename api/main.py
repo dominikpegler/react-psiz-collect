@@ -6,12 +6,27 @@ from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-
-
+import json
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+import os
+
 
 models.Base.metadata.create_all(bind=engine)
+
+
+###############
+# LOAD CONFIG #
+###############
+
+CONFIG_PATH = "config.json"
+
+if os.path.exists(CONFIG_PATH):
+    with open(CONFIG_PATH) as fp:
+            config = json.load(fp)
+    ORIGINS = config["ORIGINS"]
+else:
+    ORIGINS = ["http://localhost", "localhost"]
 
 ##############
 # CREATE API #
@@ -19,11 +34,9 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = ['http://psycyb-portia.psy.univie.ac.at', "https://psycyb-portia.psy.univie.ac.at", "psycyb-portia.psy.univie.ac.at", "http://localhost"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=ORIGINS,
     allow_credentials=True, # if set to True origins can't be set to "*"
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
