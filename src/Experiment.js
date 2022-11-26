@@ -25,6 +25,7 @@ const Experiment = ({ workerId }) => {
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
     const [statusCode, setStatusCode] = React.useState(2);
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
+    const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
 
     const handleAssigned = (assignment) => {
       fetch(SERVER_URL + "/create-assignment/", {
@@ -164,6 +165,17 @@ const Experiment = ({ workerId }) => {
       }
     };
 
+
+    const handleZoom = (e, imgPath, show) => {
+      e.preventDefault();
+      if (show === true) {
+      setZoom({ display: "block", imgPath:imgPath })}
+      else {
+        setZoom({ display: "none", imgPath: imgPath });
+      };
+    };
+
+
     const handleSelect = (id) => {
       const time = new Date() - startMs;
       var selectionNew = selection;
@@ -233,6 +245,7 @@ const Experiment = ({ workerId }) => {
               className={"overlay overlay-instructions"}
               style={showOverlay}
               onClick={() => setShowOverlay({ display: "none" })}
+              onContextMenu={() => setZoom({ display: "none" })}
             >
               <div className={"container"}>
                 <div className={"welcome"}>
@@ -243,9 +256,29 @@ const Experiment = ({ workerId }) => {
                       type="text"
                       className={"proceed-button proceed-button-info"}
                       onClick={() => setShowOverlay({ display: "none" })}
+                      onContextMenu={() => setZoom({ display: "none" })}
                     >
                       OK
                     </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className={"overlay overlay-instructions"}
+              style={zoom}
+              onClick={(e) => handleZoom(e, "", false)}
+              onContextMenu={(e) => handleZoom(e, "", false)}
+            >
+              <div className={"container"}>
+                <div className={"welcome"}>
+                  <div className={"instructions"}>
+                    <img
+                      src={zoom["imgPath"]}
+                      alt="zoomed-image"
+                      onClick={(e) => handleZoom(e, "", false)}
+                      onContextMenu={(e) => handleZoom(e, "", false)}
+                    />
                   </div>
                 </div>
               </div>
@@ -258,6 +291,7 @@ const Experiment = ({ workerId }) => {
                 imgsLoaded={imgsLoaded}
                 selection={selection}
                 handleSelect={handleSelect}
+                handleZoom={handleZoom}
               />
             </React.Suspense>
             <div className={"bottom-tile"}>

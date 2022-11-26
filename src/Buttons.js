@@ -10,7 +10,8 @@ const SubmitButton = ({ handleSubmit, selection }) => {
   );
 };
 
-const Tile = ({ id, imgPath, selection, handleSelect }) => {
+
+const Tile = ({ id, imgPath, selection, handleSelect, handleZoom }) => {
   const selectableClass =
     selection === undefined
       ? ""
@@ -25,7 +26,11 @@ const Tile = ({ id, imgPath, selection, handleSelect }) => {
       : "";
   return (
     <div className={"imgmat-tile" + selectableClass + selectedClass}>
-      <div className={"imgmat-tile-inner"} onClick={() => handleSelect(id)}>
+      <div
+        className={"imgmat-tile-inner"}
+        onClick={() => handleSelect(id)}
+        onContextMenu={(e) => handleZoom(e, imgPath, true)}
+      >
         <div className={"imgmat-tile-inner-inner"}>
           <img src={imgPath} className={"imgmat-img"} />
         </div>
@@ -39,8 +44,11 @@ const Tile = ({ id, imgPath, selection, handleSelect }) => {
   );
 };
 
-const TileQ = ({ imgPath }) => (
-  <div className={"imgmat-tile imgmat-tile-query"}>
+const TileQ = ({ imgPath, handleZoom }) => (
+  <div
+    className={"imgmat-tile imgmat-tile-query"}
+    onContextMenu={(e) => handleZoom(e, imgPath, true)}
+  >
     <img src={imgPath} className={"imgmat-img"} />
   </div>
 );

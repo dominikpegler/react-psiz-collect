@@ -18,7 +18,8 @@ var Tile = function Tile(_ref2) {
   var id = _ref2.id,
       imgPath = _ref2.imgPath,
       selection = _ref2.selection,
-      handleSelect = _ref2.handleSelect;
+      handleSelect = _ref2.handleSelect,
+      handleZoom = _ref2.handleZoom;
 
   var selectableClass = selection === undefined ? "" : selection.length < 2 ? " imgmat-tile-selectable" : "";
   var selectedClass = selection === undefined ? "" : selection.indexOf(id) > -1 ? " imgmat-tile-selected" : "";
@@ -27,9 +28,15 @@ var Tile = function Tile(_ref2) {
     { className: "imgmat-tile" + selectableClass + selectedClass },
     React.createElement(
       "div",
-      { className: "imgmat-tile-inner", onClick: function onClick() {
+      {
+        className: "imgmat-tile-inner",
+        onClick: function onClick() {
           return handleSelect(id);
-        } },
+        },
+        onContextMenu: function onContextMenu(e) {
+          return handleZoom(e, imgPath, true);
+        }
+      },
       React.createElement(
         "div",
         { className: "imgmat-tile-inner-inner" },
@@ -52,10 +59,16 @@ var Tile = function Tile(_ref2) {
 };
 
 var TileQ = function TileQ(_ref3) {
-  var imgPath = _ref3.imgPath;
+  var imgPath = _ref3.imgPath,
+      handleZoom = _ref3.handleZoom;
   return React.createElement(
     "div",
-    { className: "imgmat-tile imgmat-tile-query" },
+    {
+      className: "imgmat-tile imgmat-tile-query",
+      onContextMenu: function onContextMenu(e) {
+        return handleZoom(e, imgPath, true);
+      }
+    },
     React.createElement("img", { src: imgPath, className: "imgmat-img" })
   );
 };

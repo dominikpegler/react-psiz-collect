@@ -24,17 +24,18 @@ const Instructions = () => {
         </li>
         <ul>
           <li>
-            Select the tiles in the order of their similarity. Once a tile has
+            Select the tiles in the order of their <b>similarity</b>. Once a tile has
             been selected, its ranking will be displayed.
           </li>
-          <li>You can unselect a tile by clicking it again.</li>
+          <li>You can <b>unselect</b> a tile by clicking it again.</li>
+          <li>You can <b>enlarge</b> an image by right-clicking on it.</li>
           <li>
             Some displays will be easy while others will be challenging. Just do
             your best when making your selection.
           </li>
         </ul>
-        <li>When you are happy with your selection, click Submit Selection.</li>
-        <li>You can view the instructions at any time by clicking ?.</li>
+        <li>When you are happy with your selection, click <b>Submit Selection</b>.</li>
+        <li style={{flexDirection:"row"}}><span>You can view the instructions at any time by clicking</span> <button style={{width:"80px", height:"52px", cursor:"default"}}>?</button>.</li>
       </ul>
       <h3 style={{ textAlign: "center" }}>Example:</h3>
     </div>

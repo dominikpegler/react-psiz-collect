@@ -5,6 +5,7 @@ const ImageContainer = ({
   imgsLoaded,
   selection,
   handleSelect,
+  handleZoom
 }) => {
   return (
     <React.Fragment>
@@ -16,18 +17,21 @@ const ImageContainer = ({
               imgPath={imgPaths[stimulusSet[5]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
             <Tile
               id={3}
               imgPath={imgPaths[stimulusSet[3]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
             <Tile
               id={6}
               imgPath={imgPaths[stimulusSet[6]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
           </div>
           <div className={"imgmat-row"}>
@@ -36,13 +40,15 @@ const ImageContainer = ({
               imgPath={imgPaths[stimulusSet[1]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
-            <TileQ imgPath={imgPaths[stimulusSet[0]]} />
+            <TileQ imgPath={imgPaths[stimulusSet[0]]} handleZoom={handleZoom} />
             <Tile
               id={2}
               imgPath={imgPaths[stimulusSet[2]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
           </div>
           <div className={"imgmat-row"}>
@@ -51,18 +57,21 @@ const ImageContainer = ({
               imgPath={imgPaths[stimulusSet[7]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
             <Tile
               id={4}
               imgPath={imgPaths[stimulusSet[4]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
             <Tile
               id={8}
               imgPath={imgPaths[stimulusSet[8]]}
               selection={selection}
               handleSelect={handleSelect}
+              handleZoom={handleZoom}
             />
           </div>
         </div>

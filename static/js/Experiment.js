@@ -73,6 +73,11 @@ var Experiment = function Experiment(_ref) {
         showOverlay = _React$useState22[0],
         setShowOverlay = _React$useState22[1];
 
+    var _React$useState23 = React.useState({ display: "none", imgPath: "" }),
+        _React$useState24 = _slicedToArray(_React$useState23, 2),
+        zoom = _React$useState24[0],
+        setZoom = _React$useState24[1];
+
     var handleAssigned = function handleAssigned(assignment) {
       fetch(SERVER_URL + "/create-assignment/", {
         method: "POST",
@@ -204,6 +209,15 @@ var Experiment = function Experiment(_ref) {
       }
     };
 
+    var handleZoom = function handleZoom(e, imgPath, show) {
+      e.preventDefault();
+      if (show === true) {
+        setZoom({ display: "block", imgPath: imgPath });
+      } else {
+        setZoom({ display: "none", imgPath: imgPath });
+      };
+    };
+
     var handleSelect = function handleSelect(id) {
       var time = new Date() - startMs;
       var selectionNew = selection;
@@ -285,6 +299,9 @@ var Experiment = function Experiment(_ref) {
             style: showOverlay,
             onClick: function onClick() {
               return setShowOverlay({ display: "none" });
+            },
+            onContextMenu: function onContextMenu() {
+              return setZoom({ display: "none" });
             }
           },
           React.createElement(
@@ -305,10 +322,48 @@ var Experiment = function Experiment(_ref) {
                     className: "proceed-button proceed-button-info",
                     onClick: function onClick() {
                       return setShowOverlay({ display: "none" });
+                    },
+                    onContextMenu: function onContextMenu() {
+                      return setZoom({ display: "none" });
                     }
                   },
                   "OK"
                 )
+              )
+            )
+          )
+        ),
+        React.createElement(
+          "div",
+          {
+            className: "overlay overlay-instructions",
+            style: zoom,
+            onClick: function onClick(e) {
+              return handleZoom(e, "", false);
+            },
+            onContextMenu: function onContextMenu(e) {
+              return handleZoom(e, "", false);
+            }
+          },
+          React.createElement(
+            "div",
+            { className: "container" },
+            React.createElement(
+              "div",
+              { className: "welcome" },
+              React.createElement(
+                "div",
+                { className: "instructions" },
+                React.createElement("img", {
+                  src: zoom["imgPath"],
+                  alt: "zoomed-image",
+                  onClick: function onClick(e) {
+                    return handleZoom(e, "", false);
+                  },
+                  onContextMenu: function onContextMenu(e) {
+                    return handleZoom(e, "", false);
+                  }
+                })
               )
             )
           )
@@ -322,7 +377,8 @@ var Experiment = function Experiment(_ref) {
             stimulusSet: stimulusSet,
             imgsLoaded: imgsLoaded,
             selection: selection,
-            handleSelect: handleSelect
+            handleSelect: handleSelect,
+            handleZoom: handleZoom
           })
         ),
         React.createElement(
