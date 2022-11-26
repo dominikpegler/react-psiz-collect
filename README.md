@@ -10,7 +10,7 @@ React version of [psiz-collect](https://github.com/psiz-org/psiz-collect) experi
 
 * Stimulus images must be placed in `assets/img/` folder and referenced in `imgPaths.js` 
 * Create `config.js` and `config.json` from the example files  
-* Place SSL certificate as `cert.pem` and private key as `key.pem in repo's root directory 
+* Place SSL certificate as `cert.pem` and private key as `key.pem`  in repo's root directory 
 
 ## Run
 * `docker-compose up`
