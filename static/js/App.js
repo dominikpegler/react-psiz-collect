@@ -15,13 +15,18 @@ var App = function App() {
 
   var _React$useState5 = React.useState(false),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      consent = _React$useState6[0],
-      setConsent = _React$useState6[1];
+      surveyFinished = _React$useState6[0],
+      setSurveyFinished = _React$useState6[1];
 
   var _React$useState7 = React.useState(false),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
-      backendConnected = _React$useState8[0],
-      setBackendConnected = _React$useState8[1];
+      consent = _React$useState8[0],
+      setConsent = _React$useState8[1];
+
+  var _React$useState9 = React.useState(false),
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
+      backendConnected = _React$useState10[0],
+      setBackendConnected = _React$useState10[1];
 
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
@@ -64,7 +69,7 @@ var App = function App() {
     testConnection();
   }, [inputRef, backendConnected]);
 
-  return backendConnected ? workerId ? confirmed ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
+  return backendConnected ? workerId ? confirmed ? surveyFinished ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(Experiment, { workerId: workerId }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(

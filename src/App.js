@@ -4,6 +4,7 @@ const SERVER_URL =
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
   const [confirmed, setConfirmed] = React.useState(false);
+  const [surveyFinished, setSurveyFinished] = React.useState(false);
   const [consent, setConsent] = React.useState(false);
   const [backendConnected, setBackendConnected] = React.useState(false);
 
@@ -55,8 +56,11 @@ const App = () => {
   return backendConnected ? (
     workerId ? (
       confirmed ? (
-        <Experiment workerId={workerId} />
+        surveyFinished ? (
+         <Experiment workerId={workerId} />
       ) : (
+        <Experiment workerId={workerId} />
+      )) : (
         <div className={"container"}>
           <div className={"welcome"}>
             {consent ? (
