@@ -1,4 +1,4 @@
-var surveys = {
+var survey = {
   name: "Fear of Spiders Questionnaire (FSQ)",
   prefix: "fsq",
   scale: [1, 2, 3, 4, 5, 6, 7],
