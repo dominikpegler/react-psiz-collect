@@ -59,7 +59,7 @@ const App = () => {
         surveyFinished ? (
          <Experiment workerId={workerId} />
       ) : (
-        <Experiment workerId={workerId} />
+        <Survey workerId={workerId} />
       )) : (
         <div className={"container"}>
           <div className={"welcome"}>

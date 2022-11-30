@@ -159,6 +159,27 @@ def read_assignments_by_project_id(project_id: str, db: Session = Depends(get_db
     return assignments
 
 
+
+# JSON FILES - READ # 
+
+@app.get(
+    "/get-surveys-by-project-id/{project_id}")
+def read_surveys_by_project_id(project_id: str):
+
+    f = open("api/projects/" + project_id + ".json")
+    surveys_list = json.load(f)['surveys']
+
+    surveys_content = []
+
+    for s in surveys_list:
+        f = open("api/projects/surveys/" + s + ".json")
+        survey = json.load(f)
+        surveys_content.append(survey)
+
+    return surveys_content
+
+
+
 # @app.get("/assignment/{assignment_id}", response_model=schemas.Assignment)
 # def read_worker(assignment_id: int, db: Session = Depends(get_db)):
 #     db_assignment = crud.get_worker(db, assignment_id=assignment_id)

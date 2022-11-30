@@ -69,7 +69,7 @@ var App = function App() {
     testConnection();
   }, [inputRef, backendConnected]);
 
-  return backendConnected ? workerId ? confirmed ? surveyFinished ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(Experiment, { workerId: workerId }) : React.createElement(
+  return backendConnected ? workerId ? confirmed ? surveyFinished ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(Survey, { workerId: workerId }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(
