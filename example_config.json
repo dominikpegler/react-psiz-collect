@@ -1,5 +1,7 @@
 {
     "INFO":"THIS IS AN EXAMPLE, FOR REAL CONFIG MAKE A COPY OF THIS FILE NAMED config.json", 
     "DATABASE_URL": "postgresql://psiz:psiz@psiz-db/psiz",
-    "ORIGINS": ["http://localhost"]
+    "ORIGINS": ["http://localhost"],
+    "SURVEY_FILES": ["survey_example.json"]
+
 }

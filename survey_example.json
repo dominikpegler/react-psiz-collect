@@ -1,0 +1,21 @@
+{
+    "name": "Example Questionnaire",
+    "prefix": "example",
+    "scale": [
+        1,
+        2,
+        3,
+        4,
+        5
+    ],
+    "labels": [
+        "not at all",
+        "",
+        "",
+        "",
+        "very much"
+    ],
+    "items": [
+        "Please rate your level of agreement."
+    ]
+}
