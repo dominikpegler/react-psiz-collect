@@ -59,7 +59,7 @@ def get_db():
 # Retreive list of available stimuli for the project #
 #######################################################
 
-# TODO
+# TODO currently this list is in the frontend ... but could also by a glob-like thing in JS
 def get_stimulus_list():
     return None
 
@@ -87,6 +87,12 @@ def test_assignment():
 def create_assignment(
     assignment: schemas.AssignmentCreate, db: Session = Depends(get_db)
 ):
+    """
+    Creates a new assignment for a new participant and returns it.
+    If there exists already an assignment for a participant,
+    no new assignment will created and the existing assignment will be returned.
+    """
+
     db_assignment = crud.get_assignment_by_worker_id(
         db, worker_id=assignment.worker_id, project_id=assignment.project_id
     )
@@ -117,6 +123,9 @@ def create_assignment(
 def update_assignment(
     assignment_update: schemas.AssignmentUpdate, db: Session = Depends(get_db)
 ):
+    """
+    Updates status and end time of a specific assignment
+    """
 
     assignment_updated = crud.update_assignment(
         db=db,
@@ -130,12 +139,17 @@ def update_assignment(
 
 @app.post("/create-trial/", response_model=schemas.Trial)
 def create_trial(trial: schemas.TrialCreate, db: Session = Depends(get_db)):
+    """
+    stores the participant's trial response in the database
+    """
+
     return crud.create_trial(db=db, trial=trial)
 
 
 # DB - READ #
 
 
+# TODO: currently not in use
 @app.get(
     "/assignments-by-project-id/{project_id}", response_model=list[schemas.Assignment] 
 
