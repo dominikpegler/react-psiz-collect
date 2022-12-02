@@ -1,6 +1,6 @@
 "use strict";
 
-const Survey = ({ workerId }) => {
+const Survey = ({ workerId, setSurveyFinished, setConfirmed }) => {
   {
     const [survey, setSurvey] = React.useState();
     const [pageNo, setPageNo] = React.useState(0);
@@ -14,13 +14,13 @@ const Survey = ({ workerId }) => {
 
     const QUESTIONS_PP = 6;
 
-    const handlePagination =(move)=>{
-      if ((pageNo + move)>=0 & (pageNo + move)<pages.length) {
-        setPageNo(pageNo+move)
-      } else {
-        console.log("Won't do nothing.")
+    const handlePagination = (move) => {
+      if (pageNo + move >= 0) {
+        setPageNo(pageNo + move);
+      } else if (pageNo + move < 0) {
+        setConfirmed(false);
       }
-    }
+    };
 
     const downloadSurveyData = (projectId) => {
       fetch(SERVER_URL + "/get-surveys-by-project-id/" + projectId, {
@@ -49,62 +49,48 @@ const Survey = ({ workerId }) => {
       downloadSurveyData(projectId);
     }, []);
 
-
     // runs when survey data changes
     React.useEffect(() => {
-      if (survey !== undefined) {
-        let i = 0;
-        let j;
-        let nItems = 0;
-        let nPages;
-        let len = survey.length;
-        let pagesTmp = []
-        for (; i < len; ) {
-          nItems = survey[i]["items"].length;
-          nPages = Math.ceil(nItems / QUESTIONS_PP);
-          j = 0;
-          for (; j < nPages; ) {
-            pagesTmp.push([i, QUESTIONS_PP*j]);
-            j++;
-          }
-          i++;
-        } 
-          setPages(pagesTmp)
-      }
+      console.log("new survey data => selection will be updated");
+      //setSelection(newSelection);
     }, [survey]);
-    
+
     // rendering
     return (
       <div>
         <div className={"container"}>
-          <h1>{pages && survey[pages[pageNo][0]]["name"]}</h1>
-          <div>
-            {pages &&
-              survey[pages[pageNo][0]]["items"]
-                .slice(pages[pageNo][1], pages[pageNo][1] + QUESTIONS_PP)
-                .map((item) => (
-                  <div>
-                    <span>{item}</span>
-                    <ResponseBox
-                      s={survey[pages[pageNo][0]]}
-                      item={item}
-                    />
-                  </div>
-                ))}
-            {1 + pageNo}/{pages && pages.length}
+          <h1>{survey && survey[0]["name"]}</h1>
+          <div className={"container-questionnaire"}>
+            {survey &&
+              Object.keys(survey[0]["items"]).map((key, idx) => (
+                <div
+                  style={
+                    idx >= pageNo * QUESTIONS_PP &&
+                    idx < pageNo * QUESTIONS_PP + QUESTIONS_PP
+                      ? {
+                          display: "block",
+                        }
+                      : { display: "none" }
+                  }
+                >
+                  <span>{survey[0]["items"][key]}</span>
+                  <ResponseBox
+                    s={survey[0]}
+                    k={key}
+                    setSelection={setSelection}
+                    selection={selection}
+                  />
+                </div>
+              ))}
+            {1 + pageNo}/
           </div>
           <div className={"bottom-tile"} style={{ justifyContent: "center" }}>
             <div className={"submit-button-tile"}>
-              <button
-                disabled={pageNo === 0}
-                onClick={() => handlePagination(-1)}
-              >
-                Back
-              </button>
+              <button onClick={() => handlePagination(-1)}>Back</button>
             </div>
             <div className={"submit-button-tile"}>
               <button
-                disabled={pages && pageNo == pages.length - 1}
+                //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
                 onClick={() => handlePagination(1)}
               >
                 Next
@@ -117,40 +103,56 @@ const Survey = ({ workerId }) => {
   }
 };
 
+const ResponseBox = ({ s, k, setSelection, selection }) => {
+  const id = s["prefix"].concat("-", String(k));
 
-const ResponseBox =({s, item})=> {
+  const [value, setValue] = React.useState("");
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
   return (
-    <div
+    <form
       style={{
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "flex-end",
         marginTop: "1rem",
-        marginBottom: "2rem"
+        marginBottom: "2rem",
       }}
     >
-      {s.scale && s.scale.map(
-        (likert) =>
-          likert && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <label for={item + String(likert.value)}>{likert.label}</label>
-              <input
-                type={"radio"}
-                id={item + String(likert.value)}
-                name={item}
-                value={likert.value}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-          )
-      )}
-    </div>
+      {s.scale &&
+        s.scale.map(
+          (likert) =>
+            likert && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <label for={id + "-" + String(likert.value)}>
+                  {likert.label}
+                </label>
+                <input
+                  type={"radio"}
+                  checked={value == likert.value}
+                  id={id + "-" + String(likert.value)}
+                  value={likert.value}
+                  style={{ cursor: "pointer" }}
+                  onChange={handleChange}
+                />
+              </div>
+            )
+        )}
+    </form>
   );
-}
+};
 
+const handleSelection = (selection, setSelection, s, k, val) => {
+  let newSelection = selection;
+  newSelection[s.prefix][k] = val;
+  setSelection(newSelection);
+};

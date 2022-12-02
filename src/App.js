@@ -57,10 +57,15 @@ const App = () => {
     workerId ? (
       confirmed ? (
         surveyFinished ? (
-         <Experiment workerId={workerId} />
+          <Experiment workerId={workerId} />
+        ) : (
+          <Survey
+            workerId={workerId}
+            setSurveyFinished={setSurveyFinished}
+            setConfirmed={setConfirmed}
+          />
+        )
       ) : (
-        <Survey workerId={workerId} />
-      )) : (
         <div className={"container"}>
           <div className={"welcome"}>
             {consent ? (

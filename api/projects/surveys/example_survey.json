@@ -31,14 +31,14 @@
             "label": "very much"
         }
     ],
-    "items": [
-        "I am an Item from a different survey.",
-        "I tell the truth.",
-        "My parents say I was a calm child.",
-        "I now think a lot about shark.",
-        "If I saw a shark now, I would feel very panicky.",
-        "Sharks are one of my worst fears.",
-        "I feel very nervous if I saw a shark now.",
-        "If I saw a shark now I would probably break out in a sweat and my heart would beat faster."
-    ]
+    "items": {
+        "1":"I am an Item from a different survey.",
+        "2":"I tell the truth.",
+        "3":"My parents say I was a calm child.",
+        "4":"I now think a lot about shark.",
+        "5":"If I saw a shark now, I would feel very panicky.",
+        "6":"Sharks are one of my worst fears.",
+        "7":"I feel very nervous if I saw a shark now.",
+        "8":"If I saw a shark now I would probably break out in a sweat and my heart would beat faster."
+    }
 }

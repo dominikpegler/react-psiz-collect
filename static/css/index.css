@@ -323,6 +323,15 @@ button:hover:disabled {
   width: calc(100% - 20px);
 }
 
+.container-questionnaire {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  font-size: large;
+  text-align: left;
+  width: calc(100% - 20px);
+}
+
 .consent {
   display: flex;
   flex-direction: column;

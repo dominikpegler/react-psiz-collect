@@ -3,7 +3,9 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var Survey = function Survey(_ref) {
-  var workerId = _ref.workerId;
+  var workerId = _ref.workerId,
+      setSurveyFinished = _ref.setSurveyFinished,
+      setConfirmed = _ref.setConfirmed;
 
   {
     var _React$useState = React.useState(),
@@ -51,10 +53,10 @@ var Survey = function Survey(_ref) {
     var QUESTIONS_PP = 6;
 
     var handlePagination = function handlePagination(move) {
-      if (pageNo + move >= 0 & pageNo + move < pages.length) {
+      if (pageNo + move >= 0) {
         setPageNo(pageNo + move);
-      } else {
-        console.log("Won't do nothing.");
+      } else if (pageNo + move < 0) {
+        setConfirmed(false);
       }
     };
 
@@ -84,25 +86,8 @@ var Survey = function Survey(_ref) {
 
     // runs when survey data changes
     React.useEffect(function () {
-      if (survey !== undefined) {
-        var i = 0;
-        var j = void 0;
-        var nItems = 0;
-        var nPages = void 0;
-        var len = survey.length;
-        var pagesTmp = [];
-        for (; i < len;) {
-          nItems = survey[i]["items"].length;
-          nPages = Math.ceil(nItems / QUESTIONS_PP);
-          j = 0;
-          for (; j < nPages;) {
-            pagesTmp.push([i, QUESTIONS_PP * j]);
-            j++;
-          }
-          i++;
-        }
-        setPages(pagesTmp);
-      }
+      console.log("new survey data => selection will be updated");
+      //setSelection(newSelection);
     }, [survey]);
 
     // rendering
@@ -115,29 +100,34 @@ var Survey = function Survey(_ref) {
         React.createElement(
           "h1",
           null,
-          pages && survey[pages[pageNo][0]]["name"]
+          survey && survey[0]["name"]
         ),
         React.createElement(
           "div",
-          null,
-          pages && survey[pages[pageNo][0]]["items"].slice(pages[pageNo][1], pages[pageNo][1] + QUESTIONS_PP).map(function (item) {
+          { className: "container-questionnaire" },
+          survey && Object.keys(survey[0]["items"]).map(function (key, idx) {
             return React.createElement(
               "div",
-              null,
+              {
+                style: idx >= pageNo * QUESTIONS_PP && idx < pageNo * QUESTIONS_PP + QUESTIONS_PP ? {
+                  display: "block"
+                } : { display: "none" }
+              },
               React.createElement(
                 "span",
                 null,
-                item
+                survey[0]["items"][key]
               ),
               React.createElement(ResponseBox, {
-                s: survey[pages[pageNo][0]],
-                item: item
+                s: survey[0],
+                k: key,
+                setSelection: setSelection,
+                selection: selection
               })
             );
           }),
           1 + pageNo,
-          "/",
-          pages && pages.length
+          "/"
         ),
         React.createElement(
           "div",
@@ -147,12 +137,9 @@ var Survey = function Survey(_ref) {
             { className: "submit-button-tile" },
             React.createElement(
               "button",
-              {
-                disabled: pageNo === 0,
-                onClick: function onClick() {
+              { onClick: function onClick() {
                   return handlePagination(-1);
-                }
-              },
+                } },
               "Back"
             )
           ),
@@ -162,7 +149,7 @@ var Survey = function Survey(_ref) {
             React.createElement(
               "button",
               {
-                disabled: pages && pageNo == pages.length - 1,
+                //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
                 onClick: function onClick() {
                   return handlePagination(1);
                 }
@@ -178,10 +165,23 @@ var Survey = function Survey(_ref) {
 
 var ResponseBox = function ResponseBox(_ref2) {
   var s = _ref2.s,
-      item = _ref2.item;
+      k = _ref2.k,
+      setSelection = _ref2.setSelection,
+      selection = _ref2.selection;
+
+  var id = s["prefix"].concat("-", String(k));
+
+  var _React$useState17 = React.useState(""),
+      _React$useState18 = _slicedToArray(_React$useState17, 2),
+      value = _React$useState18[0],
+      setValue = _React$useState18[1];
+
+  var handleChange = function handleChange(event) {
+    setValue(event.target.value);
+  };
 
   return React.createElement(
-    "div",
+    "form",
     {
       style: {
         display: "flex",
@@ -203,17 +203,24 @@ var ResponseBox = function ResponseBox(_ref2) {
         },
         React.createElement(
           "label",
-          { "for": item + String(likert.value) },
+          { "for": id + "-" + String(likert.value) },
           likert.label
         ),
         React.createElement("input", {
           type: "radio",
-          id: item + String(likert.value),
-          name: item,
+          checked: value == likert.value,
+          id: id + "-" + String(likert.value),
           value: likert.value,
-          style: { cursor: "pointer" }
+          style: { cursor: "pointer" },
+          onChange: handleChange
         })
       );
     })
   );
+};
+
+var handleSelection = function handleSelection(selection, setSelection, s, k, val) {
+  var newSelection = selection;
+  newSelection[s.prefix][k] = val;
+  setSelection(newSelection);
 };
