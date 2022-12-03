@@ -1,7 +1,7 @@
 const Consent = () => {
   return (
-    <div style={{width: "1000px", backgroundColor: "white"}}>
-      <h3 style={{textAlign: "center"}}>
+    <div style={{ width: "1000px", backgroundColor: "white" }}>
+      <h3 style={{ textAlign: "center" }}>
         Information for participants and declaration of consent to participate
         in the study
       </h3>

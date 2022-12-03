@@ -5,7 +5,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 var Survey = function Survey(_ref) {
   var workerId = _ref.workerId,
       setSurveyFinished = _ref.setSurveyFinished,
-      setConfirmed = _ref.setConfirmed;
+      setConsent = _ref.setConsent;
 
   {
     var _React$useState = React.useState(),
@@ -50,13 +50,15 @@ var Survey = function Survey(_ref) {
         selection = _React$useState16[0],
         setSelection = _React$useState16[1];
 
-    var QUESTIONS_PP = 6;
+    var ITEMS_PER_PAGE = 6;
 
     var handlePagination = function handlePagination(move) {
-      if (pageNo + move >= 0) {
+      if (pageNo + move >= 0 && pageNo + move < pages) {
         setPageNo(pageNo + move);
+      } else if (pageNo + move >= pages) {
+        setSurveyFinished(true);
       } else if (pageNo + move < 0) {
-        setConfirmed(false);
+        setConsent(false);
       }
     };
 
@@ -74,6 +76,7 @@ var Survey = function Survey(_ref) {
         return response.json();
       }).then(function (res) {
         setSurvey(res);
+        setPages(Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE));
       }).catch(function (err) {
         console.log("Error:", err.toString());
       });
@@ -84,12 +87,6 @@ var Survey = function Survey(_ref) {
       downloadSurveyData(projectId);
     }, []);
 
-    // runs when survey data changes
-    React.useEffect(function () {
-      console.log("new survey data => selection will be updated");
-      //setSelection(newSelection);
-    }, [survey]);
-
     // rendering
     return React.createElement(
       "div",
@@ -98,63 +95,68 @@ var Survey = function Survey(_ref) {
         "div",
         { className: "container" },
         React.createElement(
-          "h1",
-          null,
-          survey && survey[0]["name"]
-        ),
-        React.createElement(
           "div",
-          { className: "container-questionnaire" },
-          survey && Object.keys(survey[0]["items"]).map(function (key, idx) {
-            return React.createElement(
-              "div",
-              {
-                style: idx >= pageNo * QUESTIONS_PP && idx < pageNo * QUESTIONS_PP + QUESTIONS_PP ? {
-                  display: "block"
-                } : { display: "none" }
-              },
-              React.createElement(
-                "span",
-                null,
-                survey[0]["items"][key]
-              ),
-              React.createElement(ResponseBox, {
-                s: survey[0],
-                k: key,
-                setSelection: setSelection,
-                selection: selection
-              })
-            );
-          }),
-          1 + pageNo,
-          "/"
-        ),
-        React.createElement(
-          "div",
-          { className: "bottom-tile", style: { justifyContent: "center" } },
+          { className: "welcome" },
           React.createElement(
-            "div",
-            { className: "submit-button-tile" },
-            React.createElement(
-              "button",
-              { onClick: function onClick() {
-                  return handlePagination(-1);
-                } },
-              "Back"
-            )
+            "h1",
+            null,
+            survey && survey[0]["name"]
           ),
           React.createElement(
             "div",
-            { className: "submit-button-tile" },
+            { className: "container-questionnaire" },
+            survey && Object.keys(survey[0]["items"]).map(function (key, idx) {
+              return React.createElement(
+                "div",
+                {
+                  style: idx >= pageNo * ITEMS_PER_PAGE && idx < pageNo * ITEMS_PER_PAGE + ITEMS_PER_PAGE ? {
+                    display: "block"
+                  } : { display: "none" }
+                },
+                React.createElement(
+                  "span",
+                  null,
+                  survey[0]["items"][key]
+                ),
+                React.createElement(ResponseBox, {
+                  s: survey[0],
+                  k: key,
+                  setSelection: setSelection,
+                  selection: selection
+                })
+              );
+            }),
+            1 + pageNo,
+            "/",
+            pages
+          ),
+          React.createElement(
+            "div",
+            { className: "bottom-tile", style: { justifyContent: "center" } },
             React.createElement(
-              "button",
-              {
-                //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
-                onClick: function onClick() {
-                  return handlePagination(1);
-                }
-              },
-              "Next"
+              "div",
+              { className: "submit-button-tile" },
+              React.createElement(
+                "button",
+                { onClick: function onClick() {
+                    return handlePagination(-1);
+                  } },
+                "Back"
+              )
+            ),
+            React.createElement(
+              "div",
+              { className: "submit-button-tile" },
+              React.createElement(
+                "button",
+                {
+                  //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
+                  onClick: function onClick() {
+                    return handlePagination(1);
+                  }
+                },
+                "Next"
+              )
             )
           )
         )

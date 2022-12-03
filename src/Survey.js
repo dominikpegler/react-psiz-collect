@@ -1,6 +1,6 @@
 "use strict";
 
-const Survey = ({ workerId, setSurveyFinished, setConfirmed }) => {
+const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
   {
     const [survey, setSurvey] = React.useState();
     const [pageNo, setPageNo] = React.useState(0);
@@ -12,13 +12,15 @@ const Survey = ({ workerId, setSurveyFinished, setConfirmed }) => {
     const [statusCode, setStatusCode] = React.useState(2);
     const [selection, setSelection] = React.useState();
 
-    const QUESTIONS_PP = 6;
+    const ITEMS_PER_PAGE = 6;
 
     const handlePagination = (move) => {
-      if (pageNo + move >= 0) {
+      if (pageNo + move >= 0 && pageNo + move < pages) {
         setPageNo(pageNo + move);
+      } else if (pageNo + move >= pages) {
+        setSurveyFinished(true);
       } else if (pageNo + move < 0) {
-        setConfirmed(false);
+        setConsent(false);
       }
     };
 
@@ -38,6 +40,9 @@ const Survey = ({ workerId, setSurveyFinished, setConfirmed }) => {
         })
         .then((res) => {
           setSurvey(res);
+          setPages(
+            Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE)
+          );
         })
         .catch((err) => {
           console.log("Error:", err.toString());
@@ -49,52 +54,48 @@ const Survey = ({ workerId, setSurveyFinished, setConfirmed }) => {
       downloadSurveyData(projectId);
     }, []);
 
-    // runs when survey data changes
-    React.useEffect(() => {
-      console.log("new survey data => selection will be updated");
-      //setSelection(newSelection);
-    }, [survey]);
-
     // rendering
     return (
       <div>
         <div className={"container"}>
-          <h1>{survey && survey[0]["name"]}</h1>
-          <div className={"container-questionnaire"}>
-            {survey &&
-              Object.keys(survey[0]["items"]).map((key, idx) => (
-                <div
-                  style={
-                    idx >= pageNo * QUESTIONS_PP &&
-                    idx < pageNo * QUESTIONS_PP + QUESTIONS_PP
-                      ? {
-                          display: "block",
-                        }
-                      : { display: "none" }
-                  }
-                >
-                  <span>{survey[0]["items"][key]}</span>
-                  <ResponseBox
-                    s={survey[0]}
-                    k={key}
-                    setSelection={setSelection}
-                    selection={selection}
-                  />
-                </div>
-              ))}
-            {1 + pageNo}/
-          </div>
-          <div className={"bottom-tile"} style={{ justifyContent: "center" }}>
-            <div className={"submit-button-tile"}>
-              <button onClick={() => handlePagination(-1)}>Back</button>
+          <div className={"welcome"}>
+            <h1>{survey && survey[0]["name"]}</h1>
+            <div className={"container-questionnaire"}>
+              {survey &&
+                Object.keys(survey[0]["items"]).map((key, idx) => (
+                  <div
+                    style={
+                      idx >= pageNo * ITEMS_PER_PAGE &&
+                      idx < pageNo * ITEMS_PER_PAGE + ITEMS_PER_PAGE
+                        ? {
+                            display: "block",
+                          }
+                        : { display: "none" }
+                    }
+                  >
+                    <span>{survey[0]["items"][key]}</span>
+                    <ResponseBox
+                      s={survey[0]}
+                      k={key}
+                      setSelection={setSelection}
+                      selection={selection}
+                    />
+                  </div>
+                ))}
+              {1 + pageNo}/{pages}
             </div>
-            <div className={"submit-button-tile"}>
-              <button
-                //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
-                onClick={() => handlePagination(1)}
-              >
-                Next
-              </button>
+            <div className={"bottom-tile"} style={{ justifyContent: "center" }}>
+              <div className={"submit-button-tile"}>
+                <button onClick={() => handlePagination(-1)}>Back</button>
+              </div>
+              <div className={"submit-button-tile"}>
+                <button
+                  //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
+                  onClick={() => handlePagination(1)}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </div>

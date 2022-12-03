@@ -69,17 +69,13 @@ var App = function App() {
     testConnection();
   }, [inputRef, backendConnected]);
 
-  return backendConnected ? workerId ? confirmed ? surveyFinished ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(Survey, {
-    workerId: workerId,
-    setSurveyFinished: setSurveyFinished,
-    setConfirmed: setConfirmed
-  }) : React.createElement(
+  return backendConnected ? workerId ? consent ? surveyFinished ? confirmed ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(
       "div",
       { className: "welcome" },
-      consent ? React.createElement(
+      React.createElement(
         "div",
         { className: "instructions" },
         React.createElement(Instructions, null),
@@ -95,21 +91,29 @@ var App = function App() {
           },
           "Start"
         )
-      ) : React.createElement(
-        "div",
-        { className: "consent" },
-        React.createElement(Consent, null),
-        React.createElement(
-          "button",
-          {
-            type: "text",
-            className: "proceed-button",
-            onClick: function onClick() {
-              return handleConsent();
-            }
-          },
-          "I agree to participate in the study and continue"
-        )
+      )
+    )
+  ) : React.createElement(Survey, {
+    workerId: workerId,
+    setSurveyFinished: setSurveyFinished,
+    setConsent: setConsent
+  }) : React.createElement(
+    "div",
+    { className: "container" },
+    React.createElement(
+      "div",
+      { className: "consent" },
+      React.createElement(Consent, null),
+      React.createElement(
+        "button",
+        {
+          type: "text",
+          className: "proceed-button",
+          onClick: function onClick() {
+            return handleConsent();
+          }
+        },
+        "I agree to participate in the study and continue"
       )
     )
   ) : React.createElement(

@@ -14,7 +14,6 @@ const App = () => {
     }
   };
 
-
   const testConnection = () => {
     fetch(SERVER_URL + "/test-backend-connection/")
       .then((response) => {
@@ -36,9 +35,9 @@ const App = () => {
     setConfirmed(true);
   };
 
-    const handleConsent = () => {
-      setConsent(true);
-    };
+  const handleConsent = () => {
+    setConsent(true);
+  };
 
   const inputRef = React.useRef();
   // runs only once at the beginning to set focus on text input
@@ -55,43 +54,45 @@ const App = () => {
 
   return backendConnected ? (
     workerId ? (
-      confirmed ? (
+      consent ? (
         surveyFinished ? (
-          <Experiment workerId={workerId} />
+          confirmed ? (
+            <Experiment workerId={workerId} />
+          ) : (
+            <div className={"container"}>
+              <div className={"welcome"}>
+                <div className={"instructions"}>
+                  <Instructions />
+                  <ImageContainerMini />
+                  <button
+                    type="text"
+                    className={"proceed-button"}
+                    onClick={() => handleConfirmed()}
+                  >
+                    Start
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
         ) : (
           <Survey
             workerId={workerId}
             setSurveyFinished={setSurveyFinished}
-            setConfirmed={setConfirmed}
+            setConsent={setConsent}
           />
         )
       ) : (
         <div className={"container"}>
-          <div className={"welcome"}>
-            {consent ? (
-              <div className={"instructions"}>
-                <Instructions />
-                <ImageContainerMini />
-                <button
-                  type="text"
-                  className={"proceed-button"}
-                  onClick={() => handleConfirmed()}
-                >
-                  Start
-                </button>
-              </div>
-            ) : (
-              <div className={"consent"}>
-                <Consent />
-                <button
-                  type="text"
-                  className={"proceed-button"}
-                  onClick={() => handleConsent()}
-                >
-                  I agree to participate in the study and continue
-                </button>
-              </div>
-            )}
+          <div className={"consent"}>
+            <Consent />
+            <button
+              type="text"
+              className={"proceed-button"}
+              onClick={() => handleConsent()}
+            >
+              I agree to participate in the study and continue
+            </button>
           </div>
         </div>
       )
