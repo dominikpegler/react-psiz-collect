@@ -50,16 +50,45 @@ var Survey = function Survey(_ref) {
         selection = _React$useState16[0],
         setSelection = _React$useState16[1];
 
+    var _React$useState17 = React.useState(false),
+        _React$useState18 = _slicedToArray(_React$useState17, 2),
+        indicateMissing = _React$useState18[0],
+        setIndicateMissing = _React$useState18[1];
+
     var ITEMS_PER_PAGE = 6;
 
     var handlePagination = function handlePagination(move) {
       if (pageNo + move >= 0 && pageNo + move < pages) {
         setPageNo(pageNo + move);
       } else if (pageNo + move >= pages) {
-        setSurveyFinished(true);
+        if (Object.keys(survey[0]["items"]).length == Object.keys(selection).length) {
+          setSurveyFinished(true); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
+        } else {
+          alert("Not all questions answered!"); // TODO popup overlay and indicate which items are still missing
+          setIndicateMissing(true);
+        }
       } else if (pageNo + move < 0) {
         setConsent(false);
       }
+    };
+
+    var uploadSurveyData = function uploadSurveyData(projectId) {
+      fetch(SERVER_URL + "/send-surveys-responses-by-project-id/" + projectId, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        }
+      }).then(function (response) {
+        if (response.status !== 200) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      }).then(function (res) {
+        setSurvey(res);
+      }).catch(function (err) {
+        console.log("Error:", err.toString());
+      });
     };
 
     var downloadSurveyData = function downloadSurveyData(projectId) {
@@ -77,6 +106,7 @@ var Survey = function Survey(_ref) {
       }).then(function (res) {
         setSurvey(res);
         setPages(Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE));
+        setSelection({});
       }).catch(function (err) {
         console.log("Error:", err.toString());
       });
@@ -122,7 +152,8 @@ var Survey = function Survey(_ref) {
                   s: survey[0],
                   k: key,
                   setSelection: setSelection,
-                  selection: selection
+                  selection: selection,
+                  indicateMissing: indicateMissing
                 })
               );
             }),
@@ -138,9 +169,12 @@ var Survey = function Survey(_ref) {
               { className: "submit-button-tile" },
               React.createElement(
                 "button",
-                { onClick: function onClick() {
+                {
+                  disabled: pageNo == 0,
+                  onClick: function onClick() {
                     return handlePagination(-1);
-                  } },
+                  }
+                },
                 "Back"
               )
             ),
@@ -149,12 +183,9 @@ var Survey = function Survey(_ref) {
               { className: "submit-button-tile" },
               React.createElement(
                 "button",
-                {
-                  //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
-                  onClick: function onClick() {
+                { onClick: function onClick() {
                     return handlePagination(1);
-                  }
-                },
+                  } },
                 "Next"
               )
             )
@@ -169,22 +200,27 @@ var ResponseBox = function ResponseBox(_ref2) {
   var s = _ref2.s,
       k = _ref2.k,
       setSelection = _ref2.setSelection,
-      selection = _ref2.selection;
+      selection = _ref2.selection,
+      indicateMissing = _ref2.indicateMissing;
 
   var id = s["prefix"].concat("-", String(k));
 
-  var _React$useState17 = React.useState(""),
-      _React$useState18 = _slicedToArray(_React$useState17, 2),
-      value = _React$useState18[0],
-      setValue = _React$useState18[1];
+  var _React$useState19 = React.useState(""),
+      _React$useState20 = _slicedToArray(_React$useState19, 2),
+      value = _React$useState20[0],
+      setValue = _React$useState20[1];
 
   var handleChange = function handleChange(event) {
     setValue(event.target.value);
+    var newSelection = selection;
+    newSelection[k] = event.target.value;
+    setSelection(newSelection);
   };
 
   return React.createElement(
     "form",
     {
+      className: value == "" && indicateMissing && "response-box-missing",
       style: {
         display: "flex",
         flexDirection: "row",
@@ -209,11 +245,11 @@ var ResponseBox = function ResponseBox(_ref2) {
           likert.label
         ),
         React.createElement("input", {
+          className: "radio",
           type: "radio",
           checked: value == likert.value,
           id: id + "-" + String(likert.value),
           value: likert.value,
-          style: { cursor: "pointer" },
           onChange: handleChange
         })
       );

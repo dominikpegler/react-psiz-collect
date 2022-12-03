@@ -11,6 +11,7 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
     const [statusCode, setStatusCode] = React.useState(2);
     const [selection, setSelection] = React.useState();
+    const [indicateMissing, setIndicateMissing] = React.useState(false)
 
     const ITEMS_PER_PAGE = 6;
 
@@ -18,10 +19,41 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
       if (pageNo + move >= 0 && pageNo + move < pages) {
         setPageNo(pageNo + move);
       } else if (pageNo + move >= pages) {
-        setSurveyFinished(true);
+        if (
+          Object.keys(survey[0]["items"]).length ==
+          Object.keys(selection).length
+        ) {
+          setSurveyFinished(true); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
+        } else {
+          alert("Not all questions answered!"); // TODO popup overlay and indicate which items are still missing
+          setIndicateMissing(true);
+        }
       } else if (pageNo + move < 0) {
         setConsent(false);
       }
+    };
+
+
+    const uploadSurveyData = (projectId) => {
+      fetch(SERVER_URL + "/send-surveys-responses-by-project-id/" + projectId, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then((res) => {
+          setSurvey(res);
+        })
+        .catch((err) => {
+          console.log("Error:", err.toString());
+        });
     };
 
     const downloadSurveyData = (projectId) => {
@@ -43,6 +75,7 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
           setPages(
             Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE)
           );
+          setSelection({});
         })
         .catch((err) => {
           console.log("Error:", err.toString());
@@ -79,6 +112,7 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
                       k={key}
                       setSelection={setSelection}
                       selection={selection}
+                      indicateMissing={indicateMissing}
                     />
                   </div>
                 ))}
@@ -86,15 +120,15 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
             </div>
             <div className={"bottom-tile"} style={{ justifyContent: "center" }}>
               <div className={"submit-button-tile"}>
-                <button onClick={() => handlePagination(-1)}>Back</button>
+                <button
+                  disabled={pageNo == 0}
+                  onClick={() => handlePagination(-1)}
+                >
+                  Back
+                </button>
               </div>
               <div className={"submit-button-tile"}>
-                <button
-                  //disabled={pages && pageNo == pages.length - 1} // disable only if all item values are set
-                  onClick={() => handlePagination(1)}
-                >
-                  Next
-                </button>
+                <button onClick={() => handlePagination(1)}>Next</button>
               </div>
             </div>
           </div>
@@ -104,17 +138,21 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
   }
 };
 
-const ResponseBox = ({ s, k, setSelection, selection }) => {
+const ResponseBox = ({ s, k, setSelection, selection, indicateMissing }) => {
   const id = s["prefix"].concat("-", String(k));
 
   const [value, setValue] = React.useState("");
 
   const handleChange = (event) => {
     setValue(event.target.value);
+    let newSelection = selection;
+    newSelection[k] = event.target.value;
+    setSelection(newSelection);
   };
 
   return (
     <form
+      className={value == "" && indicateMissing && "response-box-missing"}
       style={{
         display: "flex",
         flexDirection: "row",
@@ -138,11 +176,11 @@ const ResponseBox = ({ s, k, setSelection, selection }) => {
                   {likert.label}
                 </label>
                 <input
+                  className={"radio"}
                   type={"radio"}
                   checked={value == likert.value}
                   id={id + "-" + String(likert.value)}
                   value={likert.value}
-                  style={{ cursor: "pointer" }}
                   onChange={handleChange}
                 />
               </div>
