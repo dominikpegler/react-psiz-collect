@@ -62,12 +62,16 @@ class AssignmentCreate(AssignmentBase):
     end_hit: datetime
     status_code: int
     ver: int
+    consent: bool
+    survey_complete: bool
 
 
 class AssignmentUpdate(BaseModel):
     assignment_id: int
     end_hit: datetime
     status_code: int
+    consent: bool
+    survey_complete: bool
 
 
 class Assignment(AssignmentBase):

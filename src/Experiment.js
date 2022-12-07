@@ -24,6 +24,8 @@ const Experiment = ({ workerId }) => {
     const [startMs, setStartMs] = React.useState(new Date());
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
     const [statusCode, setStatusCode] = React.useState(2);
+    const [consent, setConsent] = React.useState(false);
+    const [survey_complete, setSurveyComplete] = React.useState(false);
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
     const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
 
@@ -46,6 +48,8 @@ const Experiment = ({ workerId }) => {
           console.log("res", res);
           setAssignmentId(res.assignment_id);
           setTrials(res.trials_completed);
+          setConsent(res.consent);
+          setSurveyComplete(res.survey_complete);
           console.log(
             `Success: Worker ${workerId} started assignment ${res.assignment_id}.`
           );
@@ -136,7 +140,10 @@ const Experiment = ({ workerId }) => {
           assignment_id: assignmentId,
           end_hit: endHit,
           status_code: newStatusCode,
+          consent: consent,
+          survey_complete: survey_complete
         };
+
         fetch(SERVER_URL + "/update-assignment/", {
           method: "POST",
           headers: {
@@ -165,16 +172,14 @@ const Experiment = ({ workerId }) => {
       }
     };
 
-
     const handleZoom = (e, imgPath, show) => {
       e.preventDefault();
       if (show === true) {
-      setZoom({ display: "block", imgPath:imgPath })}
-      else {
+        setZoom({ display: "block", imgPath: imgPath });
+      } else {
         setZoom({ display: "none", imgPath: imgPath });
-      };
+      }
     };
-
 
     const handleSelect = (id) => {
       const time = new Date() - startMs;
@@ -198,7 +203,6 @@ const Experiment = ({ workerId }) => {
 
     // runs once at the beginning of the assignment
     React.useEffect(() => {
-      if (trials == 0) {
         const assignment = {
           assignment_id: assignmentId,
           project_id: projectId,
@@ -212,10 +216,12 @@ const Experiment = ({ workerId }) => {
           end_hit: beginHit, // will be updated later after each trial
           status_code: 0, // will be updated after trials
           ver: 2,
+          consent: 0,
+          survey_complete: 0,
         };
         handleAssigned(assignment);
-      }
-    }, [trials]);
+        
+    }, []);
 
     // runs once before each trial to preload the images
     React.useEffect(() => {

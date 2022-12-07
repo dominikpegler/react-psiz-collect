@@ -36,11 +36,18 @@ def create_assignment(db: Session, assignment: schemas.AssignmentCreate):
 
 
 def update_assignment(
-    db: Session, assignment_id: int, end_hit: datetime, status_code: int
+    db: Session,
+    assignment_id: int,
+    end_hit: datetime,
+    status_code: int,
+    consent: bool,
+    survey_complete: bool,
 ):
     db_assignment = db.query(models.Assignment).get(assignment_id)
     db_assignment.status_code = status_code
     db_assignment.end_hit = end_hit
+    db_assignment.consent = consent
+    db_assignment.survey_complete = survey_complete
     db.add(db_assignment)
     db.commit()
     db.refresh(db_assignment)

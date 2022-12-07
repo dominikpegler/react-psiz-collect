@@ -68,15 +68,25 @@ var Experiment = function Experiment(_ref) {
         statusCode = _React$useState20[0],
         setStatusCode = _React$useState20[1];
 
-    var _React$useState21 = React.useState({ display: "none" }),
+    var _React$useState21 = React.useState(false),
         _React$useState22 = _slicedToArray(_React$useState21, 2),
-        showOverlay = _React$useState22[0],
-        setShowOverlay = _React$useState22[1];
+        consent = _React$useState22[0],
+        setConsent = _React$useState22[1];
 
-    var _React$useState23 = React.useState({ display: "none", imgPath: "" }),
+    var _React$useState23 = React.useState(false),
         _React$useState24 = _slicedToArray(_React$useState23, 2),
-        zoom = _React$useState24[0],
-        setZoom = _React$useState24[1];
+        survey_complete = _React$useState24[0],
+        setSurveyComplete = _React$useState24[1];
+
+    var _React$useState25 = React.useState({ display: "none" }),
+        _React$useState26 = _slicedToArray(_React$useState25, 2),
+        showOverlay = _React$useState26[0],
+        setShowOverlay = _React$useState26[1];
+
+    var _React$useState27 = React.useState({ display: "none", imgPath: "" }),
+        _React$useState28 = _slicedToArray(_React$useState27, 2),
+        zoom = _React$useState28[0],
+        setZoom = _React$useState28[1];
 
     var handleAssigned = function handleAssigned(assignment) {
       fetch(SERVER_URL + "/create-assignment/", {
@@ -95,6 +105,8 @@ var Experiment = function Experiment(_ref) {
         console.log("res", res);
         setAssignmentId(res.assignment_id);
         setTrials(res.trials_completed);
+        setConsent(res.consent);
+        setSurveyComplete(res.survey_complete);
         console.log("Success: Worker " + workerId + " started assignment " + res.assignment_id + ".");
       }).catch(function (err) {
         console.log("Error:", err.toString());
@@ -182,8 +194,11 @@ var Experiment = function Experiment(_ref) {
         var assignmentUpdate = {
           assignment_id: assignmentId,
           end_hit: endHit,
-          status_code: newStatusCode
+          status_code: newStatusCode,
+          consent: consent,
+          survey_complete: survey_complete
         };
+
         fetch(SERVER_URL + "/update-assignment/", {
           method: "POST",
           headers: {
@@ -215,7 +230,7 @@ var Experiment = function Experiment(_ref) {
         setZoom({ display: "block", imgPath: imgPath });
       } else {
         setZoom({ display: "none", imgPath: imgPath });
-      };
+      }
     };
 
     var handleSelect = function handleSelect(id) {
@@ -240,24 +255,24 @@ var Experiment = function Experiment(_ref) {
 
     // runs once at the beginning of the assignment
     React.useEffect(function () {
-      if (trials == 0) {
-        var assignment = {
-          assignment_id: assignmentId,
-          project_id: projectId,
-          protocol_id: protocolId,
-          worker_id: workerId,
-          amt_assignment_id: "", // unclear
-          amt_hit_id: "", // unclear
-          browser: navigator.userAgent, // extract from string
-          platform: navigator.userAgent, // extract from string
-          begin_hit: beginHit,
-          end_hit: beginHit, // will be updated later after each trial
-          status_code: 0, // will be updated after trials
-          ver: 2
-        };
-        handleAssigned(assignment);
-      }
-    }, [trials]);
+      var assignment = {
+        assignment_id: assignmentId,
+        project_id: projectId,
+        protocol_id: protocolId,
+        worker_id: workerId,
+        amt_assignment_id: "", // unclear
+        amt_hit_id: "", // unclear
+        browser: navigator.userAgent, // extract from string
+        platform: navigator.userAgent, // extract from string
+        begin_hit: beginHit,
+        end_hit: beginHit, // will be updated later after each trial
+        status_code: 0, // will be updated after trials
+        ver: 2,
+        consent: 0,
+        survey_complete: 0
+      };
+      handleAssigned(assignment);
+    }, []);
 
     // runs once before each trial to preload the images
     React.useEffect(function () {

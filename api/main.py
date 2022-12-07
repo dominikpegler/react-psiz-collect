@@ -19,11 +19,11 @@ models.Base.metadata.create_all(bind=engine)
 # LOAD CONFIG #
 ###############
 
-CONFIG_PATH = "config.json" # is defined a second time in database.py
+CONFIG_PATH = "config.json"  # is defined a second time in database.py
 
 if os.path.exists(CONFIG_PATH):
     with open(CONFIG_PATH) as fp:
-            config = json.load(fp)
+        config = json.load(fp)
     ORIGINS = config["ORIGINS"]
 else:
     ORIGINS = ["http://localhost", "localhost"]
@@ -37,7 +37,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ORIGINS,
-    allow_credentials=True, # if set to True origins can't be set to "*"
+    allow_credentials=True,  # if set to True origins can't be set to "*"
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
@@ -105,16 +105,23 @@ def create_assignment(
         )
         trials_completed = len(db_trial)
         assignment_id = db_assignment.assignment_id
+        consent = db_assignment.consent
+        survey_complete = db_assignment.survey_complete
     else:
         trials_completed = 0
         assignment_id = crud.create_assignment(
             db=db, assignment=assignment
         ).assignment_id
+        consent = False
+        survey_complete = False
 
     return JSONResponse(
         {
             "assignment_id": assignment_id,
             "trials_completed": trials_completed,
+            "consent": consent,
+            "survey_complete": survey_complete,
+
         }
     )
 
@@ -132,6 +139,8 @@ def update_assignment(
         assignment_id=assignment_update.assignment_id,
         end_hit=assignment_update.end_hit,
         status_code=assignment_update.status_code,
+        consent=assignment_update.consent,
+        survey_complete=assignment_update.survey_complete,
     )
 
     return JSONResponse({"assignment_id": assignment_updated.assignment_id})
@@ -151,23 +160,21 @@ def create_trial(trial: schemas.TrialCreate, db: Session = Depends(get_db)):
 
 # TODO: currently not in use
 @app.get(
-    "/assignments-by-project-id/{project_id}", response_model=list[schemas.Assignment] 
-
+    "/assignments-by-project-id/{project_id}", response_model=list[schemas.Assignment]
 )
 def read_assignments_by_project_id(project_id: str, db: Session = Depends(get_db)):
     assignments = crud.get_assignments_by_project_id(db, project_id=project_id)
     return assignments
 
 
+# JSON FILES - READ #
 
-# JSON FILES - READ # 
 
-@app.get(
-    "/get-surveys-by-project-id/{project_id}")
+@app.get("/get-surveys-by-project-id/{project_id}")
 def read_surveys_by_project_id(project_id: str):
 
     f = open("api/projects/" + project_id + ".json")
-    surveys_list = json.load(f)['surveys']
+    surveys_list = json.load(f)["surveys"]
 
     surveys_content = []
 
@@ -177,7 +184,6 @@ def read_surveys_by_project_id(project_id: str):
         surveys_content.append(survey)
 
     return surveys_content
-
 
 
 # @app.get("/assignment/{assignment_id}", response_model=schemas.Assignment)
