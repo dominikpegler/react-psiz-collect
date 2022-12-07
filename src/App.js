@@ -11,7 +11,10 @@ const App = () => {
   const [beginHit, _] = React.useState(new Date());
   const [assignmentId, setAssignmentId] = React.useState();
   const [statusCode, setStatusCode] = React.useState(2);
-      const [trials, setTrials] = React.useState(0);
+  const [trials, setTrials] = React.useState(0);
+  const [survey, setSurvey] = React.useState();
+  const [pages, setPages] = React.useState();
+  const [selection, setSelection] = React.useState();
 
 
   const handleSubmit = (e) => {
@@ -94,6 +97,62 @@ const App = () => {
       survey_complete: true,
     };
     updateDatabase(assignmentUpdate);
+    uploadSurveyData(assignmentId, selection);
+  };
+
+  const downloadSurveyData = (ITEMS_PER_PAGE) => {
+    fetch(SERVER_URL + "/get-surveys-by-project-id/" + projectId, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((res) => {
+        setSurvey(res);
+        setPages(
+          Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE)
+        );
+        setSelection({});
+      })
+      .catch((err) => {
+        console.log("Error:", err.toString());
+      });
+  };
+
+  const uploadSurveyData = (assignmentId, selection) => {
+    // TODO put this into handleSurveyComplete in App.js
+    fetch(
+      SERVER_URL + "/send-surveys-responses-by-project-id/" + assignmentId,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify([assignmentId, selection]),
+      }
+    )
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((res) => {
+        console.log(
+          `Upload of survey data for assignment ${res.assignment_id} successful.`
+        );
+      })
+      .catch((err) => {
+        console.log("Error:", err.toString());
+      });
   };
 
   const updateDatabase = (assignmentUpdate) => {
@@ -188,21 +247,32 @@ const App = () => {
             </div>
           )
         ) : (
-          surveyComplete==false && <Survey handleSurveyComplete={handleSurveyComplete} />
+          surveyComplete == false && (
+            <Survey
+              survey={survey}
+              handleSurveyComplete={handleSurveyComplete}
+              downloadSurveyData={downloadSurveyData}
+              pages={pages}
+              selection={selection}
+              setSelection={setSelection}
+            />
+          )
         )
       ) : (
-        consent==false && <div className={"container"}>
-          <div className={"consent"}>
-            <Consent />
-            <button
-              type="text"
-              className={"proceed-button"}
-              onClick={() => handleConsent()}
-            >
-              I agree to participate in the study and continue
-            </button>
+        consent == false && (
+          <div className={"container"}>
+            <div className={"consent"}>
+              <Consent />
+              <button
+                type="text"
+                className={"proceed-button"}
+                onClick={() => handleConsent()}
+              >
+                I agree to participate in the study and continue
+              </button>
+            </div>
           </div>
-        </div>
+        )
       )
     ) : (
       <div className={"container"}>

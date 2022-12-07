@@ -1,19 +1,10 @@
 "use strict";
 
-const Survey = ({ handleSurveyComplete }) => {
+const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selection, setSelection }) => {
   {
-    const [survey, setSurvey] = React.useState();
     const [pageNo, setPageNo] = React.useState(0);
-    const [pages, setPages] = React.useState();
-    const [assignmentId, setAssignmentId] = React.useState();
-    const [beginHit, _] = React.useState(new Date());
-    const [startMs, setStartMs] = React.useState(new Date());
-    // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
-    const [statusCode, setStatusCode] = React.useState(2);
-    const [selection, setSelection] = React.useState();
     const [indicateMissing, setIndicateMissing] = React.useState(false);
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
-
 
     const ITEMS_PER_PAGE = 6;
 
@@ -25,9 +16,9 @@ const Survey = ({ handleSurveyComplete }) => {
           Object.keys(survey[0]["items"]).length ==
           Object.keys(selection).length
         ) {
-          handleSurveyComplete(selection); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
+          handleSurveyComplete(selection); // TODO, call uploadSurveyData from here
         } else {
-          setShowOverlay({ display: "block" })
+          setShowOverlay({ display: "block" });
           setIndicateMissing(true);
         }
       } else if (pageNo + move < 0) {
@@ -36,58 +27,9 @@ const Survey = ({ handleSurveyComplete }) => {
       }
     };
 
-    const uploadSurveyData = (projectId) => {
-      // TODO put this into handleSurveyComplete in App.js
-      fetch(SERVER_URL + "/send-surveys-responses-by-project-id/" + projectId, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.status !== 200) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .then((res) => {
-          setSurvey(res);
-        })
-        .catch((err) => {
-          console.log("Error:", err.toString());
-        });
-    };
-
-    const downloadSurveyData = (projectId) => {
-      fetch(SERVER_URL + "/get-surveys-by-project-id/" + projectId, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.status !== 200) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .then((res) => {
-          setSurvey(res);
-          setPages(
-            Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE)
-          );
-          setSelection({});
-        })
-        .catch((err) => {
-          console.log("Error:", err.toString());
-        });
-    };
-
     // runs only once at the beginning
     React.useEffect(() => {
-      downloadSurveyData(projectId);
+      downloadSurveyData(ITEMS_PER_PAGE);
     }, []);
 
     // rendering
@@ -119,50 +61,55 @@ const Survey = ({ handleSurveyComplete }) => {
               </div>
             </div>
           </div>
-          {survey && <div className={"welcome"}>
-            <h1>{survey[0]["name"]}</h1>
-            <ProgressBarContainerSurvey
-              nItems={Object.keys(survey[0]["items"]).length}
-              nSelected={Object.keys(selection).length}
-            />
-            <div className={"container-questionnaire"}>
-              {survey &&
-                Object.keys(survey[0]["items"]).map((key, idx) => (
-                  <div
-                    style={
-                      idx >= pageNo * ITEMS_PER_PAGE &&
-                      idx < pageNo * ITEMS_PER_PAGE + ITEMS_PER_PAGE
-                        ? {
-                            display: "block",
-                          }
-                        : { display: "none" }
-                    }
+          {survey && (
+            <div className={"welcome"}>
+              <h1>{survey[0]["name"]}</h1>
+              <ProgressBarContainerSurvey
+                nItems={Object.keys(survey[0]["items"]).length}
+                nSelected={Object.keys(selection).length}
+              />
+              <div className={"container-questionnaire"}>
+                {survey &&
+                  Object.keys(survey[0]["items"]).map((key, idx) => (
+                    <div
+                      style={
+                        idx >= pageNo * ITEMS_PER_PAGE &&
+                        idx < pageNo * ITEMS_PER_PAGE + ITEMS_PER_PAGE
+                          ? {
+                              display: "block",
+                            }
+                          : { display: "none" }
+                      }
+                    >
+                      <span>{survey[0]["items"][key]}</span>
+                      <ResponseBox
+                        s={survey[0]}
+                        k={key}
+                        setSelection={setSelection}
+                        selection={selection}
+                        indicateMissing={indicateMissing}
+                      />
+                    </div>
+                  ))}
+              </div>
+              <div
+                className={"bottom-tile"}
+                style={{ justifyContent: "center" }}
+              >
+                <div className={"submit-button-tile"}>
+                  <button
+                    disabled={pageNo == 0}
+                    onClick={() => handlePagination(-1)}
                   >
-                    <span>{survey[0]["items"][key]}</span>
-                    <ResponseBox
-                      s={survey[0]}
-                      k={key}
-                      setSelection={setSelection}
-                      selection={selection}
-                      indicateMissing={indicateMissing}
-                    />
-                  </div>
-                ))}
-            </div>
-            <div className={"bottom-tile"} style={{ justifyContent: "center" }}>
-              <div className={"submit-button-tile"}>
-                <button
-                  disabled={pageNo == 0}
-                  onClick={() => handlePagination(-1)}
-                >
-                  Back
-                </button>
-              </div>
-              <div className={"submit-button-tile"}>
-                <button onClick={() => handlePagination(1)}>Next</button>
+                    Back
+                  </button>
+                </div>
+                <div className={"submit-button-tile"}>
+                  <button onClick={() => handlePagination(1)}>Next</button>
+                </div>
               </div>
             </div>
-          </div>}
+          )}
         </div>
       </div>
     );

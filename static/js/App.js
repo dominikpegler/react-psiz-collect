@@ -50,6 +50,21 @@ var App = function App() {
       trials = _React$useState18[0],
       setTrials = _React$useState18[1];
 
+  var _React$useState19 = React.useState(),
+      _React$useState20 = _slicedToArray(_React$useState19, 2),
+      survey = _React$useState20[0],
+      setSurvey = _React$useState20[1];
+
+  var _React$useState21 = React.useState(),
+      _React$useState22 = _slicedToArray(_React$useState21, 2),
+      pages = _React$useState22[0],
+      setPages = _React$useState22[1];
+
+  var _React$useState23 = React.useState(),
+      _React$useState24 = _slicedToArray(_React$useState23, 2),
+      selection = _React$useState24[0],
+      setSelection = _React$useState24[1];
+
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
       setWorkerId(e.target.value);
@@ -122,6 +137,49 @@ var App = function App() {
       survey_complete: true
     };
     updateDatabase(assignmentUpdate);
+    uploadSurveyData(assignmentId, selection);
+  };
+
+  var downloadSurveyData = function downloadSurveyData(ITEMS_PER_PAGE) {
+    fetch(SERVER_URL + "/get-surveys-by-project-id/" + projectId, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      setSurvey(res);
+      setPages(Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE));
+      setSelection({});
+    }).catch(function (err) {
+      console.log("Error:", err.toString());
+    });
+  };
+
+  var uploadSurveyData = function uploadSurveyData(assignmentId, selection) {
+    // TODO put this into handleSurveyComplete in App.js
+    fetch(SERVER_URL + "/send-surveys-responses-by-project-id/" + assignmentId, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify([assignmentId, selection])
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      console.log("Upload of survey data for assignment " + res.assignment_id + " successful.");
+    }).catch(function (err) {
+      console.log("Error:", err.toString());
+    });
   };
 
   var updateDatabase = function updateDatabase(assignmentUpdate) {
@@ -213,7 +271,14 @@ var App = function App() {
         )
       )
     )
-  ) : surveyComplete == false && React.createElement(Survey, { handleSurveyComplete: handleSurveyComplete }) : consent == false && React.createElement(
+  ) : surveyComplete == false && React.createElement(Survey, {
+    survey: survey,
+    handleSurveyComplete: handleSurveyComplete,
+    downloadSurveyData: downloadSurveyData,
+    pages: pages,
+    selection: selection,
+    setSelection: setSelection
+  }) : consent == false && React.createElement(
     "div",
     { className: "container" },
     React.createElement(

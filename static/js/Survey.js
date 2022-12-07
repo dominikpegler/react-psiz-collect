@@ -3,60 +3,28 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var Survey = function Survey(_ref) {
-  var handleSurveyComplete = _ref.handleSurveyComplete;
+  var survey = _ref.survey,
+      handleSurveyComplete = _ref.handleSurveyComplete,
+      downloadSurveyData = _ref.downloadSurveyData,
+      pages = _ref.pages,
+      selection = _ref.selection,
+      setSelection = _ref.setSelection;
 
   {
-    var _React$useState = React.useState(),
+    var _React$useState = React.useState(0),
         _React$useState2 = _slicedToArray(_React$useState, 2),
-        survey = _React$useState2[0],
-        setSurvey = _React$useState2[1];
+        pageNo = _React$useState2[0],
+        setPageNo = _React$useState2[1];
 
-    var _React$useState3 = React.useState(0),
+    var _React$useState3 = React.useState(false),
         _React$useState4 = _slicedToArray(_React$useState3, 2),
-        pageNo = _React$useState4[0],
-        setPageNo = _React$useState4[1];
+        indicateMissing = _React$useState4[0],
+        setIndicateMissing = _React$useState4[1];
 
-    var _React$useState5 = React.useState(),
+    var _React$useState5 = React.useState({ display: "none" }),
         _React$useState6 = _slicedToArray(_React$useState5, 2),
-        pages = _React$useState6[0],
-        setPages = _React$useState6[1];
-
-    var _React$useState7 = React.useState(),
-        _React$useState8 = _slicedToArray(_React$useState7, 2),
-        assignmentId = _React$useState8[0],
-        setAssignmentId = _React$useState8[1];
-
-    var _React$useState9 = React.useState(new Date()),
-        _React$useState10 = _slicedToArray(_React$useState9, 2),
-        beginHit = _React$useState10[0],
-        _ = _React$useState10[1];
-
-    var _React$useState11 = React.useState(new Date()),
-        _React$useState12 = _slicedToArray(_React$useState11, 2),
-        startMs = _React$useState12[0],
-        setStartMs = _React$useState12[1];
-    // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
-
-
-    var _React$useState13 = React.useState(2),
-        _React$useState14 = _slicedToArray(_React$useState13, 2),
-        statusCode = _React$useState14[0],
-        setStatusCode = _React$useState14[1];
-
-    var _React$useState15 = React.useState(),
-        _React$useState16 = _slicedToArray(_React$useState15, 2),
-        selection = _React$useState16[0],
-        setSelection = _React$useState16[1];
-
-    var _React$useState17 = React.useState(false),
-        _React$useState18 = _slicedToArray(_React$useState17, 2),
-        indicateMissing = _React$useState18[0],
-        setIndicateMissing = _React$useState18[1];
-
-    var _React$useState19 = React.useState({ display: "none" }),
-        _React$useState20 = _slicedToArray(_React$useState19, 2),
-        showOverlay = _React$useState20[0],
-        setShowOverlay = _React$useState20[1];
+        showOverlay = _React$useState6[0],
+        setShowOverlay = _React$useState6[1];
 
     var ITEMS_PER_PAGE = 6;
 
@@ -65,7 +33,7 @@ var Survey = function Survey(_ref) {
         setPageNo(pageNo + move);
       } else if (pageNo + move >= pages) {
         if (Object.keys(survey[0]["items"]).length == Object.keys(selection).length) {
-          handleSurveyComplete(selection); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
+          handleSurveyComplete(selection); // TODO, call uploadSurveyData from here
         } else {
           setShowOverlay({ display: "block" });
           setIndicateMissing(true);
@@ -76,50 +44,9 @@ var Survey = function Survey(_ref) {
       }
     };
 
-    var uploadSurveyData = function uploadSurveyData(projectId) {
-      // TODO put this into handleSurveyComplete in App.js
-      fetch(SERVER_URL + "/send-surveys-responses-by-project-id/" + projectId, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }).then(function (response) {
-        if (response.status !== 200) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      }).then(function (res) {
-        setSurvey(res);
-      }).catch(function (err) {
-        console.log("Error:", err.toString());
-      });
-    };
-
-    var downloadSurveyData = function downloadSurveyData(projectId) {
-      fetch(SERVER_URL + "/get-surveys-by-project-id/" + projectId, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      }).then(function (response) {
-        if (response.status !== 200) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      }).then(function (res) {
-        setSurvey(res);
-        setPages(Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE));
-        setSelection({});
-      }).catch(function (err) {
-        console.log("Error:", err.toString());
-      });
-    };
-
     // runs only once at the beginning
     React.useEffect(function () {
-      downloadSurveyData(projectId);
+      downloadSurveyData(ITEMS_PER_PAGE);
     }, []);
 
     // rendering
@@ -213,7 +140,10 @@ var Survey = function Survey(_ref) {
           ),
           React.createElement(
             "div",
-            { className: "bottom-tile", style: { justifyContent: "center" } },
+            {
+              className: "bottom-tile",
+              style: { justifyContent: "center" }
+            },
             React.createElement(
               "div",
               { className: "submit-button-tile" },
@@ -255,10 +185,10 @@ var ResponseBox = function ResponseBox(_ref2) {
 
   var id = s["prefix"].concat("-", String(k));
 
-  var _React$useState21 = React.useState(""),
-      _React$useState22 = _slicedToArray(_React$useState21, 2),
-      value = _React$useState22[0],
-      setValue = _React$useState22[1];
+  var _React$useState7 = React.useState(""),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      value = _React$useState8[0],
+      setValue = _React$useState8[1];
 
   var handleChange = function handleChange(event) {
     setValue(event.target.value);
