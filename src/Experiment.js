@@ -1,13 +1,19 @@
 "use strict";
 
-const Experiment = ({ workerId }) => {
+const Experiment = ({
+  assignmentId,
+  statusCode,
+  setStatusCode,
+  consent,
+  surveyComplete,
+  trials,
+  setTrials
+}) => {
   {
-    const [trials, setTrials] = React.useState(0);
     const [imgsLoaded, setImgsLoaded] = React.useState(false);
     const [selection, setSelection] = React.useState([]);
     const [selectionTimes, setSelectionTimes] = React.useState([]);
     const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
-    const [assignmentId, setAssignmentId] = React.useState();
 
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
@@ -19,45 +25,10 @@ const Experiment = ({ workerId }) => {
       randomIntArray(0, imgPaths.length - 1, 9)
     );
     const nTrials = 40;
-    const protocolId = "internal";
-    const [beginHit, _] = React.useState(new Date());
     const [startMs, setStartMs] = React.useState(new Date());
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
-    const [statusCode, setStatusCode] = React.useState(2);
-    const [consent, setConsent] = React.useState(false);
-    const [survey_complete, setSurveyComplete] = React.useState(false);
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
     const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
-
-    const handleAssigned = (assignment) => {
-      fetch(SERVER_URL + "/create-assignment/", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(assignment),
-      })
-        .then((response) => {
-          if (response.status !== 200) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .then((res) => {
-          console.log("res", res);
-          setAssignmentId(res.assignment_id);
-          setTrials(res.trials_completed);
-          setConsent(res.consent);
-          setSurveyComplete(res.survey_complete);
-          console.log(
-            `Success: Worker ${workerId} started assignment ${res.assignment_id}.`
-          );
-        })
-        .catch((err) => {
-          console.log("Error:", err.toString());
-        });
-    };
 
     const handleSubmit = () => {
       if (selection.length == 2) {
@@ -141,7 +112,7 @@ const Experiment = ({ workerId }) => {
           end_hit: endHit,
           status_code: newStatusCode,
           consent: consent,
-          survey_complete: survey_complete
+          survey_complete: surveyComplete,
         };
 
         fetch(SERVER_URL + "/update-assignment/", {
@@ -200,28 +171,6 @@ const Experiment = ({ workerId }) => {
     const handleRedirect = () => {
       window.location.href = redirectURL;
     };
-
-    // runs once at the beginning of the assignment
-    React.useEffect(() => {
-        const assignment = {
-          assignment_id: assignmentId,
-          project_id: projectId,
-          protocol_id: protocolId,
-          worker_id: workerId,
-          amt_assignment_id: "", // unclear
-          amt_hit_id: "", // unclear
-          browser: navigator.userAgent, // extract from string
-          platform: navigator.userAgent, // extract from string
-          begin_hit: beginHit,
-          end_hit: beginHit, // will be updated later after each trial
-          status_code: 0, // will be updated after trials
-          ver: 2,
-          consent: 0,
-          survey_complete: 0,
-        };
-        handleAssigned(assignment);
-        
-    }, []);
 
     // runs once before each trial to preload the images
     React.useEffect(() => {

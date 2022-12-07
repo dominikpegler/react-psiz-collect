@@ -15,8 +15,8 @@ var App = function App() {
 
   var _React$useState5 = React.useState(false),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      surveyFinished = _React$useState6[0],
-      setSurveyFinished = _React$useState6[1];
+      surveyComplete = _React$useState6[0],
+      setSurveyComplete = _React$useState6[1];
 
   var _React$useState7 = React.useState(false),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
@@ -27,6 +27,28 @@ var App = function App() {
       _React$useState10 = _slicedToArray(_React$useState9, 2),
       backendConnected = _React$useState10[0],
       setBackendConnected = _React$useState10[1];
+
+  var protocolId = "internal";
+
+  var _React$useState11 = React.useState(new Date()),
+      _React$useState12 = _slicedToArray(_React$useState11, 2),
+      beginHit = _React$useState12[0],
+      _ = _React$useState12[1];
+
+  var _React$useState13 = React.useState(),
+      _React$useState14 = _slicedToArray(_React$useState13, 2),
+      assignmentId = _React$useState14[0],
+      setAssignmentId = _React$useState14[1];
+
+  var _React$useState15 = React.useState(2),
+      _React$useState16 = _slicedToArray(_React$useState15, 2),
+      statusCode = _React$useState16[0],
+      setStatusCode = _React$useState16[1];
+
+  var _React$useState17 = React.useState(0),
+      _React$useState18 = _slicedToArray(_React$useState17, 2),
+      trials = _React$useState18[0],
+      setTrials = _React$useState18[1];
 
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
@@ -44,7 +66,32 @@ var App = function App() {
       setBackendConnected(true);
     }).catch(function (err) {
       console.log("Connection with backend failed.");
-      console.log("Error:", err.toString());
+      console.log("ERROR-Response from API:", err.toString());
+    });
+  };
+
+  var handleAssigned = function handleAssigned(assignment) {
+    fetch(SERVER_URL + "/create-assignment/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(assignment)
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      console.log("res", res);
+      setAssignmentId(res.assignment_id);
+      setTrials(res.trials_completed);
+      setConsent(res.consent);
+      setSurveyComplete(res.survey_complete);
+      console.log("Success: Worker " + workerId + " started assignment " + res.assignment_id + ".");
+    }).catch(function (err) {
+      console.log("ERROR-Response from API:", err.toString());
     });
   };
 
@@ -54,9 +101,51 @@ var App = function App() {
 
   var handleConsent = function handleConsent() {
     setConsent(true);
+    var assignmentUpdate = {
+      assignment_id: assignmentId,
+      end_hit: new Date(),
+      status_code: statusCode,
+      consent: true,
+      survey_complete: surveyComplete
+    };
+    updateDatabase(assignmentUpdate);
+  };
+
+  var handleSurveyComplete = function handleSurveyComplete(selection) {
+    setSurveyComplete(true);
+    console.log("Survey completed. Selection\n", selection);
+    var assignmentUpdate = {
+      assignment_id: assignmentId,
+      end_hit: new Date(),
+      status_code: statusCode,
+      consent: consent,
+      survey_complete: true
+    };
+    updateDatabase(assignmentUpdate);
+  };
+
+  var updateDatabase = function updateDatabase(assignmentUpdate) {
+    fetch(SERVER_URL + "/update-assignment/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(assignmentUpdate)
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      console.log("Assignment " + res.assignment_id + " update successful.");
+    }).catch(function (err) {
+      console.log("ERROR-Response from API:", err.toString());
+    });
   };
 
   var inputRef = React.useRef();
+
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
   React.useEffect(function () {
@@ -69,7 +158,38 @@ var App = function App() {
     testConnection();
   }, [inputRef, backendConnected]);
 
-  return backendConnected ? workerId ? consent ? surveyFinished ? confirmed ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
+  // runs only if workerId was changed
+  React.useEffect(function () {
+    if (workerId !== undefined) {
+      var assignment = {
+        assignment_id: assignmentId,
+        project_id: projectId,
+        protocol_id: protocolId,
+        worker_id: workerId,
+        amt_assignment_id: "", // unclear
+        amt_hit_id: "", // unclear
+        browser: navigator.userAgent, // extract from string
+        platform: navigator.userAgent, // extract from string
+        begin_hit: beginHit,
+        end_hit: beginHit, // will be updated later after each trial
+        status_code: 0, // will be updated after trials
+        ver: 2,
+        consent: 0,
+        survey_complete: 0
+      };
+      handleAssigned(assignment);
+    }
+  }, [workerId]);
+
+  return backendConnected ? workerId ? consent ? surveyComplete ? confirmed ? React.createElement(Experiment, {
+    assignmentId: assignmentId,
+    statusCode: statusCode,
+    setStatusCode: setStatusCode,
+    consent: consent,
+    surveyComplete: surveyComplete,
+    trials: trials,
+    setTrials: setTrials
+  }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(
@@ -93,11 +213,7 @@ var App = function App() {
         )
       )
     )
-  ) : React.createElement(Survey, {
-    workerId: workerId,
-    setSurveyFinished: setSurveyFinished,
-    setConsent: setConsent
-  }) : React.createElement(
+  ) : React.createElement(Survey, { handleSurveyComplete: handleSurveyComplete }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(

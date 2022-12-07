@@ -3,9 +3,7 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var Survey = function Survey(_ref) {
-  var workerId = _ref.workerId,
-      setSurveyFinished = _ref.setSurveyFinished,
-      setConsent = _ref.setConsent;
+  var handleSurveyComplete = _ref.handleSurveyComplete;
 
   {
     var _React$useState = React.useState(),
@@ -62,17 +60,19 @@ var Survey = function Survey(_ref) {
         setPageNo(pageNo + move);
       } else if (pageNo + move >= pages) {
         if (Object.keys(survey[0]["items"]).length == Object.keys(selection).length) {
-          setSurveyFinished(true); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
+          handleSurveyComplete(selection); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
         } else {
           alert("Not all questions answered!"); // TODO popup overlay and indicate which items are still missing
           setIndicateMissing(true);
         }
       } else if (pageNo + move < 0) {
-        setConsent(false);
+        console.log("Nothing here. ");
+        //setConsent(false);
       }
     };
 
     var uploadSurveyData = function uploadSurveyData(projectId) {
+      // TODO put this into handleSurveyComplete in App.js
       fetch(SERVER_URL + "/send-surveys-responses-by-project-id/" + projectId, {
         method: "POST",
         headers: {

@@ -1,6 +1,6 @@
 "use strict";
 
-const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
+const Survey = ({ handleSurveyComplete }) => {
   {
     const [survey, setSurvey] = React.useState();
     const [pageNo, setPageNo] = React.useState(0);
@@ -11,7 +11,7 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
     const [statusCode, setStatusCode] = React.useState(2);
     const [selection, setSelection] = React.useState();
-    const [indicateMissing, setIndicateMissing] = React.useState(false)
+    const [indicateMissing, setIndicateMissing] = React.useState(false);
 
     const ITEMS_PER_PAGE = 6;
 
@@ -23,18 +23,19 @@ const Survey = ({ workerId, setSurveyFinished, setConsent }) => {
           Object.keys(survey[0]["items"]).length ==
           Object.keys(selection).length
         ) {
-          setSurveyFinished(true); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
+          handleSurveyComplete(selection); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
         } else {
           alert("Not all questions answered!"); // TODO popup overlay and indicate which items are still missing
           setIndicateMissing(true);
         }
       } else if (pageNo + move < 0) {
-        setConsent(false);
+        console.log("Nothing here. ");
+        //setConsent(false);
       }
     };
 
-
     const uploadSurveyData = (projectId) => {
+      // TODO put this into handleSurveyComplete in App.js
       fetch(SERVER_URL + "/send-surveys-responses-by-project-id/" + projectId, {
         method: "POST",
         headers: {
