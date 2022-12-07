@@ -76,12 +76,21 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
                         idx >= pageNo * ITEMS_PER_PAGE &&
                         idx < pageNo * ITEMS_PER_PAGE + ITEMS_PER_PAGE
                           ? {
-                              display: "flex", flexDirection:"row", justifyContent: "space-between", alignItems:"flex-start", marginBottom: "2rem"
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "flex-start",
+                              paddingBottom: ".75rem",
+                              paddingTop: ".75rem",
+                              borderBottom: "1px solid",
+                              borderImage: "linear-gradient(to right, lightgray, darkgray) 1"
                             }
                           : { display: "none" }
                       }
                     >
-                      <span style={{marginRight: "2rem"}}>{survey[0]["items"][key]}</span>
+                      <span style={{ marginRight: "2rem" }}>
+                        {survey[0]["items"][key]}
+                      </span>
                       <ResponseBox
                         s={survey[0]}
                         k={key}
