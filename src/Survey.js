@@ -63,7 +63,7 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
           </div>
           {survey && (
             <div className={"welcome"}>
-              <h1>{survey[0]["name"]}</h1>
+              <h2>{survey[0]["name"]}</h2>
               <ProgressBarContainerSurvey
                 nItems={Object.keys(survey[0]["items"]).length}
                 nSelected={Object.keys(selection).length}

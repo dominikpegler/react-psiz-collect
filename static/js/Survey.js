@@ -104,7 +104,7 @@ var Survey = function Survey(_ref) {
           "div",
           { className: "welcome" },
           React.createElement(
-            "h1",
+            "h2",
             null,
             survey[0]["name"]
           ),
