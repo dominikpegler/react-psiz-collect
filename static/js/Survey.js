@@ -224,7 +224,7 @@ var ResponseBox = function ResponseBox(_ref2) {
           "label",
           {
             "for": id + "-" + String(likert.value),
-            style: { textAlign: "center" }
+            style: { textAlign: "center", cursor: "pointer" }
           },
           likert.label,
           React.createElement("br", null),

@@ -153,7 +153,7 @@ const ResponseBox = ({ s, k, setSelection, selection, indicateMissing }) => {
               >
                 <label
                   for={id + "-" + String(likert.value)}
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: "center", cursor: "pointer" }}
                 >
                   {likert.label}
                   <br />
