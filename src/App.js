@@ -127,16 +127,23 @@ const App = () => {
   };
 
   const uploadSurveyData = (assignmentId, selection) => {
-    // TODO put this into handleSurveyComplete in App.js
+    console.log(
+      "trying to upload this survey data -->",
+      JSON.stringify({
+        assignment_id: assignmentId,
+        project_id: projectId,
+        selection: selection,
+      })
+    );
     fetch(
-      SERVER_URL + "/send-surveys-responses-by-project-id/" + assignmentId,
+      SERVER_URL + "/send-survey-responses-by-assignment/",
       {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([assignmentId, selection]),
+        body: JSON.stringify({"assignment_id":assignmentId, "project_id": projectId, "selection": selection}),
       }
     )
       .then((response) => {
@@ -147,8 +154,9 @@ const App = () => {
       })
       .then((res) => {
         console.log(
-          `Upload of survey data for assignment ${res.assignment_id} successful.`
+          `Upload of survey data for assignment ${res.assignment_id} and project ${res.project_id} successful.`
         );
+        console.log("This is the whole menu -->", res.survey_data)
       })
       .catch((err) => {
         console.log("Error:", err.toString());

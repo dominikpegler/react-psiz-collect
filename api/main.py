@@ -2,13 +2,14 @@
 # IMPORTS #
 ###########
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Body
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import json
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+from .survey import write_survey_to_db
 import os
 
 
@@ -154,6 +155,20 @@ def create_trial(trial: schemas.TrialCreate, db: Session = Depends(get_db)):
 
     return crud.create_trial(db=db, trial=trial)
 
+
+@app.post("/send-survey-responses-by-assignment/")
+def create_survey_data(assignment_id: int = Body(...), project_id: str = Body(...), selection: dict = Body(...)) -> None:
+
+    import logging
+
+    write_survey_to_db(project_id, assignment_id, selection, config['DATABASE_URL'])
+
+    return JSONResponse(
+        {
+            "assignment_id": assignment_id,
+            "project_id": project_id
+        }
+    )
 
 # DB - READ #
 
