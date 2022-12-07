@@ -12,6 +12,8 @@ const Survey = ({ handleSurveyComplete }) => {
     const [statusCode, setStatusCode] = React.useState(2);
     const [selection, setSelection] = React.useState();
     const [indicateMissing, setIndicateMissing] = React.useState(false);
+    const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
+
 
     const ITEMS_PER_PAGE = 6;
 
@@ -25,7 +27,7 @@ const Survey = ({ handleSurveyComplete }) => {
         ) {
           handleSurveyComplete(selection); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
         } else {
-          alert("Not all questions answered!"); // TODO popup overlay and indicate which items are still missing
+          setShowOverlay({ display: "block" })
           setIndicateMissing(true);
         }
       } else if (pageNo + move < 0) {
@@ -92,8 +94,37 @@ const Survey = ({ handleSurveyComplete }) => {
     return (
       <div>
         <div className={"container"}>
-          <div className={"welcome"}>
-            <h1>{survey && survey[0]["name"]}</h1>
+          <div
+            className={"overlay overlay-instructions"}
+            style={showOverlay}
+            onClick={() => setShowOverlay({ display: "none" })}
+            onContextMenu={() => setZoom({ display: "none" })}
+          >
+            <div className={"container"}>
+              <div className={"welcome"}>
+                <div className={"instructions"}>
+                  <div>
+                    Please answer all questions. The missing answers are now
+                    marked in red.
+                  </div>
+                  <button
+                    type="text"
+                    className={"proceed-button proceed-button-info"}
+                    onClick={() => setShowOverlay({ display: "none" })}
+                    onContextMenu={() => setShowOverlay({ display: "none" })}
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {survey && <div className={"welcome"}>
+            <h1>{survey[0]["name"]}</h1>
+            <ProgressBarContainerSurvey
+              nItems={Object.keys(survey[0]["items"]).length}
+              nSelected={Object.keys(selection).length}
+            />
             <div className={"container-questionnaire"}>
               {survey &&
                 Object.keys(survey[0]["items"]).map((key, idx) => (
@@ -117,7 +148,6 @@ const Survey = ({ handleSurveyComplete }) => {
                     />
                   </div>
                 ))}
-              {1 + pageNo}/{pages}
             </div>
             <div className={"bottom-tile"} style={{ justifyContent: "center" }}>
               <div className={"submit-button-tile"}>
@@ -132,7 +162,7 @@ const Survey = ({ handleSurveyComplete }) => {
                 <button onClick={() => handlePagination(1)}>Next</button>
               </div>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
     );

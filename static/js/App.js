@@ -13,12 +13,12 @@ var App = function App() {
       confirmed = _React$useState4[0],
       setConfirmed = _React$useState4[1];
 
-  var _React$useState5 = React.useState(false),
+  var _React$useState5 = React.useState(),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
       surveyComplete = _React$useState6[0],
       setSurveyComplete = _React$useState6[1];
 
-  var _React$useState7 = React.useState(false),
+  var _React$useState7 = React.useState(),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
       consent = _React$useState8[0],
       setConsent = _React$useState8[1];
@@ -213,7 +213,7 @@ var App = function App() {
         )
       )
     )
-  ) : React.createElement(Survey, { handleSurveyComplete: handleSurveyComplete }) : React.createElement(
+  ) : surveyComplete == false && React.createElement(Survey, { handleSurveyComplete: handleSurveyComplete }) : consent == false && React.createElement(
     "div",
     { className: "container" },
     React.createElement(

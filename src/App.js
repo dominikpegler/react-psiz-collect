@@ -4,8 +4,8 @@ const SERVER_URL =
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
   const [confirmed, setConfirmed] = React.useState(false);
-  const [surveyComplete, setSurveyComplete] = React.useState(false);
-  const [consent, setConsent] = React.useState(false);
+  const [surveyComplete, setSurveyComplete] = React.useState();
+  const [consent, setConsent] = React.useState();
   const [backendConnected, setBackendConnected] = React.useState(false);
   const protocolId = "internal";
   const [beginHit, _] = React.useState(new Date());
@@ -188,10 +188,10 @@ const App = () => {
             </div>
           )
         ) : (
-          <Survey handleSurveyComplete={handleSurveyComplete} />
+          surveyComplete==false && <Survey handleSurveyComplete={handleSurveyComplete} />
         )
       ) : (
-        <div className={"container"}>
+        consent==false && <div className={"container"}>
           <div className={"consent"}>
             <Consent />
             <button

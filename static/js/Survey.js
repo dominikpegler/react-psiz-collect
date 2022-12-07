@@ -53,6 +53,11 @@ var Survey = function Survey(_ref) {
         indicateMissing = _React$useState18[0],
         setIndicateMissing = _React$useState18[1];
 
+    var _React$useState19 = React.useState({ display: "none" }),
+        _React$useState20 = _slicedToArray(_React$useState19, 2),
+        showOverlay = _React$useState20[0],
+        setShowOverlay = _React$useState20[1];
+
     var ITEMS_PER_PAGE = 6;
 
     var handlePagination = function handlePagination(move) {
@@ -62,7 +67,7 @@ var Survey = function Survey(_ref) {
         if (Object.keys(survey[0]["items"]).length == Object.keys(selection).length) {
           handleSurveyComplete(selection); // TODO, call uploadSurveyData from here and put setSurveyFinished into this function
         } else {
-          alert("Not all questions answered!"); // TODO popup overlay and indicate which items are still missing
+          setShowOverlay({ display: "block" });
           setIndicateMissing(true);
         }
       } else if (pageNo + move < 0) {
@@ -126,12 +131,60 @@ var Survey = function Survey(_ref) {
         { className: "container" },
         React.createElement(
           "div",
+          {
+            className: "overlay overlay-instructions",
+            style: showOverlay,
+            onClick: function onClick() {
+              return setShowOverlay({ display: "none" });
+            },
+            onContextMenu: function onContextMenu() {
+              return setZoom({ display: "none" });
+            }
+          },
+          React.createElement(
+            "div",
+            { className: "container" },
+            React.createElement(
+              "div",
+              { className: "welcome" },
+              React.createElement(
+                "div",
+                { className: "instructions" },
+                React.createElement(
+                  "div",
+                  null,
+                  "Please answer all questions. The missing answers are now marked in red."
+                ),
+                React.createElement(
+                  "button",
+                  {
+                    type: "text",
+                    className: "proceed-button proceed-button-info",
+                    onClick: function onClick() {
+                      return setShowOverlay({ display: "none" });
+                    },
+                    onContextMenu: function onContextMenu() {
+                      return setShowOverlay({ display: "none" });
+                    }
+                  },
+                  "OK"
+                )
+              )
+            )
+          )
+        ),
+        survey && React.createElement(
+          "div",
           { className: "welcome" },
           React.createElement(
             "h1",
             null,
-            survey && survey[0]["name"]
+            survey[0]["name"]
           ),
+          React.createElement(ProgressBarContainerSurvey, {
+            nItems: Object.keys(survey[0]["items"]).length,
+            nSelected: Object.keys(selection).length
+          }),
           React.createElement(
             "div",
             { className: "container-questionnaire" },
@@ -156,10 +209,7 @@ var Survey = function Survey(_ref) {
                   indicateMissing: indicateMissing
                 })
               );
-            }),
-            1 + pageNo,
-            "/",
-            pages
+            })
           ),
           React.createElement(
             "div",
@@ -205,10 +255,10 @@ var ResponseBox = function ResponseBox(_ref2) {
 
   var id = s["prefix"].concat("-", String(k));
 
-  var _React$useState19 = React.useState(""),
-      _React$useState20 = _slicedToArray(_React$useState19, 2),
-      value = _React$useState20[0],
-      setValue = _React$useState20[1];
+  var _React$useState21 = React.useState(""),
+      _React$useState22 = _slicedToArray(_React$useState21, 2),
+      value = _React$useState22[0],
+      setValue = _React$useState22[1];
 
   var handleChange = function handleChange(event) {
     setValue(event.target.value);
