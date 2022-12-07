@@ -76,12 +76,12 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
                         idx >= pageNo * ITEMS_PER_PAGE &&
                         idx < pageNo * ITEMS_PER_PAGE + ITEMS_PER_PAGE
                           ? {
-                              display: "block",
+                              display: "flex", flexDirection:"row", justifyContent: "space-between", alignItems:"flex-start", marginBottom: "2rem"
                             }
                           : { display: "none" }
                       }
                     >
-                      <span>{survey[0]["items"][key]}</span>
+                      <span style={{marginRight: "2rem"}}>{survey[0]["items"][key]}</span>
                       <ResponseBox
                         s={survey[0]}
                         k={key}
@@ -96,7 +96,7 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
                 className={"bottom-tile"}
                 style={{ justifyContent: "center" }}
               >
-                <div className={"submit-button-tile"}>
+                <div className={"nav-button-tile"}>
                   <button
                     disabled={pageNo == 0}
                     onClick={() => handlePagination(-1)}
@@ -104,7 +104,7 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
                     Back
                   </button>
                 </div>
-                <div className={"submit-button-tile"}>
+                <div className={"nav-button-tile"}>
                   <button onClick={() => handlePagination(1)}>Next</button>
                 </div>
               </div>
@@ -136,8 +136,6 @@ const ResponseBox = ({ s, k, setSelection, selection, indicateMissing }) => {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "flex-end",
-        marginTop: "1rem",
-        marginBottom: "2rem",
       }}
     >
       {s.scale &&
@@ -148,10 +146,18 @@ const ResponseBox = ({ s, k, setSelection, selection, indicateMissing }) => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  width: "4.7rem",
                 }}
               >
-                <label for={id + "-" + String(likert.value)}>
+                <label
+                  for={id + "-" + String(likert.value)}
+                  style={{ textAlign: "center" }}
+                >
                   {likert.label}
+                  <br />
+                  {likert.value}
                 </label>
                 <input
                   className={"radio"}

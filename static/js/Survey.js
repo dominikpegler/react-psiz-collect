@@ -120,12 +120,12 @@ var Survey = function Survey(_ref) {
                 "div",
                 {
                   style: idx >= pageNo * ITEMS_PER_PAGE && idx < pageNo * ITEMS_PER_PAGE + ITEMS_PER_PAGE ? {
-                    display: "block"
+                    display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem"
                   } : { display: "none" }
                 },
                 React.createElement(
                   "span",
-                  null,
+                  { style: { marginRight: "2rem" } },
                   survey[0]["items"][key]
                 ),
                 React.createElement(ResponseBox, {
@@ -146,7 +146,7 @@ var Survey = function Survey(_ref) {
             },
             React.createElement(
               "div",
-              { className: "submit-button-tile" },
+              { className: "nav-button-tile" },
               React.createElement(
                 "button",
                 {
@@ -160,7 +160,7 @@ var Survey = function Survey(_ref) {
             ),
             React.createElement(
               "div",
-              { className: "submit-button-tile" },
+              { className: "nav-button-tile" },
               React.createElement(
                 "button",
                 { onClick: function onClick() {
@@ -205,9 +205,7 @@ var ResponseBox = function ResponseBox(_ref2) {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "flex-end",
-        marginTop: "1rem",
-        marginBottom: "2rem"
+        alignItems: "flex-end"
       }
     },
     s.scale && s.scale.map(function (likert) {
@@ -216,13 +214,21 @@ var ResponseBox = function ResponseBox(_ref2) {
         {
           style: {
             display: "flex",
-            flexDirection: "column"
+            flexDirection: "column",
+            justifyContent: "space-around",
+            alignItems: "center",
+            width: "4.7rem"
           }
         },
         React.createElement(
           "label",
-          { "for": id + "-" + String(likert.value) },
-          likert.label
+          {
+            "for": id + "-" + String(likert.value),
+            style: { textAlign: "center" }
+          },
+          likert.label,
+          React.createElement("br", null),
+          likert.value
         ),
         React.createElement("input", {
           className: "radio",
