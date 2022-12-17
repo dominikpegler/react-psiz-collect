@@ -1,21 +1,44 @@
 {
-    "name": "Example Questionnaire",
+    "name": "Example Survey",
     "prefix": "example",
     "scale": [
-        1,
-        2,
-        3,
-        4,
-        5
+        {
+            "value": 1,
+            "label": "not at all"
+        },
+        {
+            "value": 2,
+            "label": ""
+        },
+        {
+            "value": 3,
+            "label": ""
+        },
+        {
+            "value": 4,
+            "label": ""
+        },
+        {
+            "value": 5,
+            "label": ""
+        },
+        {
+            "value": 6,
+            "label": ""
+        },
+        {
+            "value": 7,
+            "label": "very much"
+        }
     ],
-    "labels": [
-        "not at all",
-        "",
-        "",
-        "",
-        "very much"
-    ],
-    "items": [
-        "Please rate your level of agreement."
-    ]
+    "items": {
+        "1":"I am an Item from a different survey.",
+        "2":"I tell the truth.",
+        "3":"My parents say I was a calm child.",
+        "4":"I now think a lot about shark.",
+        "5":"If I saw a shark now, I would feel very panicky.",
+        "6":"Sharks are one of my worst fears.",
+        "7":"I feel very nervous if I saw a shark now.",
+        "8":"If I saw a shark now I would probably break out in a sweat and my heart would beat faster."
+    }
 }

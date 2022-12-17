@@ -1,13 +1,19 @@
 "use strict";
 
-const Experiment = ({ workerId }) => {
+const Experiment = ({
+  assignmentId,
+  statusCode,
+  setStatusCode,
+  consent,
+  surveyComplete,
+  trials,
+  setTrials
+}) => {
   {
-    const [trials, setTrials] = React.useState(0);
     const [imgsLoaded, setImgsLoaded] = React.useState(false);
     const [selection, setSelection] = React.useState([]);
     const [selectionTimes, setSelectionTimes] = React.useState([]);
     const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
-    const [assignmentId, setAssignmentId] = React.useState();
 
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
@@ -19,41 +25,10 @@ const Experiment = ({ workerId }) => {
       randomIntArray(0, imgPaths.length - 1, 9)
     );
     const nTrials = 40;
-    const protocolId = "internal";
-    const [beginHit, _] = React.useState(new Date());
     const [startMs, setStartMs] = React.useState(new Date());
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
-    const [statusCode, setStatusCode] = React.useState(2);
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
     const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
-
-    const handleAssigned = (assignment) => {
-      fetch(SERVER_URL + "/create-assignment/", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(assignment),
-      })
-        .then((response) => {
-          if (response.status !== 200) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .then((res) => {
-          console.log("res", res);
-          setAssignmentId(res.assignment_id);
-          setTrials(res.trials_completed);
-          console.log(
-            `Success: Worker ${workerId} started assignment ${res.assignment_id}.`
-          );
-        })
-        .catch((err) => {
-          console.log("Error:", err.toString());
-        });
-    };
 
     const handleSubmit = () => {
       if (selection.length == 2) {
@@ -136,7 +111,10 @@ const Experiment = ({ workerId }) => {
           assignment_id: assignmentId,
           end_hit: endHit,
           status_code: newStatusCode,
+          consent: consent,
+          survey_complete: surveyComplete,
         };
+
         fetch(SERVER_URL + "/update-assignment/", {
           method: "POST",
           headers: {
@@ -165,16 +143,14 @@ const Experiment = ({ workerId }) => {
       }
     };
 
-
     const handleZoom = (e, imgPath, show) => {
       e.preventDefault();
       if (show === true) {
-      setZoom({ display: "block", imgPath:imgPath })}
-      else {
+        setZoom({ display: "block", imgPath: imgPath });
+      } else {
         setZoom({ display: "none", imgPath: imgPath });
-      };
+      }
     };
-
 
     const handleSelect = (id) => {
       const time = new Date() - startMs;
@@ -195,27 +171,6 @@ const Experiment = ({ workerId }) => {
     const handleRedirect = () => {
       window.location.href = redirectURL;
     };
-
-    // runs once at the beginning of the assignment
-    React.useEffect(() => {
-      if (trials == 0) {
-        const assignment = {
-          assignment_id: assignmentId,
-          project_id: projectId,
-          protocol_id: protocolId,
-          worker_id: workerId,
-          amt_assignment_id: "", // unclear
-          amt_hit_id: "", // unclear
-          browser: navigator.userAgent, // extract from string
-          platform: navigator.userAgent, // extract from string
-          begin_hit: beginHit,
-          end_hit: beginHit, // will be updated later after each trial
-          status_code: 0, // will be updated after trials
-          ver: 2,
-        };
-        handleAssigned(assignment);
-      }
-    }, [trials]);
 
     // runs once before each trial to preload the images
     React.useEffect(() => {
@@ -238,7 +193,7 @@ const Experiment = ({ workerId }) => {
 
     // rendering
     return (
-      <div>
+      <div className={"container"}>
         {trials < nTrials ? (
           <div className={"container"}>
             <div
@@ -270,17 +225,13 @@ const Experiment = ({ workerId }) => {
               onClick={(e) => handleZoom(e, "", false)}
               onContextMenu={(e) => handleZoom(e, "", false)}
             >
-              <div className={"container"}>
-                <div className={"welcome"}>
-                  <div className={"instructions"}>
+                  <div className={"container zoomed-img"}>
                     <img
                       src={zoom["imgPath"]}
                       alt="zoomed-image"
                       onClick={(e) => handleZoom(e, "", false)}
                       onContextMenu={(e) => handleZoom(e, "", false)}
                     />
-                  </div>
-                </div>
               </div>
             </div>
             <ProgressBarContainer nTrials={nTrials} trials={trials} />

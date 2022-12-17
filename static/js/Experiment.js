@@ -3,38 +3,34 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var Experiment = function Experiment(_ref) {
-  var workerId = _ref.workerId;
+  var assignmentId = _ref.assignmentId,
+      statusCode = _ref.statusCode,
+      setStatusCode = _ref.setStatusCode,
+      consent = _ref.consent,
+      surveyComplete = _ref.surveyComplete,
+      trials = _ref.trials,
+      setTrials = _ref.setTrials;
 
   {
-    var _React$useState = React.useState(0),
+    var _React$useState = React.useState(false),
         _React$useState2 = _slicedToArray(_React$useState, 2),
-        trials = _React$useState2[0],
-        setTrials = _React$useState2[1];
+        imgsLoaded = _React$useState2[0],
+        setImgsLoaded = _React$useState2[1];
 
-    var _React$useState3 = React.useState(false),
+    var _React$useState3 = React.useState([]),
         _React$useState4 = _slicedToArray(_React$useState3, 2),
-        imgsLoaded = _React$useState4[0],
-        setImgsLoaded = _React$useState4[1];
+        selection = _React$useState4[0],
+        setSelection = _React$useState4[1];
 
     var _React$useState5 = React.useState([]),
         _React$useState6 = _slicedToArray(_React$useState5, 2),
-        selection = _React$useState6[0],
-        setSelection = _React$useState6[1];
+        selectionTimes = _React$useState6[0],
+        setSelectionTimes = _React$useState6[1];
 
-    var _React$useState7 = React.useState([]),
+    var _React$useState7 = React.useState(0),
         _React$useState8 = _slicedToArray(_React$useState7, 2),
-        selectionTimes = _React$useState8[0],
-        setSelectionTimes = _React$useState8[1];
-
-    var _React$useState9 = React.useState(0),
-        _React$useState10 = _slicedToArray(_React$useState9, 2),
-        numberOfUpdates = _React$useState10[0],
-        setNumberOfUpdates = _React$useState10[1];
-
-    var _React$useState11 = React.useState(),
-        _React$useState12 = _slicedToArray(_React$useState11, 2),
-        assignmentId = _React$useState12[0],
-        setAssignmentId = _React$useState12[1];
+        numberOfUpdates = _React$useState8[0],
+        setNumberOfUpdates = _React$useState8[1];
 
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
@@ -43,63 +39,29 @@ var Experiment = function Experiment(_ref) {
 
     // TODO fetch the following in the future fetch from API
 
-    var _React$useState13 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
-        _React$useState14 = _slicedToArray(_React$useState13, 2),
-        stimulusSet = _React$useState14[0],
-        setStimulusSet = _React$useState14[1];
+    var _React$useState9 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
+        _React$useState10 = _slicedToArray(_React$useState9, 2),
+        stimulusSet = _React$useState10[0],
+        setStimulusSet = _React$useState10[1];
 
     var nTrials = 40;
-    var protocolId = "internal";
 
-    var _React$useState15 = React.useState(new Date()),
-        _React$useState16 = _slicedToArray(_React$useState15, 2),
-        beginHit = _React$useState16[0],
-        _ = _React$useState16[1];
-
-    var _React$useState17 = React.useState(new Date()),
-        _React$useState18 = _slicedToArray(_React$useState17, 2),
-        startMs = _React$useState18[0],
-        setStartMs = _React$useState18[1];
+    var _React$useState11 = React.useState(new Date()),
+        _React$useState12 = _slicedToArray(_React$useState11, 2),
+        startMs = _React$useState12[0],
+        setStartMs = _React$useState12[1];
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
 
 
-    var _React$useState19 = React.useState(2),
-        _React$useState20 = _slicedToArray(_React$useState19, 2),
-        statusCode = _React$useState20[0],
-        setStatusCode = _React$useState20[1];
+    var _React$useState13 = React.useState({ display: "none" }),
+        _React$useState14 = _slicedToArray(_React$useState13, 2),
+        showOverlay = _React$useState14[0],
+        setShowOverlay = _React$useState14[1];
 
-    var _React$useState21 = React.useState({ display: "none" }),
-        _React$useState22 = _slicedToArray(_React$useState21, 2),
-        showOverlay = _React$useState22[0],
-        setShowOverlay = _React$useState22[1];
-
-    var _React$useState23 = React.useState({ display: "none", imgPath: "" }),
-        _React$useState24 = _slicedToArray(_React$useState23, 2),
-        zoom = _React$useState24[0],
-        setZoom = _React$useState24[1];
-
-    var handleAssigned = function handleAssigned(assignment) {
-      fetch(SERVER_URL + "/create-assignment/", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(assignment)
-      }).then(function (response) {
-        if (response.status !== 200) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      }).then(function (res) {
-        console.log("res", res);
-        setAssignmentId(res.assignment_id);
-        setTrials(res.trials_completed);
-        console.log("Success: Worker " + workerId + " started assignment " + res.assignment_id + ".");
-      }).catch(function (err) {
-        console.log("Error:", err.toString());
-      });
-    };
+    var _React$useState15 = React.useState({ display: "none", imgPath: "" }),
+        _React$useState16 = _slicedToArray(_React$useState15, 2),
+        zoom = _React$useState16[0],
+        setZoom = _React$useState16[1];
 
     var _handleSubmit = function _handleSubmit() {
       if (selection.length == 2) {
@@ -182,8 +144,11 @@ var Experiment = function Experiment(_ref) {
         var assignmentUpdate = {
           assignment_id: assignmentId,
           end_hit: endHit,
-          status_code: newStatusCode
+          status_code: newStatusCode,
+          consent: consent,
+          survey_complete: surveyComplete
         };
+
         fetch(SERVER_URL + "/update-assignment/", {
           method: "POST",
           headers: {
@@ -215,7 +180,7 @@ var Experiment = function Experiment(_ref) {
         setZoom({ display: "block", imgPath: imgPath });
       } else {
         setZoom({ display: "none", imgPath: imgPath });
-      };
+      }
     };
 
     var handleSelect = function handleSelect(id) {
@@ -237,27 +202,6 @@ var Experiment = function Experiment(_ref) {
     var handleRedirect = function handleRedirect() {
       window.location.href = redirectURL;
     };
-
-    // runs once at the beginning of the assignment
-    React.useEffect(function () {
-      if (trials == 0) {
-        var assignment = {
-          assignment_id: assignmentId,
-          project_id: projectId,
-          protocol_id: protocolId,
-          worker_id: workerId,
-          amt_assignment_id: "", // unclear
-          amt_hit_id: "", // unclear
-          browser: navigator.userAgent, // extract from string
-          platform: navigator.userAgent, // extract from string
-          begin_hit: beginHit,
-          end_hit: beginHit, // will be updated later after each trial
-          status_code: 0, // will be updated after trials
-          ver: 2
-        };
-        handleAssigned(assignment);
-      }
-    }, [trials]);
 
     // runs once before each trial to preload the images
     React.useEffect(function () {
@@ -288,7 +232,7 @@ var Experiment = function Experiment(_ref) {
     // rendering
     return React.createElement(
       "div",
-      null,
+      { className: "container" },
       trials < nTrials ? React.createElement(
         "div",
         { className: "container" },
@@ -347,25 +291,17 @@ var Experiment = function Experiment(_ref) {
           },
           React.createElement(
             "div",
-            { className: "container" },
-            React.createElement(
-              "div",
-              { className: "welcome" },
-              React.createElement(
-                "div",
-                { className: "instructions" },
-                React.createElement("img", {
-                  src: zoom["imgPath"],
-                  alt: "zoomed-image",
-                  onClick: function onClick(e) {
-                    return handleZoom(e, "", false);
-                  },
-                  onContextMenu: function onContextMenu(e) {
-                    return handleZoom(e, "", false);
-                  }
-                })
-              )
-            )
+            { className: "container zoomed-img" },
+            React.createElement("img", {
+              src: zoom["imgPath"],
+              alt: "zoomed-image",
+              onClick: function onClick(e) {
+                return handleZoom(e, "", false);
+              },
+              onContextMenu: function onContextMenu(e) {
+                return handleZoom(e, "", false);
+              }
+            })
           )
         ),
         React.createElement(ProgressBarContainer, { nTrials: nTrials, trials: trials }),

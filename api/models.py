@@ -19,6 +19,8 @@ class Assignment(Base):
     end_hit = Column(DateTime, unique=False, index=False)
     status_code = Column(Integer, unique=False, index=False)
     ver = Column(Integer, unique=False, index=False)
+    consent = Column(Boolean, unique=False, index=False)
+    survey_complete = Column(Boolean, unique=False, index=False)
 
     trial = relationship("Trial", back_populates="assignment")
 

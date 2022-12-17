@@ -13,15 +13,57 @@ var App = function App() {
       confirmed = _React$useState4[0],
       setConfirmed = _React$useState4[1];
 
-  var _React$useState5 = React.useState(false),
+  var _React$useState5 = React.useState(),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      consent = _React$useState6[0],
-      setConsent = _React$useState6[1];
+      surveyComplete = _React$useState6[0],
+      setSurveyComplete = _React$useState6[1];
 
-  var _React$useState7 = React.useState(false),
+  var _React$useState7 = React.useState(),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
-      backendConnected = _React$useState8[0],
-      setBackendConnected = _React$useState8[1];
+      consent = _React$useState8[0],
+      setConsent = _React$useState8[1];
+
+  var _React$useState9 = React.useState(false),
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
+      backendConnected = _React$useState10[0],
+      setBackendConnected = _React$useState10[1];
+
+  var protocolId = "internal";
+
+  var _React$useState11 = React.useState(new Date()),
+      _React$useState12 = _slicedToArray(_React$useState11, 2),
+      beginHit = _React$useState12[0],
+      _ = _React$useState12[1];
+
+  var _React$useState13 = React.useState(),
+      _React$useState14 = _slicedToArray(_React$useState13, 2),
+      assignmentId = _React$useState14[0],
+      setAssignmentId = _React$useState14[1];
+
+  var _React$useState15 = React.useState(2),
+      _React$useState16 = _slicedToArray(_React$useState15, 2),
+      statusCode = _React$useState16[0],
+      setStatusCode = _React$useState16[1];
+
+  var _React$useState17 = React.useState(0),
+      _React$useState18 = _slicedToArray(_React$useState17, 2),
+      trials = _React$useState18[0],
+      setTrials = _React$useState18[1];
+
+  var _React$useState19 = React.useState(),
+      _React$useState20 = _slicedToArray(_React$useState19, 2),
+      survey = _React$useState20[0],
+      setSurvey = _React$useState20[1];
+
+  var _React$useState21 = React.useState(),
+      _React$useState22 = _slicedToArray(_React$useState21, 2),
+      pages = _React$useState22[0],
+      setPages = _React$useState22[1];
+
+  var _React$useState23 = React.useState(),
+      _React$useState24 = _slicedToArray(_React$useState23, 2),
+      selection = _React$useState24[0],
+      setSelection = _React$useState24[1];
 
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
@@ -39,7 +81,32 @@ var App = function App() {
       setBackendConnected(true);
     }).catch(function (err) {
       console.log("Connection with backend failed.");
-      console.log("Error:", err.toString());
+      console.log("ERROR-Response from API:", err.toString());
+    });
+  };
+
+  var handleAssigned = function handleAssigned(assignment) {
+    fetch(SERVER_URL + "/create-assignment/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(assignment)
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      console.log("res", res);
+      setAssignmentId(res.assignment_id);
+      setTrials(res.trials_completed);
+      setConsent(res.consent);
+      setSurveyComplete(res.survey_complete);
+      console.log("Success: Worker " + workerId + " started assignment " + res.assignment_id + ".");
+    }).catch(function (err) {
+      console.log("ERROR-Response from API:", err.toString());
     });
   };
 
@@ -49,9 +116,103 @@ var App = function App() {
 
   var handleConsent = function handleConsent() {
     setConsent(true);
+    var assignmentUpdate = {
+      assignment_id: assignmentId,
+      end_hit: new Date(),
+      status_code: statusCode,
+      consent: true,
+      survey_complete: surveyComplete
+    };
+    updateDatabase(assignmentUpdate);
+  };
+
+  var handleSurveyComplete = function handleSurveyComplete(selection) {
+    setSurveyComplete(true);
+    console.log("Survey completed. Selection\n", selection);
+    var assignmentUpdate = {
+      assignment_id: assignmentId,
+      end_hit: new Date(),
+      status_code: statusCode,
+      consent: consent,
+      survey_complete: true
+    };
+    updateDatabase(assignmentUpdate);
+    uploadSurveyData(assignmentId, selection);
+  };
+
+  var downloadSurveyData = function downloadSurveyData(ITEMS_PER_PAGE) {
+    fetch(SERVER_URL + "/get-surveys-by-project-id/" + projectId, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      setSurvey(res);
+      setPages(Math.ceil(Object.keys(res[0]["items"]).length / ITEMS_PER_PAGE));
+      setSelection({});
+    }).catch(function (err) {
+      console.log("Error:", err.toString());
+    });
+  };
+
+  var uploadSurveyData = function uploadSurveyData(assignmentId, selection) {
+    console.log("trying to upload this survey data -->", JSON.stringify({
+      assignment_id: assignmentId,
+      project_id: projectId,
+      selection: selection
+    }));
+    fetch(SERVER_URL + "/send-survey-responses-by-assignment/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ "assignment_id": assignmentId, "project_id": projectId, "selection": selection })
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      console.log("Upload of survey data for assignment " + res.assignment_id + " and project " + res.project_id + " successful.");
+      console.log("This is the whole menu -->", res.survey_data);
+    }).catch(function (err) {
+      console.log("Error:", err.toString());
+    });
+  };
+
+  var updateDatabase = function updateDatabase(assignmentUpdate) {
+    fetch(SERVER_URL + "/update-assignment/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(assignmentUpdate)
+    }).then(function (response) {
+      if (response.status !== 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    }).then(function (res) {
+      console.log("Assignment " + res.assignment_id + " update successful.");
+    }).catch(function (err) {
+      console.log("ERROR-Response from API:", err.toString());
+    });
   };
 
   var inputRef = React.useRef();
+
+  React.useLayoutEffect(function () {
+    document.documentElement.requestFullscreen();
+  });
+
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
   React.useEffect(function () {
@@ -64,13 +225,44 @@ var App = function App() {
     testConnection();
   }, [inputRef, backendConnected]);
 
-  return backendConnected ? workerId ? confirmed ? React.createElement(Experiment, { workerId: workerId }) : React.createElement(
+  // runs only if workerId was changed
+  React.useEffect(function () {
+    if (workerId !== undefined) {
+      var assignment = {
+        assignment_id: assignmentId,
+        project_id: projectId,
+        protocol_id: protocolId,
+        worker_id: workerId,
+        amt_assignment_id: "", // unclear
+        amt_hit_id: "", // unclear
+        browser: navigator.userAgent, // extract from string
+        platform: navigator.userAgent, // extract from string
+        begin_hit: beginHit,
+        end_hit: beginHit, // will be updated later after each trial
+        status_code: 0, // will be updated after trials
+        ver: 2,
+        consent: 0,
+        survey_complete: 0
+      };
+      handleAssigned(assignment);
+    }
+  }, [workerId]);
+
+  return backendConnected ? workerId ? consent ? surveyComplete ? confirmed ? React.createElement(Experiment, {
+    assignmentId: assignmentId,
+    statusCode: statusCode,
+    setStatusCode: setStatusCode,
+    consent: consent,
+    surveyComplete: surveyComplete,
+    trials: trials,
+    setTrials: setTrials
+  }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(
       "div",
       { className: "welcome" },
-      consent ? React.createElement(
+      React.createElement(
         "div",
         { className: "instructions" },
         React.createElement(Instructions, null),
@@ -86,21 +278,32 @@ var App = function App() {
           },
           "Start"
         )
-      ) : React.createElement(
-        "div",
-        { className: "consent" },
-        React.createElement(Consent, null),
-        React.createElement(
-          "button",
-          {
-            type: "text",
-            className: "proceed-button",
-            onClick: function onClick() {
-              return handleConsent();
-            }
-          },
-          "I agree to participate in the study and continue"
-        )
+      )
+    )
+  ) : surveyComplete == false && React.createElement(Survey, {
+    survey: survey,
+    handleSurveyComplete: handleSurveyComplete,
+    downloadSurveyData: downloadSurveyData,
+    pages: pages,
+    selection: selection,
+    setSelection: setSelection
+  }) : consent == false && React.createElement(
+    "div",
+    { className: "container" },
+    React.createElement(
+      "div",
+      { className: "consent" },
+      React.createElement(Consent, null),
+      React.createElement(
+        "button",
+        {
+          type: "text",
+          className: "proceed-button",
+          onClick: function onClick() {
+            return handleConsent();
+          }
+        },
+        "I agree to participate in the study and continue"
       )
     )
   ) : React.createElement(

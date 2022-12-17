@@ -28,3 +28,25 @@ var ProgressBarContainer = function ProgressBarContainer(_ref) {
     )
   );
 };
+
+var ProgressBarContainerSurvey = function ProgressBarContainerSurvey(_ref2) {
+  var nItems = _ref2.nItems,
+      nSelected = _ref2.nSelected;
+
+  var progress = 100 * nSelected / nItems;
+
+  return React.createElement(
+    "div",
+    { className: "progress-bar-container" },
+    React.createElement(
+      "div",
+      { className: "progress-bar-bg" },
+      React.createElement("div", {
+        className: "progress-bar-fg",
+        style: {
+          width: progress + "%"
+        }
+      })
+    )
+  );
+};
