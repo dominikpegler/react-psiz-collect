@@ -70,29 +70,25 @@ var Survey = function Survey(_ref) {
             { className: "container" },
             React.createElement(
               "div",
-              { className: "welcome" },
+              { className: "please-answer" },
               React.createElement(
-                "div",
-                { className: "instructions" },
-                React.createElement(
-                  "div",
-                  null,
-                  "Please answer all questions. The missing answers are now marked in red."
-                ),
-                React.createElement(
-                  "button",
-                  {
-                    type: "text",
-                    className: "proceed-button proceed-button-info",
-                    onClick: function onClick() {
-                      return setShowOverlay({ display: "none" });
-                    },
-                    onContextMenu: function onContextMenu() {
-                      return setShowOverlay({ display: "none" });
-                    }
+                "p",
+                null,
+                "Please answer all questions. The missing answers are now marked in red."
+              ),
+              React.createElement(
+                "button",
+                {
+                  type: "text",
+                  className: "proceed-button proceed-button-info",
+                  onClick: function onClick() {
+                    return setShowOverlay({ display: "none" });
                   },
-                  "OK"
-                )
+                  onContextMenu: function onContextMenu() {
+                    return setShowOverlay({ display: "none" });
+                  }
+                },
+                "OK"
               )
             )
           )

@@ -306,6 +306,10 @@ button:hover:disabled {
   height: 100%;
 }
 
+.start {
+  height: 600px;
+}
+
 .login {
   display: flex;
   flex-direction: column;
@@ -331,9 +335,17 @@ button:hover:disabled {
   align-items: center;
   font-size: x-large;
   text-align: left;
-  margin-bottom: 15px;
-  margin-top: 15px;
   width: calc(100% - 20px);
+}
+
+.please-answer {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  font-size: x-large;
+  min-height:720px;
+  padding-top:50px; 
 }
 
 .container-questionnaire {

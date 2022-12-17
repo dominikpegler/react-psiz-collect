@@ -8,62 +8,67 @@ var App = function App() {
       workerId = _React$useState2[0],
       setWorkerId = _React$useState2[1];
 
-  var _React$useState3 = React.useState(false),
+  var _React$useState3 = React.useState(true),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      confirmed = _React$useState4[0],
-      setConfirmed = _React$useState4[1];
+      showWelcomeScreen = _React$useState4[0],
+      setShowWelcomeScreen = _React$useState4[1];
 
-  var _React$useState5 = React.useState(),
+  var _React$useState5 = React.useState(false),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      surveyComplete = _React$useState6[0],
-      setSurveyComplete = _React$useState6[1];
+      confirmed = _React$useState6[0],
+      setConfirmed = _React$useState6[1];
 
   var _React$useState7 = React.useState(),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
-      consent = _React$useState8[0],
-      setConsent = _React$useState8[1];
+      surveyComplete = _React$useState8[0],
+      setSurveyComplete = _React$useState8[1];
 
-  var _React$useState9 = React.useState(false),
+  var _React$useState9 = React.useState(),
       _React$useState10 = _slicedToArray(_React$useState9, 2),
-      backendConnected = _React$useState10[0],
-      setBackendConnected = _React$useState10[1];
+      consent = _React$useState10[0],
+      setConsent = _React$useState10[1];
+
+  var _React$useState11 = React.useState(false),
+      _React$useState12 = _slicedToArray(_React$useState11, 2),
+      backendConnected = _React$useState12[0],
+      setBackendConnected = _React$useState12[1];
 
   var protocolId = "internal";
 
-  var _React$useState11 = React.useState(new Date()),
-      _React$useState12 = _slicedToArray(_React$useState11, 2),
-      beginHit = _React$useState12[0],
-      _ = _React$useState12[1];
-
-  var _React$useState13 = React.useState(),
+  var _React$useState13 = React.useState(new Date()),
       _React$useState14 = _slicedToArray(_React$useState13, 2),
-      assignmentId = _React$useState14[0],
-      setAssignmentId = _React$useState14[1];
+      beginHit = _React$useState14[0],
+      _ = _React$useState14[1];
 
-  var _React$useState15 = React.useState(2),
+  var _React$useState15 = React.useState(),
       _React$useState16 = _slicedToArray(_React$useState15, 2),
-      statusCode = _React$useState16[0],
-      setStatusCode = _React$useState16[1];
+      assignmentId = _React$useState16[0],
+      setAssignmentId = _React$useState16[1];
 
-  var _React$useState17 = React.useState(0),
+  var _React$useState17 = React.useState(2),
       _React$useState18 = _slicedToArray(_React$useState17, 2),
-      trials = _React$useState18[0],
-      setTrials = _React$useState18[1];
+      statusCode = _React$useState18[0],
+      setStatusCode = _React$useState18[1];
 
-  var _React$useState19 = React.useState(),
+  var _React$useState19 = React.useState(0),
       _React$useState20 = _slicedToArray(_React$useState19, 2),
-      survey = _React$useState20[0],
-      setSurvey = _React$useState20[1];
+      trials = _React$useState20[0],
+      setTrials = _React$useState20[1];
 
   var _React$useState21 = React.useState(),
       _React$useState22 = _slicedToArray(_React$useState21, 2),
-      pages = _React$useState22[0],
-      setPages = _React$useState22[1];
+      survey = _React$useState22[0],
+      setSurvey = _React$useState22[1];
 
   var _React$useState23 = React.useState(),
       _React$useState24 = _slicedToArray(_React$useState23, 2),
-      selection = _React$useState24[0],
-      setSelection = _React$useState24[1];
+      pages = _React$useState24[0],
+      setPages = _React$useState24[1];
+
+  var _React$useState25 = React.useState(),
+      _React$useState26 = _slicedToArray(_React$useState25, 2),
+      selection = _React$useState26[0],
+      setSelection = _React$useState26[1];
 
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {
@@ -173,7 +178,11 @@ var App = function App() {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ "assignment_id": assignmentId, "project_id": projectId, "selection": selection })
+      body: JSON.stringify({
+        assignment_id: assignmentId,
+        project_id: projectId,
+        selection: selection
+      })
     }).then(function (response) {
       if (response.status !== 200) {
         throw new Error(response.statusText);
@@ -248,7 +257,7 @@ var App = function App() {
     }
   }, [workerId]);
 
-  return backendConnected ? workerId ? consent ? surveyComplete ? confirmed ? React.createElement(Experiment, {
+  return backendConnected ? workerId ? showWelcomeScreen ? React.createElement(Welcome, { setShowWelcomeScreen: setShowWelcomeScreen }) : consent ? surveyComplete ? confirmed ? React.createElement(Experiment, {
     assignmentId: assignmentId,
     statusCode: statusCode,
     setStatusCode: setStatusCode,
@@ -256,57 +265,14 @@ var App = function App() {
     surveyComplete: surveyComplete,
     trials: trials,
     setTrials: setTrials
-  }) : React.createElement(
-    "div",
-    { className: "container" },
-    React.createElement(
-      "div",
-      { className: "welcome" },
-      React.createElement(
-        "div",
-        { className: "instructions" },
-        React.createElement(Instructions, null),
-        React.createElement(ImageContainerMini, null),
-        React.createElement(
-          "button",
-          {
-            type: "text",
-            className: "proceed-button",
-            onClick: function onClick() {
-              return handleConfirmed();
-            }
-          },
-          "Start"
-        )
-      )
-    )
-  ) : surveyComplete == false && React.createElement(Survey, {
+  }) : React.createElement(Instructions, { handleConfirmed: handleConfirmed }) : surveyComplete == false && React.createElement(Survey, {
     survey: survey,
     handleSurveyComplete: handleSurveyComplete,
     downloadSurveyData: downloadSurveyData,
     pages: pages,
     selection: selection,
     setSelection: setSelection
-  }) : consent == false && React.createElement(
-    "div",
-    { className: "container" },
-    React.createElement(
-      "div",
-      { className: "consent" },
-      React.createElement(Consent, null),
-      React.createElement(
-        "button",
-        {
-          type: "text",
-          className: "proceed-button",
-          onClick: function onClick() {
-            return handleConsent();
-          }
-        },
-        "I agree to participate in the study and continue"
-      )
-    )
-  ) : React.createElement(
+  }) : consent == false && React.createElement(Consent, { handleConsent: handleConsent }) : React.createElement(
     "div",
     { className: "container" },
     React.createElement(

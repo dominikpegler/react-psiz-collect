@@ -3,6 +3,7 @@ const SERVER_URL =
 
 const App = () => {
   const [workerId, setWorkerId] = React.useState();
+  const [showWelcomeScreen, setShowWelcomeScreen] = React.useState(true);
   const [confirmed, setConfirmed] = React.useState(false);
   const [surveyComplete, setSurveyComplete] = React.useState();
   const [consent, setConsent] = React.useState();
@@ -15,7 +16,6 @@ const App = () => {
   const [survey, setSurvey] = React.useState();
   const [pages, setPages] = React.useState();
   const [selection, setSelection] = React.useState();
-
 
   const handleSubmit = (e) => {
     if (e.key == "Enter") {
@@ -135,17 +135,18 @@ const App = () => {
         selection: selection,
       })
     );
-    fetch(
-      SERVER_URL + "/send-survey-responses-by-assignment/",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({"assignment_id":assignmentId, "project_id": projectId, "selection": selection}),
-      }
-    )
+    fetch(SERVER_URL + "/send-survey-responses-by-assignment/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        assignment_id: assignmentId,
+        project_id: projectId,
+        selection: selection,
+      }),
+    })
       .then((response) => {
         if (response.status !== 200) {
           throw new Error(response.statusText);
@@ -156,7 +157,7 @@ const App = () => {
         console.log(
           `Upload of survey data for assignment ${res.assignment_id} and project ${res.project_id} successful.`
         );
-        console.log("This is the whole menu -->", res.survey_data)
+        console.log("This is the whole menu -->", res.survey_data);
       })
       .catch((err) => {
         console.log("Error:", err.toString());
@@ -188,11 +189,10 @@ const App = () => {
 
   const inputRef = React.useRef();
 
+  React.useLayoutEffect(() => {
+    document.documentElement.requestFullscreen();
+  });
 
-  React.useLayoutEffect (() => {
-  document.documentElement.requestFullscreen(); 
-  })
-  
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
   React.useEffect(() => {
@@ -230,6 +230,7 @@ const App = () => {
 
   return backendConnected ? (
     workerId ? (
+      showWelcomeScreen ? (<Welcome setShowWelcomeScreen={setShowWelcomeScreen}/>) : 
       consent ? (
         surveyComplete ? (
           confirmed ? (
@@ -243,21 +244,7 @@ const App = () => {
               setTrials={setTrials}
             />
           ) : (
-            <div className={"container"}>
-              <div className={"welcome"}>
-                <div className={"instructions"}>
-                  <Instructions />
-                  <ImageContainerMini />
-                  <button
-                    type="text"
-                    className={"proceed-button"}
-                    onClick={() => handleConfirmed()}
-                  >
-                    Start
-                  </button>
-                </div>
-              </div>
-            </div>
+            <Instructions handleConfirmed={handleConfirmed} />
           )
         ) : (
           surveyComplete == false && (
@@ -272,20 +259,7 @@ const App = () => {
           )
         )
       ) : (
-        consent == false && (
-          <div className={"container"}>
-            <div className={"consent"}>
-              <Consent />
-              <button
-                type="text"
-                className={"proceed-button"}
-                onClick={() => handleConsent()}
-              >
-                I agree to participate in the study and continue
-              </button>
-            </div>
-          </div>
-        )
+        consent == false && <Consent handleConsent={handleConsent} />
       )
     ) : (
       <div className={"container"}>

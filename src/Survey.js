@@ -42,21 +42,19 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
             onClick={() => setShowOverlay({ display: "none" })}
           >
             <div className={"container"}>
-              <div className={"welcome"}>
-                <div className={"instructions"}>
-                  <div>
-                    Please answer all questions. The missing answers are now
-                    marked in red.
-                  </div>
-                  <button
-                    type="text"
-                    className={"proceed-button proceed-button-info"}
-                    onClick={() => setShowOverlay({ display: "none" })}
-                    onContextMenu={() => setShowOverlay({ display: "none" })}
-                  >
-                    OK
-                  </button>
-                </div>
+              <div className={"please-answer"}>
+                <p>
+                  Please answer all questions. The missing answers are now
+                  marked in red.
+                </p>
+                <button
+                  type="text"
+                  className={"proceed-button proceed-button-info"}
+                  onClick={() => setShowOverlay({ display: "none" })}
+                  onContextMenu={() => setShowOverlay({ display: "none" })}
+                >
+                  OK
+                </button>
               </div>
             </div>
           </div>
@@ -82,7 +80,8 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
                               paddingBottom: ".75rem",
                               paddingTop: ".75rem",
                               borderBottom: "1px solid",
-                              borderImage: "linear-gradient(to right, lightgray, darkgray) 1"
+                              borderImage:
+                                "linear-gradient(to right, lightgray, darkgray) 1",
                             }
                           : { display: "none" }
                       }

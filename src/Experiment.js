@@ -205,8 +205,7 @@ const Experiment = ({
               <div className={"container"}>
                 <div className={"welcome"}>
                   <div className={"instructions"}>
-                    <Instructions />
-                    <ImageContainerMini />
+                    <InstructionsInner />
                     <button
                       type="text"
                       className={"proceed-button proceed-button-info"}

@@ -257,8 +257,7 @@ var Experiment = function Experiment(_ref) {
               React.createElement(
                 "div",
                 { className: "instructions" },
-                React.createElement(Instructions, null),
-                React.createElement(ImageContainerMini, null),
+                React.createElement(InstructionsInner, null),
                 React.createElement(
                   "button",
                   {

@@ -19,10 +19,10 @@ var Prompt = function Prompt() {
   );
 };
 
-var Instructions = function Instructions() {
+var InstructionsInner = function InstructionsInner() {
   return React.createElement(
     "div",
-    null,
+    { className: "instructions" },
     React.createElement(
       "h2",
       { style: { textAlign: "center" } },
@@ -121,6 +121,28 @@ var Instructions = function Instructions() {
       "h3",
       { style: { textAlign: "center" } },
       "Example:"
+    ),
+    React.createElement(ImageContainerMini, null)
+  );
+};
+
+var Instructions = function Instructions(_ref) {
+  var handleConfirmed = _ref.handleConfirmed;
+
+  return React.createElement(
+    "div",
+    { className: "container" },
+    React.createElement(InstructionsInner, null),
+    React.createElement(
+      "button",
+      {
+        type: "text",
+        className: "proceed-button",
+        onClick: function onClick() {
+          return handleConfirmed();
+        }
+      },
+      "Start"
     )
   );
 };
