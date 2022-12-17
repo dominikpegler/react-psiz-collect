@@ -232,7 +232,7 @@ var Experiment = function Experiment(_ref) {
     // rendering
     return React.createElement(
       "div",
-      null,
+      { className: "container" },
       trials < nTrials ? React.createElement(
         "div",
         { className: "container" },
@@ -291,25 +291,17 @@ var Experiment = function Experiment(_ref) {
           },
           React.createElement(
             "div",
-            { className: "container" },
-            React.createElement(
-              "div",
-              { className: "welcome" },
-              React.createElement(
-                "div",
-                { className: "instructions" },
-                React.createElement("img", {
-                  src: zoom["imgPath"],
-                  alt: "zoomed-image",
-                  onClick: function onClick(e) {
-                    return handleZoom(e, "", false);
-                  },
-                  onContextMenu: function onContextMenu(e) {
-                    return handleZoom(e, "", false);
-                  }
-                })
-              )
-            )
+            { className: "container zoomed-img" },
+            React.createElement("img", {
+              src: zoom["imgPath"],
+              alt: "zoomed-image",
+              onClick: function onClick(e) {
+                return handleZoom(e, "", false);
+              },
+              onContextMenu: function onContextMenu(e) {
+                return handleZoom(e, "", false);
+              }
+            })
           )
         ),
         React.createElement(ProgressBarContainer, { nTrials: nTrials, trials: trials }),

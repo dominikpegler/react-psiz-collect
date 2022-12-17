@@ -188,6 +188,11 @@ const App = () => {
 
   const inputRef = React.useRef();
 
+
+  React.useLayoutEffect (() => {
+  document.documentElement.requestFullscreen(); 
+  })
+  
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params
   React.useEffect(() => {

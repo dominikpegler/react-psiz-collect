@@ -63,9 +63,6 @@ var Survey = function Survey(_ref) {
             style: showOverlay,
             onClick: function onClick() {
               return setShowOverlay({ display: "none" });
-            },
-            onContextMenu: function onContextMenu() {
-              return setZoom({ display: "none" });
             }
           },
           React.createElement(

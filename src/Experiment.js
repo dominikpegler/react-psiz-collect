@@ -193,7 +193,7 @@ const Experiment = ({
 
     // rendering
     return (
-      <div>
+      <div className={"container"}>
         {trials < nTrials ? (
           <div className={"container"}>
             <div
@@ -225,17 +225,13 @@ const Experiment = ({
               onClick={(e) => handleZoom(e, "", false)}
               onContextMenu={(e) => handleZoom(e, "", false)}
             >
-              <div className={"container"}>
-                <div className={"welcome"}>
-                  <div className={"instructions"}>
+                  <div className={"container zoomed-img"}>
                     <img
                       src={zoom["imgPath"]}
                       alt="zoomed-image"
                       onClick={(e) => handleZoom(e, "", false)}
                       onContextMenu={(e) => handleZoom(e, "", false)}
                     />
-                  </div>
-                </div>
               </div>
             </div>
             <ProgressBarContainer nTrials={nTrials} trials={trials} />

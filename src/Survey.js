@@ -40,7 +40,6 @@ const Survey = ({ survey, handleSurveyComplete, downloadSurveyData, pages, selec
             className={"overlay overlay-instructions"}
             style={showOverlay}
             onClick={() => setShowOverlay({ display: "none" })}
-            onContextMenu={() => setZoom({ display: "none" })}
           >
             <div className={"container"}>
               <div className={"welcome"}>
