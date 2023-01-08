@@ -63,6 +63,12 @@ var Experiment = function Experiment(_ref) {
         zoom = _React$useState16[0],
         setZoom = _React$useState16[1];
 
+    var handleDebrief = function handleDebrief(strategies) {
+      setDebrief(true);
+      window.location.href = redirectURL;
+      //updateDatabaseDebrief(strategies);
+    };
+
     var _handleSubmit = function _handleSubmit() {
       if (selection.length == 2) {
         var endHit = new Date();
@@ -197,10 +203,6 @@ var Experiment = function Experiment(_ref) {
       setSelection(selectionNew);
       setSelectionTimes(selectionTimesNew);
       setNumberOfUpdates(numberOfUpdates + 1);
-    };
-
-    var handleRedirect = function handleRedirect() {
-      window.location.href = redirectURL;
     };
 
     // runs once before each trial to preload the images
@@ -351,25 +353,7 @@ var Experiment = function Experiment(_ref) {
         React.createElement(
           "div",
           { className: "goodbye" },
-          React.createElement(
-            "div",
-            { className: "goodbye-msg-btn" },
-            React.createElement(
-              "span",
-              null,
-              "Thank you for your participation!"
-            ),
-            React.createElement(
-              "button",
-              {
-                className: "goodbye-button",
-                onClick: function onClick() {
-                  return handleRedirect();
-                }
-              },
-              "Complete the task"
-            )
-          )
+          React.createElement(Debrief, { handleDebrief: handleDebrief })
         )
       )
     );

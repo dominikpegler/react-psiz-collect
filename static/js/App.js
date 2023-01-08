@@ -28,47 +28,52 @@ var App = function App() {
       consent = _React$useState10[0],
       setConsent = _React$useState10[1];
 
-  var _React$useState11 = React.useState(false),
+  var _React$useState11 = React.useState(),
       _React$useState12 = _slicedToArray(_React$useState11, 2),
-      backendConnected = _React$useState12[0],
-      setBackendConnected = _React$useState12[1];
+      debrief = _React$useState12[0],
+      setDebrief = _React$useState12[1];
+
+  var _React$useState13 = React.useState(false),
+      _React$useState14 = _slicedToArray(_React$useState13, 2),
+      backendConnected = _React$useState14[0],
+      setBackendConnected = _React$useState14[1];
 
   var protocolId = "internal";
 
-  var _React$useState13 = React.useState(new Date()),
-      _React$useState14 = _slicedToArray(_React$useState13, 2),
-      beginHit = _React$useState14[0],
-      _ = _React$useState14[1];
-
-  var _React$useState15 = React.useState(),
+  var _React$useState15 = React.useState(new Date()),
       _React$useState16 = _slicedToArray(_React$useState15, 2),
-      assignmentId = _React$useState16[0],
-      setAssignmentId = _React$useState16[1];
+      beginHit = _React$useState16[0],
+      _ = _React$useState16[1];
 
-  var _React$useState17 = React.useState(2),
+  var _React$useState17 = React.useState(),
       _React$useState18 = _slicedToArray(_React$useState17, 2),
-      statusCode = _React$useState18[0],
-      setStatusCode = _React$useState18[1];
+      assignmentId = _React$useState18[0],
+      setAssignmentId = _React$useState18[1];
 
-  var _React$useState19 = React.useState(0),
+  var _React$useState19 = React.useState(2),
       _React$useState20 = _slicedToArray(_React$useState19, 2),
-      trials = _React$useState20[0],
-      setTrials = _React$useState20[1];
+      statusCode = _React$useState20[0],
+      setStatusCode = _React$useState20[1];
 
-  var _React$useState21 = React.useState(),
+  var _React$useState21 = React.useState(0),
       _React$useState22 = _slicedToArray(_React$useState21, 2),
-      survey = _React$useState22[0],
-      setSurvey = _React$useState22[1];
+      trials = _React$useState22[0],
+      setTrials = _React$useState22[1];
 
   var _React$useState23 = React.useState(),
       _React$useState24 = _slicedToArray(_React$useState23, 2),
-      pages = _React$useState24[0],
-      setPages = _React$useState24[1];
+      survey = _React$useState24[0],
+      setSurvey = _React$useState24[1];
 
   var _React$useState25 = React.useState(),
       _React$useState26 = _slicedToArray(_React$useState25, 2),
-      selection = _React$useState26[0],
-      setSelection = _React$useState26[1];
+      pages = _React$useState26[0],
+      setPages = _React$useState26[1];
+
+  var _React$useState27 = React.useState(),
+      _React$useState28 = _slicedToArray(_React$useState27, 2),
+      selection = _React$useState28[0],
+      setSelection = _React$useState28[1];
 
   var handleSubmit = function handleSubmit(e) {
     if (e.key == "Enter") {

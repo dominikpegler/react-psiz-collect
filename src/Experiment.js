@@ -30,6 +30,13 @@ const Experiment = ({
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
     const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
 
+    const handleDebrief = (strategies) => {
+      setDebrief(true);
+      window.location.href = redirectURL;
+      //updateDatabaseDebrief(strategies);
+    };
+
+
     const handleSubmit = () => {
       if (selection.length == 2) {
         const endHit = new Date();
@@ -168,10 +175,6 @@ const Experiment = ({
       setNumberOfUpdates(numberOfUpdates + 1);
     };
 
-    const handleRedirect = () => {
-      window.location.href = redirectURL;
-    };
-
     // runs once before each trial to preload the images
     React.useEffect(() => {
       const loadImage = (imgId) => {
@@ -265,15 +268,7 @@ const Experiment = ({
         ) : (
           <div className={"container"}>
             <div className={"goodbye"}>
-              <div className={"goodbye-msg-btn"}>
-                <span>Thank you for your participation!</span>
-                <button
-                  className={"goodbye-button"}
-                  onClick={() => handleRedirect()}
-                >
-                  Complete the task
-                </button>
-              </div>
+            <Debrief handleDebrief={handleDebrief}/>
             </div>
           </div>
         )}

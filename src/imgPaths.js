@@ -1,5 +1,3 @@
-"use strict";
-//ROAST stimuli
 const imgPaths = [
   "assets/img/roast/Sp_001.jpg",
   "assets/img/roast/Sp_002.jpg",

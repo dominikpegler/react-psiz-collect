@@ -7,6 +7,7 @@ const App = () => {
   const [confirmed, setConfirmed] = React.useState(false);
   const [surveyComplete, setSurveyComplete] = React.useState();
   const [consent, setConsent] = React.useState();
+  const [debrief, setDebrief] = React.useState();
   const [backendConnected, setBackendConnected] = React.useState(false);
   const protocolId = "internal";
   const [beginHit, _] = React.useState(new Date());
