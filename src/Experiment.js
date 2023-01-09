@@ -14,6 +14,8 @@ const Experiment = ({
     const [selection, setSelection] = React.useState([]);
     const [selectionTimes, setSelectionTimes] = React.useState([]);
     const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
+    const [strategy, setStrategy] = React.useState("");
+
 
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
@@ -30,14 +32,29 @@ const Experiment = ({
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
     const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
 
-    const handleDebrief = (strategies) => {
-      setDebrief(true);
+    const handleDebrief = () => {
+      console.log("Debrief finished")
       window.location.href = redirectURL;
       //updateDatabaseDebrief(strategies);
     };
 
 
-    const handleSubmit = () => {
+    const handleSubmitLastQuestion = (input) => {
+      const endHit = new Date();
+      const newStatusCode = 1;
+      setStrategy(input);
+      setStatusCode(newStatusCode);
+      const assignmentUpdate = {
+        assignment_id: assignmentId,
+        end_hit: endHit,
+        status_code: newStatusCode,
+        consent: consent,
+        survey_complete: surveyComplete,
+        // strategy: input,
+      };
+    }
+
+    const handleSubmitTrial = () => {
       if (selection.length == 2) {
         const endHit = new Date();
         const submitTime = endHit - startMs;
@@ -46,8 +63,7 @@ const Experiment = ({
           newStatusCode = 2;
           setStatusCode(newStatusCode);
         } else if (trials + 1 == nTrials) {
-          newStatusCode = 1;
-          setStatusCode(newStatusCode);
+          setAllTrialsFinished(true)
         }
 
         setTrials(trials + 1);
@@ -120,6 +136,7 @@ const Experiment = ({
           status_code: newStatusCode,
           consent: consent,
           survey_complete: surveyComplete,
+          // strategy: "",
         };
 
         fetch(SERVER_URL + "/update-assignment/", {
@@ -227,13 +244,13 @@ const Experiment = ({
               onClick={(e) => handleZoom(e, "", false)}
               onContextMenu={(e) => handleZoom(e, "", false)}
             >
-                  <div className={"container zoomed-img"}>
-                    <img
-                      src={zoom["imgPath"]}
-                      alt="zoomed-image"
-                      onClick={(e) => handleZoom(e, "", false)}
-                      onContextMenu={(e) => handleZoom(e, "", false)}
-                    />
+              <div className={"container zoomed-img"}>
+                <img
+                  src={zoom["imgPath"]}
+                  alt="zoomed-image"
+                  onClick={(e) => handleZoom(e, "", false)}
+                  onContextMenu={(e) => handleZoom(e, "", false)}
+                />
               </div>
             </div>
             <ProgressBarContainer nTrials={nTrials} trials={trials} />
@@ -258,21 +275,46 @@ const Experiment = ({
               </div>
               <div className={"submit-button-tile"}>
                 <SubmitButton
-                  handleSubmit={() => handleSubmit()}
+                  handleSubmit={() => handleSubmitTrial()}
                   selection={selection}
                 />
               </div>
               <div className={"info-button-tile"}></div>
             </div>
           </div>
-        ) : (
-          <div className={"container"}>
-            <div className={"goodbye"}>
-            <Debrief handleDebrief={handleDebrief}/>
-            </div>
+        ) : strategy === "" ? (<div className={"container"}>
+          <div className={"goodbye"}>
+            <StrategyQuestion handleSubmitLastQuestion={handleSubmitLastQuestion} />
           </div>
+        </div>
+        ) : (<div className={"container"}>
+          <div className={"goodbye"}>
+            <Debrief handleDebrief={handleDebrief} />
+          </div>
+        </div>
         )}
       </div>
     );
   }
 };
+
+
+const StrategyQuestion = ({ handleSubmitLastQuestion }) => {
+  const textInput = React.useRef();
+  return (
+    <div className={"please-answer"}>
+          <h3 style={{ textAlign: "center" }}>
+            Could you describe what principles or strategies you used to choose the most similar images?
+          </h3>
+          <textarea autofocus ref={textInput}/>
+        <button
+          type="text"
+          className={"proceed-button"}
+          onClick={() => handleSubmitLastQuestion(textInput.current.value)}
+        >
+          Submit Answer
+        </button>
+    </div>
+  );
+};
+

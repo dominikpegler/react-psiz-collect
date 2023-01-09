@@ -563,3 +563,15 @@ button:hover:disabled {
   border-radius: 10px;
   /* border-width: 2px; */
 }
+
+textarea {
+  height: 200px;
+  width: 400px;
+  resize:none;
+  font-size: large
+}
+
+p {
+overflow-wrap: normal;
+width: 100%
+}

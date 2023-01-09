@@ -32,6 +32,11 @@ var Experiment = function Experiment(_ref) {
         numberOfUpdates = _React$useState8[0],
         setNumberOfUpdates = _React$useState8[1];
 
+    var _React$useState9 = React.useState(""),
+        _React$useState10 = _slicedToArray(_React$useState9, 2),
+        strategy = _React$useState10[0],
+        setStrategy = _React$useState10[1];
+
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
 
@@ -39,37 +44,52 @@ var Experiment = function Experiment(_ref) {
 
     // TODO fetch the following in the future fetch from API
 
-    var _React$useState9 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
-        _React$useState10 = _slicedToArray(_React$useState9, 2),
-        stimulusSet = _React$useState10[0],
-        setStimulusSet = _React$useState10[1];
+    var _React$useState11 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
+        _React$useState12 = _slicedToArray(_React$useState11, 2),
+        stimulusSet = _React$useState12[0],
+        setStimulusSet = _React$useState12[1];
 
     var nTrials = 40;
 
-    var _React$useState11 = React.useState(new Date()),
-        _React$useState12 = _slicedToArray(_React$useState11, 2),
-        startMs = _React$useState12[0],
-        setStartMs = _React$useState12[1];
+    var _React$useState13 = React.useState(new Date()),
+        _React$useState14 = _slicedToArray(_React$useState13, 2),
+        startMs = _React$useState14[0],
+        setStartMs = _React$useState14[1];
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
 
 
-    var _React$useState13 = React.useState({ display: "none" }),
-        _React$useState14 = _slicedToArray(_React$useState13, 2),
-        showOverlay = _React$useState14[0],
-        setShowOverlay = _React$useState14[1];
-
-    var _React$useState15 = React.useState({ display: "none", imgPath: "" }),
+    var _React$useState15 = React.useState({ display: "none" }),
         _React$useState16 = _slicedToArray(_React$useState15, 2),
-        zoom = _React$useState16[0],
-        setZoom = _React$useState16[1];
+        showOverlay = _React$useState16[0],
+        setShowOverlay = _React$useState16[1];
 
-    var handleDebrief = function handleDebrief(strategies) {
-      setDebrief(true);
+    var _React$useState17 = React.useState({ display: "none", imgPath: "" }),
+        _React$useState18 = _slicedToArray(_React$useState17, 2),
+        zoom = _React$useState18[0],
+        setZoom = _React$useState18[1];
+
+    var handleDebrief = function handleDebrief() {
+      console.log("Debrief finished");
       window.location.href = redirectURL;
       //updateDatabaseDebrief(strategies);
     };
 
-    var _handleSubmit = function _handleSubmit() {
+    var handleSubmitLastQuestion = function handleSubmitLastQuestion(input) {
+      var endHit = new Date();
+      var newStatusCode = 1;
+      setStrategy(input);
+      setStatusCode(newStatusCode);
+      var assignmentUpdate = {
+        assignment_id: assignmentId,
+        end_hit: endHit,
+        status_code: newStatusCode,
+        consent: consent,
+        survey_complete: surveyComplete
+        // strategy: input,
+      };
+    };
+
+    var handleSubmitTrial = function handleSubmitTrial() {
       if (selection.length == 2) {
         var endHit = new Date();
         var submitTime = endHit - startMs;
@@ -78,8 +98,7 @@ var Experiment = function Experiment(_ref) {
           newStatusCode = 2;
           setStatusCode(newStatusCode);
         } else if (trials + 1 == nTrials) {
-          newStatusCode = 1;
-          setStatusCode(newStatusCode);
+          setAllTrialsFinished(true);
         }
 
         setTrials(trials + 1);
@@ -153,6 +172,7 @@ var Experiment = function Experiment(_ref) {
           status_code: newStatusCode,
           consent: consent,
           survey_complete: surveyComplete
+          // strategy: "",
         };
 
         fetch(SERVER_URL + "/update-assignment/", {
@@ -340,12 +360,20 @@ var Experiment = function Experiment(_ref) {
             { className: "submit-button-tile" },
             React.createElement(SubmitButton, {
               handleSubmit: function handleSubmit() {
-                return _handleSubmit();
+                return handleSubmitTrial();
               },
               selection: selection
             })
           ),
           React.createElement("div", { className: "info-button-tile" })
+        )
+      ) : strategy === "" ? React.createElement(
+        "div",
+        { className: "container" },
+        React.createElement(
+          "div",
+          { className: "goodbye" },
+          React.createElement(StrategyQuestion, { handleSubmitLastQuestion: handleSubmitLastQuestion })
         )
       ) : React.createElement(
         "div",
@@ -358,4 +386,31 @@ var Experiment = function Experiment(_ref) {
       )
     );
   }
+};
+
+var StrategyQuestion = function StrategyQuestion(_ref2) {
+  var handleSubmitLastQuestion = _ref2.handleSubmitLastQuestion;
+
+  var textInput = React.useRef();
+  return React.createElement(
+    "div",
+    { className: "please-answer" },
+    React.createElement(
+      "h3",
+      { style: { textAlign: "center" } },
+      "Could you describe what principles or strategies you used to choose the most similar images?"
+    ),
+    React.createElement("textarea", { autofocus: true, ref: textInput }),
+    React.createElement(
+      "button",
+      {
+        type: "text",
+        className: "proceed-button",
+        onClick: function onClick() {
+          return handleSubmitLastQuestion(textInput.current.value);
+        }
+      },
+      "Submit Answer"
+    )
+  );
 };
