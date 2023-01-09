@@ -21,6 +21,8 @@ class Assignment(Base):
     ver = Column(Integer, unique=False, index=False)
     consent = Column(Boolean, unique=False, index=False)
     survey_complete = Column(Boolean, unique=False, index=False)
+    strategy = Column(String, unique=False, index=False)
+
 
     trial = relationship("Trial", back_populates="assignment")
 

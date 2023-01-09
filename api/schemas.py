@@ -64,6 +64,7 @@ class AssignmentCreate(AssignmentBase):
     ver: int
     consent: bool
     survey_complete: bool
+    strategy: str
 
 
 class AssignmentUpdate(BaseModel):
@@ -72,6 +73,7 @@ class AssignmentUpdate(BaseModel):
     status_code: int
     consent: bool
     survey_complete: bool
+    strategy: str
 
 
 class Assignment(AssignmentBase):

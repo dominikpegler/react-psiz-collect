@@ -7,7 +7,7 @@ const App = () => {
   const [confirmed, setConfirmed] = React.useState(false);
   const [surveyComplete, setSurveyComplete] = React.useState();
   const [consent, setConsent] = React.useState();
-  const [debrief, setDebrief] = React.useState();
+  const [strategy, setStrategy] = React.useState("");
   const [backendConnected, setBackendConnected] = React.useState(false);
   const protocolId = "internal";
   const [beginHit, _] = React.useState(new Date());
@@ -62,6 +62,7 @@ const App = () => {
         setTrials(res.trials_completed);
         setConsent(res.consent);
         setSurveyComplete(res.survey_complete);
+        setStrategy(res.strategy)
         console.log(
           `Success: Worker ${workerId} started assignment ${res.assignment_id}.`
         );
@@ -83,6 +84,7 @@ const App = () => {
       status_code: statusCode,
       consent: true,
       survey_complete: surveyComplete,
+      strategy: ""
     };
     updateDatabase(assignmentUpdate);
   };
@@ -96,6 +98,7 @@ const App = () => {
       status_code: statusCode,
       consent: consent,
       survey_complete: true,
+      strategy: ""
     };
     updateDatabase(assignmentUpdate);
     uploadSurveyData(assignmentId, selection);
@@ -224,10 +227,12 @@ const App = () => {
         ver: 2,
         consent: 0,
         survey_complete: 0,
+        strategy: strategy
       };
       handleAssigned(assignment);
     }
   }, [workerId]);
+
 
   return backendConnected ? (
     workerId ? (
@@ -243,6 +248,8 @@ const App = () => {
               surveyComplete={surveyComplete}
               trials={trials}
               setTrials={setTrials}
+              strategy={strategy}
+              setStrategy={setStrategy}
             />
           ) : (
             <Instructions handleConfirmed={handleConfirmed} />

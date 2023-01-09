@@ -42,12 +42,14 @@ def update_assignment(
     status_code: int,
     consent: bool,
     survey_complete: bool,
+    strategy: str,
 ):
     db_assignment = db.query(models.Assignment).get(assignment_id)
     db_assignment.status_code = status_code
     db_assignment.end_hit = end_hit
     db_assignment.consent = consent
     db_assignment.survey_complete = survey_complete
+    db_assignment.strategy = strategy
     db.add(db_assignment)
     db.commit()
     db.refresh(db_assignment)

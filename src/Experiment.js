@@ -7,16 +7,15 @@ const Experiment = ({
   consent,
   surveyComplete,
   trials,
-  setTrials
+  setTrials,
+  strategy,
+  setStrategy
 }) => {
   {
     const [imgsLoaded, setImgsLoaded] = React.useState(false);
     const [selection, setSelection] = React.useState([]);
     const [selectionTimes, setSelectionTimes] = React.useState([]);
     const [numberOfUpdates, setNumberOfUpdates] = React.useState(0);
-    const [strategy, setStrategy] = React.useState("");
-
-
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
 
@@ -35,7 +34,6 @@ const Experiment = ({
     const handleDebrief = () => {
       console.log("Debrief finished")
       window.location.href = redirectURL;
-      //updateDatabaseDebrief(strategies);
     };
 
 
@@ -50,8 +48,31 @@ const Experiment = ({
         status_code: newStatusCode,
         consent: consent,
         survey_complete: surveyComplete,
-        // strategy: input,
+        strategy: input,
       };
+
+      // TODO we need this update thing twice at least, maybe better putting it into a function
+      fetch(SERVER_URL + "/update-assignment/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(assignmentUpdate),
+      })
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then((res) => {
+          console.log(`Assignment ${res.assignment_id} update successful.`);
+        })
+        .catch((err) => {
+          console.log("Error:", err.toString());
+        });
+
     }
 
     const handleSubmitTrial = () => {
@@ -62,10 +83,7 @@ const Experiment = ({
         if (trials == 0) {
           newStatusCode = 2;
           setStatusCode(newStatusCode);
-        } else if (trials + 1 == nTrials) {
-          setAllTrialsFinished(true)
         }
-
         setTrials(trials + 1);
         setImgsLoaded(false);
         setStimulusSet(randomIntArray(0, 119, 9));
@@ -136,7 +154,7 @@ const Experiment = ({
           status_code: newStatusCode,
           consent: consent,
           survey_complete: surveyComplete,
-          // strategy: "",
+          strategy: "",
         };
 
         fetch(SERVER_URL + "/update-assignment/", {
@@ -282,7 +300,7 @@ const Experiment = ({
               <div className={"info-button-tile"}></div>
             </div>
           </div>
-        ) : strategy === "" ? (<div className={"container"}>
+        ) : strategy == "" ? (<div className={"container"}>
           <div className={"goodbye"}>
             <StrategyQuestion handleSubmitLastQuestion={handleSubmitLastQuestion} />
           </div>
@@ -303,17 +321,17 @@ const StrategyQuestion = ({ handleSubmitLastQuestion }) => {
   const textInput = React.useRef();
   return (
     <div className={"please-answer"}>
-          <h3 style={{ textAlign: "center" }}>
-            Could you describe what principles or strategies you used to choose the most similar images?
-          </h3>
-          <textarea autofocus ref={textInput}/>
-        <button
-          type="text"
-          className={"proceed-button"}
-          onClick={() => handleSubmitLastQuestion(textInput.current.value)}
-        >
-          Submit Answer
-        </button>
+      <h3 style={{ textAlign: "center" }}>
+        Could you describe what principles or strategies you used to choose the most similar images?
+      </h3>
+      <textarea autofocus ref={textInput} />
+      <button
+        type="text"
+        className={"proceed-button"}
+        onClick={() => handleSubmitLastQuestion(textInput.current.value)}
+      >
+        Submit Answer
+      </button>
     </div>
   );
 };

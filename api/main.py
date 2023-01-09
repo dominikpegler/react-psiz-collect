@@ -108,6 +108,7 @@ def create_assignment(
         assignment_id = db_assignment.assignment_id
         consent = db_assignment.consent
         survey_complete = db_assignment.survey_complete
+        strategy = db_assignment.strategy
     else:
         trials_completed = 0
         assignment_id = crud.create_assignment(
@@ -115,6 +116,7 @@ def create_assignment(
         ).assignment_id
         consent = False
         survey_complete = False
+        strategy = ""
 
     return JSONResponse(
         {
@@ -122,6 +124,7 @@ def create_assignment(
             "trials_completed": trials_completed,
             "consent": consent,
             "survey_complete": survey_complete,
+            "strategy": strategy,
 
         }
     )
@@ -142,6 +145,7 @@ def update_assignment(
         status_code=assignment_update.status_code,
         consent=assignment_update.consent,
         survey_complete=assignment_update.survey_complete,
+        strategy=assignment_update.strategy,
     )
 
     return JSONResponse({"assignment_id": assignment_updated.assignment_id})

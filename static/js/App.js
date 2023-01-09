@@ -28,10 +28,10 @@ var App = function App() {
       consent = _React$useState10[0],
       setConsent = _React$useState10[1];
 
-  var _React$useState11 = React.useState(),
+  var _React$useState11 = React.useState(""),
       _React$useState12 = _slicedToArray(_React$useState11, 2),
-      debrief = _React$useState12[0],
-      setDebrief = _React$useState12[1];
+      strategy = _React$useState12[0],
+      setStrategy = _React$useState12[1];
 
   var _React$useState13 = React.useState(false),
       _React$useState14 = _slicedToArray(_React$useState13, 2),
@@ -114,6 +114,7 @@ var App = function App() {
       setTrials(res.trials_completed);
       setConsent(res.consent);
       setSurveyComplete(res.survey_complete);
+      setStrategy(res.strategy);
       console.log("Success: Worker " + workerId + " started assignment " + res.assignment_id + ".");
     }).catch(function (err) {
       console.log("ERROR-Response from API:", err.toString());
@@ -131,7 +132,8 @@ var App = function App() {
       end_hit: new Date(),
       status_code: statusCode,
       consent: true,
-      survey_complete: surveyComplete
+      survey_complete: surveyComplete,
+      strategy: ""
     };
     updateDatabase(assignmentUpdate);
   };
@@ -144,7 +146,8 @@ var App = function App() {
       end_hit: new Date(),
       status_code: statusCode,
       consent: consent,
-      survey_complete: true
+      survey_complete: true,
+      strategy: ""
     };
     updateDatabase(assignmentUpdate);
     uploadSurveyData(assignmentId, selection);
@@ -256,7 +259,8 @@ var App = function App() {
         status_code: 0, // will be updated after trials
         ver: 2,
         consent: 0,
-        survey_complete: 0
+        survey_complete: 0,
+        strategy: strategy
       };
       handleAssigned(assignment);
     }
@@ -269,7 +273,9 @@ var App = function App() {
     consent: consent,
     surveyComplete: surveyComplete,
     trials: trials,
-    setTrials: setTrials
+    setTrials: setTrials,
+    strategy: strategy,
+    setStrategy: setStrategy
   }) : React.createElement(Instructions, { handleConfirmed: handleConfirmed }) : surveyComplete == false && React.createElement(Survey, {
     survey: survey,
     handleSurveyComplete: handleSurveyComplete,

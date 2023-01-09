@@ -9,7 +9,9 @@ var Experiment = function Experiment(_ref) {
       consent = _ref.consent,
       surveyComplete = _ref.surveyComplete,
       trials = _ref.trials,
-      setTrials = _ref.setTrials;
+      setTrials = _ref.setTrials,
+      strategy = _ref.strategy,
+      setStrategy = _ref.setStrategy;
 
   {
     var _React$useState = React.useState(false),
@@ -31,12 +33,6 @@ var Experiment = function Experiment(_ref) {
         _React$useState8 = _slicedToArray(_React$useState7, 2),
         numberOfUpdates = _React$useState8[0],
         setNumberOfUpdates = _React$useState8[1];
-
-    var _React$useState9 = React.useState(""),
-        _React$useState10 = _slicedToArray(_React$useState9, 2),
-        strategy = _React$useState10[0],
-        setStrategy = _React$useState10[1];
-
     // numberOfUpdates is needed only because without it the child components (<Tile/>)
     // would not update. There might be a better solution.
 
@@ -44,34 +40,33 @@ var Experiment = function Experiment(_ref) {
 
     // TODO fetch the following in the future fetch from API
 
-    var _React$useState11 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
-        _React$useState12 = _slicedToArray(_React$useState11, 2),
-        stimulusSet = _React$useState12[0],
-        setStimulusSet = _React$useState12[1];
+    var _React$useState9 = React.useState(randomIntArray(0, imgPaths.length - 1, 9)),
+        _React$useState10 = _slicedToArray(_React$useState9, 2),
+        stimulusSet = _React$useState10[0],
+        setStimulusSet = _React$useState10[1];
 
     var nTrials = 40;
 
-    var _React$useState13 = React.useState(new Date()),
-        _React$useState14 = _slicedToArray(_React$useState13, 2),
-        startMs = _React$useState14[0],
-        setStartMs = _React$useState14[1];
+    var _React$useState11 = React.useState(new Date()),
+        _React$useState12 = _slicedToArray(_React$useState11, 2),
+        startMs = _React$useState12[0],
+        setStartMs = _React$useState12[1];
     // fetch from API and update later on => set to 1 if all trials finished, set to 2 if ...
 
 
-    var _React$useState15 = React.useState({ display: "none" }),
-        _React$useState16 = _slicedToArray(_React$useState15, 2),
-        showOverlay = _React$useState16[0],
-        setShowOverlay = _React$useState16[1];
+    var _React$useState13 = React.useState({ display: "none" }),
+        _React$useState14 = _slicedToArray(_React$useState13, 2),
+        showOverlay = _React$useState14[0],
+        setShowOverlay = _React$useState14[1];
 
-    var _React$useState17 = React.useState({ display: "none", imgPath: "" }),
-        _React$useState18 = _slicedToArray(_React$useState17, 2),
-        zoom = _React$useState18[0],
-        setZoom = _React$useState18[1];
+    var _React$useState15 = React.useState({ display: "none", imgPath: "" }),
+        _React$useState16 = _slicedToArray(_React$useState15, 2),
+        zoom = _React$useState16[0],
+        setZoom = _React$useState16[1];
 
     var handleDebrief = function handleDebrief() {
       console.log("Debrief finished");
       window.location.href = redirectURL;
-      //updateDatabaseDebrief(strategies);
     };
 
     var handleSubmitLastQuestion = function handleSubmitLastQuestion(input) {
@@ -84,9 +79,28 @@ var Experiment = function Experiment(_ref) {
         end_hit: endHit,
         status_code: newStatusCode,
         consent: consent,
-        survey_complete: surveyComplete
-        // strategy: input,
+        survey_complete: surveyComplete,
+        strategy: input
       };
+
+      // TODO we need this update thing twice at least, maybe better putting it into a function
+      fetch(SERVER_URL + "/update-assignment/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(assignmentUpdate)
+      }).then(function (response) {
+        if (response.status !== 200) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      }).then(function (res) {
+        console.log("Assignment " + res.assignment_id + " update successful.");
+      }).catch(function (err) {
+        console.log("Error:", err.toString());
+      });
     };
 
     var handleSubmitTrial = function handleSubmitTrial() {
@@ -97,10 +111,7 @@ var Experiment = function Experiment(_ref) {
         if (trials == 0) {
           newStatusCode = 2;
           setStatusCode(newStatusCode);
-        } else if (trials + 1 == nTrials) {
-          setAllTrialsFinished(true);
         }
-
         setTrials(trials + 1);
         setImgsLoaded(false);
         setStimulusSet(randomIntArray(0, 119, 9));
@@ -171,8 +182,8 @@ var Experiment = function Experiment(_ref) {
           end_hit: endHit,
           status_code: newStatusCode,
           consent: consent,
-          survey_complete: surveyComplete
-          // strategy: "",
+          survey_complete: surveyComplete,
+          strategy: ""
         };
 
         fetch(SERVER_URL + "/update-assignment/", {
@@ -367,7 +378,7 @@ var Experiment = function Experiment(_ref) {
           ),
           React.createElement("div", { className: "info-button-tile" })
         )
-      ) : strategy === "" ? React.createElement(
+      ) : strategy == "" ? React.createElement(
         "div",
         { className: "container" },
         React.createElement(
