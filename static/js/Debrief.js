@@ -1,3 +1,5 @@
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var Debrief = function Debrief(_ref) {
   var handleDebrief = _ref.handleDebrief;
 
@@ -7,7 +9,7 @@ var Debrief = function Debrief(_ref) {
     { className: "container" },
     React.createElement(
       "div",
-      { className: "consent", style: { maxWidth: "720px" } },
+      { className: "debrief" },
       React.createElement(
         "h3",
         { style: { textAlign: "center" } },
@@ -37,6 +39,96 @@ var Debrief = function Debrief(_ref) {
         "p",
         null,
         "The following questions are all optional. All feedback, both positive and negative, is appreciated. Providing feedback here will have no effect on your receiving payment for taking part in this study."
+      ),
+      React.createElement("hr", null)
+    ),
+    React.createElement(
+      "div",
+      { className: "container-debrief-questionnaire" },
+      React.createElement(
+        "div",
+        {
+          className: "debrief-question"
+        },
+        React.createElement(
+          "span",
+          { style: { marginRight: "2rem" } },
+          "Enjoyment: How did you enjoy taking part in this study?"
+        ),
+        React.createElement(ResponseBoxDebrief, {
+          scale: [{ "value": 1, "label": "Low" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "High" }],
+          key: "question_1"
+          // setSelection={setSelection}
+          // selection={selection}
+        })
+      ),
+      React.createElement(
+        "div",
+        {
+          className: "debrief-question"
+        },
+        React.createElement(
+          "span",
+          { style: { marginRight: "2rem" } },
+          "Interest: How interesting did you find this study?"
+        ),
+        React.createElement(ResponseBoxDebrief, {
+          scale: [{ "value": 1, "label": "Boring" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Interesting" }],
+          key: "question_2"
+          // setSelection={setSelection}
+          // selection={selection}
+        })
+      ),
+      React.createElement(
+        "div",
+        {
+          className: "debrief-question"
+        },
+        React.createElement(
+          "span",
+          { style: { marginRight: "2rem" } },
+          "Understanding: How well were the study instructions explained?"
+        ),
+        React.createElement(ResponseBoxDebrief, {
+          scale: [{ "value": 1, "label": "Not very well" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Very well" }],
+          key: "question_3"
+          // setSelection={setSelection}
+          // selection={selection}
+        })
+      ),
+      React.createElement(
+        "div",
+        {
+          className: "debrief-question"
+        },
+        React.createElement(
+          "span",
+          { style: { marginRight: "2rem" } },
+          "Length: What is your opinion on the length of the study?"
+        ),
+        React.createElement(ResponseBoxDebrief, {
+          scale: [{ "value": 1, "label": "Too short" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Too long" }],
+          key: "question_4"
+          // setSelection={setSelection}
+          // selection={selection}
+        })
+      ),
+      React.createElement(
+        "div",
+        {
+          className: "debrief-question"
+        },
+        React.createElement(
+          "span",
+          { style: { marginRight: "2rem" } },
+          "How much attention did you pay to the experiment (your response won't come with any disadvantages)?"
+        ),
+        React.createElement(ResponseBoxDebrief, {
+          scale: [{ "value": 1, "label": "No attention" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Full attention" }],
+          key: "question_5"
+          // setSelection={setSelection}
+          // selection={selection}
+        })
       )
     ),
     React.createElement(
@@ -50,5 +142,69 @@ var Debrief = function Debrief(_ref) {
       },
       "Complete Study"
     )
+  );
+};
+
+var ResponseBoxDebrief = function ResponseBoxDebrief(_ref2) {
+  var scale = _ref2.scale,
+      key = _ref2.key;
+
+  var id = "debrief".concat("-", String(key));
+
+  var _React$useState = React.useState(""),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      value = _React$useState2[0],
+      setValue = _React$useState2[1];
+
+  //const handleChange = (event) => {
+  //  setValue(event.target.value);
+  //  let newSelection = selection;
+  //  newSelection[k] = event.target.value;
+  //  setSelection(newSelection);
+  //};
+
+  return React.createElement(
+    "form",
+    {
+      style: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-end",
+        fontSize: "small"
+      }
+    },
+    scale && scale.map(function (likert) {
+      return likert && React.createElement(
+        "div",
+        {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            alignItems: "center",
+            width: "4.7rem"
+          }
+        },
+        React.createElement(
+          "label",
+          {
+            "for": id + "-" + String(likert.value),
+            style: { textAlign: "center", cursor: "pointer" }
+          },
+          likert.label,
+          React.createElement("br", null),
+          likert.value
+        ),
+        React.createElement("input", {
+          className: "radio",
+          type: "radio",
+          checked: value == likert.value,
+          id: id + "-" + String(likert.value),
+          value: likert.value
+          // onChange={handleChange}
+        })
+      );
+    })
   );
 };
