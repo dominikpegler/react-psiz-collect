@@ -31,7 +31,7 @@ const Experiment = ({
     const [showOverlay, setShowOverlay] = React.useState({ display: "none" });
     const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
 
-    const handleDebrief = () => {
+    const handleDebrief = (textInput) => {
       console.log("Debrief finished")
       window.location.href = redirectURL;
     };

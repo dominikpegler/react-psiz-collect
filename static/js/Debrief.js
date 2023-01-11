@@ -3,7 +3,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 var Debrief = function Debrief(_ref) {
   var handleDebrief = _ref.handleDebrief;
 
-
+  var textInput = React.useRef();
   return React.createElement(
     "div",
     { className: "container" },
@@ -53,7 +53,7 @@ var Debrief = function Debrief(_ref) {
         React.createElement(
           "span",
           { style: { marginRight: "2rem" } },
-          "Enjoyment: How did you enjoy taking part in this study?"
+          "How did you enjoy taking part in this study?"
         ),
         React.createElement(ResponseBoxDebrief, {
           scale: [{ "value": 1, "label": "Low" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "High" }],
@@ -70,7 +70,7 @@ var Debrief = function Debrief(_ref) {
         React.createElement(
           "span",
           { style: { marginRight: "2rem" } },
-          "Interest: How interesting did you find this study?"
+          "How interesting did you find this study?"
         ),
         React.createElement(ResponseBoxDebrief, {
           scale: [{ "value": 1, "label": "Boring" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Interesting" }],
@@ -87,7 +87,7 @@ var Debrief = function Debrief(_ref) {
         React.createElement(
           "span",
           { style: { marginRight: "2rem" } },
-          "Understanding: How well were the study instructions explained?"
+          "How well were the study instructions explained?"
         ),
         React.createElement(ResponseBoxDebrief, {
           scale: [{ "value": 1, "label": "Not very well" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Very well" }],
@@ -104,7 +104,7 @@ var Debrief = function Debrief(_ref) {
         React.createElement(
           "span",
           { style: { marginRight: "2rem" } },
-          "Length: What is your opinion on the length of the study?"
+          "What is your opinion on the length of the study?"
         ),
         React.createElement(ResponseBoxDebrief, {
           scale: [{ "value": 1, "label": "Too short" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Too long" }],
@@ -129,6 +129,20 @@ var Debrief = function Debrief(_ref) {
           // setSelection={setSelection}
           // selection={selection}
         })
+      ),
+      React.createElement(
+        "div",
+        {
+          style: { display: "flex", flexDirection: "column" },
+          className: "debrief-question"
+        },
+        " ",
+        React.createElement(
+          "span",
+          { style: { marginRight: "2rem" } },
+          "Do you have any comments about the study?"
+        ),
+        React.createElement("textarea", { autofocus: true, ref: textInput, style: { width: "60%", height: "100px" } })
       )
     ),
     React.createElement(
@@ -137,7 +151,7 @@ var Debrief = function Debrief(_ref) {
         type: "text",
         className: "proceed-button",
         onClick: function onClick() {
-          return handleDebrief();
+          return handleDebrief(textInput);
         }
       },
       "Complete Study"

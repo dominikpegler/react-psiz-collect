@@ -1,5 +1,5 @@
 const Debrief = ({ handleDebrief }) => {
-
+  const textInput = React.useRef();
   return (
     <div className={"container"}>
       <div className={"debrief"}>
@@ -18,7 +18,7 @@ const Debrief = ({ handleDebrief }) => {
           className={"debrief-question"}
         >
           <span style={{ marginRight: "2rem" }}>
-            Enjoyment: How did you enjoy taking part in this study?
+            How did you enjoy taking part in this study?
           </span>
           <ResponseBoxDebrief
             scale={[{ "value": 1, "label": "Low" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "High" }]}
@@ -31,7 +31,7 @@ const Debrief = ({ handleDebrief }) => {
           className={"debrief-question"}
         >
           <span style={{ marginRight: "2rem" }}>
-            Interest: How interesting did you find this study?
+            How interesting did you find this study?
           </span>
           <ResponseBoxDebrief
             scale={[{ "value": 1, "label": "Boring" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Interesting" }]}
@@ -44,7 +44,7 @@ const Debrief = ({ handleDebrief }) => {
           className={"debrief-question"}
         >
           <span style={{ marginRight: "2rem" }}>
-            Understanding: How well were the study instructions explained?
+            How well were the study instructions explained?
           </span>
           <ResponseBoxDebrief
             scale={[{ "value": 1, "label": "Not very well" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Very well" }]}
@@ -57,7 +57,7 @@ const Debrief = ({ handleDebrief }) => {
           className={"debrief-question"}
         >
           <span style={{ marginRight: "2rem" }}>
-            Length: What is your opinion on the length of the study?
+            What is your opinion on the length of the study?
           </span>
           <ResponseBoxDebrief
             scale={[{ "value": 1, "label": "Too short" }, { "value": 2, "label": "" }, { "value": 3, "label": "" }, { "value": 4, "label": "" }, { "value": 5, "label": "Too long" }]}
@@ -79,12 +79,20 @@ const Debrief = ({ handleDebrief }) => {
             // selection={selection}
           />
         </div>
+        <div
+        style={{display:"flex", flexDirection:"column"}}
+          className={"debrief-question"}
+        > <span style={{ marginRight: "2rem" }}>
+        Do you have any comments about the study?
+      </span>
+        <textarea autofocus ref={textInput} style={{width:"60%", height: "100px"}}/>
+        </div>
       </div>
 
       <button
         type="text"
         className={"proceed-button"}
-        onClick={() => handleDebrief()}
+        onClick={() => handleDebrief(textInput)}
       >
         Complete Study
       </button>

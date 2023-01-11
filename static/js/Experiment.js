@@ -64,7 +64,7 @@ var Experiment = function Experiment(_ref) {
         zoom = _React$useState16[0],
         setZoom = _React$useState16[1];
 
-    var handleDebrief = function handleDebrief() {
+    var handleDebrief = function handleDebrief(textInput) {
       console.log("Debrief finished");
       window.location.href = redirectURL;
     };
