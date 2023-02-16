@@ -513,17 +513,17 @@ button:hover:disabled {
 }
 
 /*  for tables big desktop */
-@media (min-width: 1800px) {
+@media (min-width: 2100px) {
   .imgmat-tile-inner {
-    height: 250px;
+    height: 240px;
   }
 
   .imgmat-img {
-    max-height: 250px;
+    max-height: 240px;
   }
 
   .container {
-    max-width: 1600px;
+    max-width: 1400px;
   }
 }
 
