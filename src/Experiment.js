@@ -9,7 +9,7 @@ const Experiment = ({
   trials,
   setTrials,
   strategy,
-  setStrategy
+  setStrategy,
 }) => {
   {
     const [imgsLoaded, setImgsLoaded] = React.useState(false);
@@ -32,10 +32,9 @@ const Experiment = ({
     const [zoom, setZoom] = React.useState({ display: "none", imgPath: "" });
 
     const handleDebrief = (textInput) => {
-      console.log("Debrief finished")
+      console.log("Debrief finished");
       window.location.href = redirectURL;
     };
-
 
     const handleSubmitLastQuestion = (input) => {
       const endHit = new Date();
@@ -72,8 +71,7 @@ const Experiment = ({
         .catch((err) => {
           console.log("Error:", err.toString());
         });
-
-    }
+    };
 
     const handleSubmitTrial = () => {
       if (selection.length == 2) {
@@ -231,9 +229,9 @@ const Experiment = ({
 
     // rendering
     return (
-      <div className={"container"}>
+      <div className={"root-container"}>
         {trials < nTrials ? (
-          <div className={"container"}>
+          <div className={"experiment-container"}>
             <div
               className={"overlay overlay-instructions"}
               style={showOverlay}
@@ -300,29 +298,33 @@ const Experiment = ({
               <div className={"info-button-tile"}></div>
             </div>
           </div>
-        ) : strategy == "" ? (<div className={"container"}>
-          <div className={"goodbye"}>
-            <StrategyQuestion handleSubmitLastQuestion={handleSubmitLastQuestion} />
+        ) : strategy == "" ? (
+          <div className={"container"}>
+            <div className={"goodbye"}>
+              <StrategyQuestion
+                handleSubmitLastQuestion={handleSubmitLastQuestion}
+              />
+            </div>
           </div>
-        </div>
-        ) : (<div className={"container"}>
-          <div className={"goodbye"}>
-            <Debrief handleDebrief={handleDebrief} />
+        ) : (
+          <div className={"container"}>
+            <div className={"goodbye"}>
+              <Debrief handleDebrief={handleDebrief} />
+            </div>
           </div>
-        </div>
         )}
       </div>
     );
   }
 };
 
-
 const StrategyQuestion = ({ handleSubmitLastQuestion }) => {
   const textInput = React.useRef();
   return (
     <div className={"please-answer"}>
       <h3 style={{ textAlign: "center" }}>
-        Could you describe what principles or strategies you used to choose the most similar images?
+        Could you describe what principles or strategies you used to choose the
+        most similar images?
       </h3>
       <textarea autofocus ref={textInput} />
       <button
@@ -335,4 +337,3 @@ const StrategyQuestion = ({ handleSubmitLastQuestion }) => {
     </div>
   );
 };
-

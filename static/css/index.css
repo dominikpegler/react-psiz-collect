@@ -69,7 +69,7 @@ button:hover:disabled {
   display: flex;
   width: 8rem;
   margin-left: 1rem;
-  margin-right: 1rem
+  margin-right: 1rem;
 }
 
 .bottom-tile {
@@ -192,10 +192,12 @@ button:hover:disabled {
 .imgmat-img-overlay {
   display: block;
   position: absolute;
-  background: linear-gradient(to right,
-      rgba(255, 0, 0, 0),
-      var(--selected-color),
-      rgba(255, 0, 0, 0));
+  background: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    var(--selected-color),
+    rgba(255, 0, 0, 0)
+  );
   z-index: 4;
   top: 50%;
   left: 0;
@@ -240,6 +242,23 @@ button:hover:disabled {
 .progress-bar-fg {
   background: var(--selected-color);
   height: 100%;
+}
+
+.root-container {
+  height: 100vh;
+}
+
+.experiment-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .container {
@@ -370,8 +389,8 @@ button:hover:disabled {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  padding-bottom: .75rem;
-  padding-top: .75rem;
+  padding-bottom: 0.75rem;
+  padding-top: 0.75rem;
   border-bottom: 1px solid;
   border-image: linear-gradient(to right, lightgray, darkgray) 1;
 }
@@ -463,6 +482,7 @@ button:hover:disabled {
   }
 }
 
+/* for tablets landscape */
 @media (min-width: 992px) {
   .imgmat-tile-inner {
     height: 160px;
@@ -477,6 +497,7 @@ button:hover:disabled {
   }
 }
 
+/* for desktop */
 @media (min-width: 1200px) {
   .imgmat-tile-inner {
     height: 160px;
@@ -488,6 +509,21 @@ button:hover:disabled {
 
   .container {
     max-width: 1140px;
+  }
+}
+
+/*  for tables big desktop */
+@media (min-width: 1800px) {
+  .imgmat-tile-inner {
+    height: 250px;
+  }
+
+  .imgmat-img {
+    max-height: 250px;
+  }
+
+  .container {
+    max-width: 1600px;
   }
 }
 
@@ -568,10 +604,12 @@ button:hover:disabled {
 .imgmat-img-overlay-mini {
   display: block;
   position: absolute;
-  background: linear-gradient(to right,
-      rgba(255, 0, 0, 0),
-      var(--selected-color),
-      rgba(255, 0, 0, 0));
+  background: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    var(--selected-color),
+    rgba(255, 0, 0, 0)
+  );
   z-index: 4;
   top: 50%;
   left: 0;
@@ -605,10 +643,10 @@ textarea {
   height: 200px;
   width: 400px;
   resize: none;
-  font-size: large
+  font-size: large;
 }
 
 p {
   overflow-wrap: normal;
-  width: 100%
+  width: 100%;
 }

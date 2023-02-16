@@ -265,10 +265,10 @@ var Experiment = function Experiment(_ref) {
     // rendering
     return React.createElement(
       "div",
-      { className: "container" },
+      { className: "root-container" },
       trials < nTrials ? React.createElement(
         "div",
-        { className: "container" },
+        { className: "experiment-container" },
         React.createElement(
           "div",
           {
@@ -384,7 +384,9 @@ var Experiment = function Experiment(_ref) {
         React.createElement(
           "div",
           { className: "goodbye" },
-          React.createElement(StrategyQuestion, { handleSubmitLastQuestion: handleSubmitLastQuestion })
+          React.createElement(StrategyQuestion, {
+            handleSubmitLastQuestion: handleSubmitLastQuestion
+          })
         )
       ) : React.createElement(
         "div",
