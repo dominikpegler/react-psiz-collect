@@ -3,7 +3,7 @@ import React from "react";
 export const Debrief = ({ handleDebrief }) => {
   const textInput = React.useRef();
   return (
-    <div className={"experiment-container"}>
+    <div className="debrief-outer">
       <div className={"debrief"}>
         <h3 style={{ textAlign: "center" }}>Study feedback</h3>
         <p>Dear Participant,</p>
@@ -21,9 +21,12 @@ export const Debrief = ({ handleDebrief }) => {
           a01468373@unet.univie.ac.at
         </p>
         <p>
-          The following questions are all optional. All feedback, both positive
-          and negative, is appreciated. Providing feedback here will have no
-          effect on your receiving payment for taking part in this study.
+          <b>
+            The following questions are all optional. All feedback, both
+            positive and negative, is appreciated. Providing feedback here will
+            have no effect on your receiving payment for taking part in this
+            study.
+          </b>
         </p>
         <hr />
       </div>
@@ -40,7 +43,7 @@ export const Debrief = ({ handleDebrief }) => {
               { value: 4, label: "" },
               { value: 5, label: "High" },
             ]}
-            key={"question_1"}
+            k={"question_1"}
             // setSelection={setSelection}
             // selection={selection}
           />
@@ -57,7 +60,7 @@ export const Debrief = ({ handleDebrief }) => {
               { value: 4, label: "" },
               { value: 5, label: "Interesting" },
             ]}
-            key={"question_2"}
+            k={"question_2"}
             // setSelection={setSelection}
             // selection={selection}
           />
@@ -74,7 +77,7 @@ export const Debrief = ({ handleDebrief }) => {
               { value: 4, label: "" },
               { value: 5, label: "Very well" },
             ]}
-            key={"question_3"}
+            k={"question_3"}
             // setSelection={setSelection}
             // selection={selection}
           />
@@ -91,7 +94,7 @@ export const Debrief = ({ handleDebrief }) => {
               { value: 4, label: "" },
               { value: 5, label: "Too long" },
             ]}
-            key={"question_4"}
+            k={"question_4"}
             // setSelection={setSelection}
             // selection={selection}
           />
@@ -109,7 +112,7 @@ export const Debrief = ({ handleDebrief }) => {
               { value: 4, label: "" },
               { value: 5, label: "Full attention" },
             ]}
-            key={"question_5"}
+            k={"question_5"}
             // setSelection={setSelection}
             // selection={selection}
           />
@@ -123,7 +126,7 @@ export const Debrief = ({ handleDebrief }) => {
             Do you have any comments about the study?
           </span>
           <textarea
-            autofocus
+            autoFocus
             ref={textInput}
             style={{ width: "60%", height: "100px" }}
           />
@@ -141,8 +144,8 @@ export const Debrief = ({ handleDebrief }) => {
   );
 };
 
-const ResponseBoxDebrief = ({ scale, key }) => {
-  const id = "debrief".concat("-", String(key));
+const ResponseBoxDebrief = ({ scale, k }) => {
+  const id = "debrief".concat("-", String(k));
 
   const [value, setValue] = React.useState("");
 
@@ -177,7 +180,7 @@ const ResponseBoxDebrief = ({ scale, key }) => {
               }}
             >
               <label
-                for={id + "-" + String(likert.value)}
+                // for={id + "-" + String(likert.value)}
                 style={{ textAlign: "center", cursor: "pointer" }}
               >
                 {likert.label}
@@ -187,10 +190,10 @@ const ResponseBoxDebrief = ({ scale, key }) => {
               <input
                 className={"radio"}
                 type={"radio"}
-                checked={value === likert.value}
+                //checked={value === likert.value}
                 id={id + "-" + String(likert.value)}
-                value={likert.value}
-                // onChange={handleChange}
+                // value={likert.value}
+                //onChange={handleChange}
               />
             </div>
           ) : (

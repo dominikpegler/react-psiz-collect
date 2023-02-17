@@ -319,10 +319,8 @@ export const Experiment = ({
             </div>
           </div>
         ) : (
-          <div className={"container"}>
-            <div className={"goodbye"}>
-              <Debrief handleDebrief={handleDebrief} />
-            </div>
+          <div className={"experiment-container"}>
+            <Debrief handleDebrief={handleDebrief} />
           </div>
         )}
       </div>
