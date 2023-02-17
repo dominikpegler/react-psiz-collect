@@ -12,7 +12,7 @@ export const Welcome = ({ setShowWelcomeScreen }) => {
         undivided attention to it, without multitasking (e.g., using your phone
         or other devices).
       </p>
-      <img alt="instruction icons" src="static/img/instruction_icons.png" />
+      <img alt="instruction icons" src="/img/instruction_icons.png" />
       <p>Click the button below to continue.</p>
       <button
         type="text"
