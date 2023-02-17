@@ -1,5 +1,3 @@
-"use strict";
-
 import { ImageContainerMini } from "./ImageContainer";
 
 export const Prompt = () => {
@@ -57,15 +55,17 @@ export const InstructionsInner = () => (
 
 export const Instructions = ({ handleConfirmed }) => {
   return (
-    <div className={"container"}>
-      <InstructionsInner />
-      <button
-        type="text"
-        className={"proceed-button"}
-        onClick={() => handleConfirmed()}
-      >
-        Start
-      </button>
+    <div className="root-container">
+      <div className={"experiment-container"}>
+        <InstructionsInner />
+        <button
+          type="text"
+          className={"proceed-button"}
+          onClick={() => handleConfirmed()}
+        >
+          Start
+        </button>
+      </div>
     </div>
   );
 };

@@ -318,8 +318,6 @@ button:hover:disabled {
   display: flex;
   flex-direction: column;
   font-size: x-large;
-  justify-content: space-around;
-  align-items: center;
   text-align: center;
   height: 100%;
 }
@@ -353,7 +351,6 @@ button:hover:disabled {
   align-items: center;
   font-size: x-large;
   text-align: left;
-  width: calc(100% - 20px);
 }
 
 .please-answer {

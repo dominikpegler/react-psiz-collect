@@ -1,11 +1,9 @@
-"use strict";
-
 import React from "react";
 
 export const Debrief = ({ handleDebrief }) => {
   const textInput = React.useRef();
   return (
-    <div className={"container"}>
+    <div className={"experiment-container"}>
       <div className={"debrief"}>
         <h3 style={{ textAlign: "center" }}>Study feedback</h3>
         <p>Dear Participant,</p>
@@ -166,36 +164,38 @@ const ResponseBoxDebrief = ({ scale, key }) => {
       }}
     >
       {scale &&
-        scale.map(
-          (likert) =>
-            likert && (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  width: "4.7rem",
-                }}
+        scale.map((likert, idx) =>
+          likert ? (
+            <div
+              key={idx}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+                alignItems: "center",
+                width: "4.7rem",
+              }}
+            >
+              <label
+                for={id + "-" + String(likert.value)}
+                style={{ textAlign: "center", cursor: "pointer" }}
               >
-                <label
-                  for={id + "-" + String(likert.value)}
-                  style={{ textAlign: "center", cursor: "pointer" }}
-                >
-                  {likert.label}
-                  <br />
-                  {likert.value}
-                </label>
-                <input
-                  className={"radio"}
-                  type={"radio"}
-                  checked={value === likert.value}
-                  id={id + "-" + String(likert.value)}
-                  value={likert.value}
-                  // onChange={handleChange}
-                />
-              </div>
-            )
+                {likert.label}
+                <br />
+                {likert.value}
+              </label>
+              <input
+                className={"radio"}
+                type={"radio"}
+                checked={value === likert.value}
+                id={id + "-" + String(likert.value)}
+                value={likert.value}
+                // onChange={handleChange}
+              />
+            </div>
+          ) : (
+            <div></div>
+          )
         )}
     </form>
   );

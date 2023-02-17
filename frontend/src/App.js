@@ -294,18 +294,14 @@ function App() {
         consent === false && <Consent handleConsent={handleConsent} />
       )
     ) : (
-      <div className={"container"}>
-        <div className={"welcome"}>
-          <div className={"login"}>
-            <span>Please enter your participant ID</span>
-            <input
-              type="text"
-              className={"login-input"}
-              onKeyDown={(e) => handleSubmit(e)}
-              ref={inputRef}
-            ></input>
-          </div>
-        </div>
+      <div className={"root-container welcome login"}>
+        <span>Please enter your participant ID</span>
+        <input
+          type="text"
+          className={"login-input"}
+          onKeyDown={(e) => handleSubmit(e)}
+          ref={inputRef}
+        ></input>
       </div>
     )
   ) : (
