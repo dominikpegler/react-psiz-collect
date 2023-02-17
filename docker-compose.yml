@@ -1,7 +1,6 @@
 version: "3.7"
 
 services:
-
   nginx:
     image: nginx:1.23.2-alpine
     hostname: psiz-nx
@@ -18,40 +17,40 @@ services:
           - psiz-nginx
     restart: always
     depends_on:
-      - web
-  
-  web:
+      - frontend
+
+  frontend:
     build:
       context: .
-      dockerfile: web.Dockerfile
-    image: psiz-web
-    hostname: psiz-web
-    container_name: psiz-web
+      dockerfile: frontend.Dockerfile
+    image: psiz-frontend
+    hostname: psiz-frontend
+    container_name: psiz-frontend
     volumes:
-       - .:/app
+      - .:/app
     restart: always
     ports:
       - "8080:8080"
     networks:
       psiz:
         aliases:
-          - psiz-web
-  api:
+          - psiz-frontend
+  backend:
     build:
       context: .
-      dockerfile: api.Dockerfile
-    image: psiz-api
-    hostname: psiz-api
-    container_name: psiz-api
+      dockerfile: backend.Dockerfile
+    image: psiz-backend
+    hostname: psiz-backend
+    container_name: psiz-backend
     volumes:
-       - .:/app
+      - .:/app
     restart: always
     ports:
       - "5000:5000"
     networks:
       psiz:
         aliases:
-          - psiz-api
+          - psiz-backend
 
   db:
     build:
@@ -62,7 +61,7 @@ services:
     hostname: psiz-db
     restart: always
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
@@ -71,10 +70,7 @@ services:
           - psiz-db
 
 volumes:
-  postgres:
+  db:
 
 networks:
-    psiz:
-    default:
-      external:
-        name: react-psiz-collect_psiz
+  psiz:
