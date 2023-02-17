@@ -113,8 +113,6 @@ dist
 # TernJS port file
 .tern-port
 
-package.json
-package-lock.json
 config.js
 config.json
 var/
