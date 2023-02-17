@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    image: psiz-db
+    container_name: psiz-db
+    hostname: psiz-db
+    restart: always
+    volumes:
+      - ./db-dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      psiz:
+        aliases:
+          - psiz-db
+
+volumes:
+  db-dev:
+
+networks:
+  psiz:
