@@ -24,7 +24,7 @@ docker-compose -f docker-compose.dev.yml up
 ### Backend
 
 ```bash
-uvicorn api.main:app --proxy-headers --host 0.0.0.0 --port 5000 --reload
+uvicorn backend.main:app --proxy-headers --host 0.0.0.0 --port 5000 --reload
 ```
 
 ### Frontend
