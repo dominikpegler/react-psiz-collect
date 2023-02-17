@@ -203,9 +203,9 @@ function App() {
 
   const inputRef = useRef();
 
-  //useLayoutEffect(() => {
-  //  document.documentElement.requestFullscreen();
-  //});
+  useLayoutEffect(() => {
+    document.documentElement.requestFullscreen();
+  });
 
   // runs only once at the beginning to set focus on text input
   // and set workerId from url params

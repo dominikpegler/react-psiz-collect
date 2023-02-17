@@ -125,7 +125,6 @@ def create_assignment(
             "consent": consent,
             "survey_complete": survey_complete,
             "strategy": strategy,
-
         }
     )
 
@@ -161,18 +160,18 @@ def create_trial(trial: schemas.TrialCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/send-survey-responses-by-assignment/")
-def create_survey_data(assignment_id: int = Body(...), project_id: str = Body(...), selection: dict = Body(...)) -> None:
+def create_survey_data(
+    assignment_id: int = Body(...),
+    project_id: str = Body(...),
+    selection: dict = Body(...),
+) -> None:
 
     import logging
 
-    write_survey_to_db(project_id, assignment_id, selection, config['DATABASE_URL'])
+    write_survey_to_db(project_id, assignment_id, selection, config["DATABASE_URL"])
 
-    return JSONResponse(
-        {
-            "assignment_id": assignment_id,
-            "project_id": project_id
-        }
-    )
+    return JSONResponse({"assignment_id": assignment_id, "project_id": project_id})
+
 
 # DB - READ #
 
@@ -192,13 +191,13 @@ def read_assignments_by_project_id(project_id: str, db: Session = Depends(get_db
 @app.get("/get-surveys-by-project-id/{project_id}")
 def read_surveys_by_project_id(project_id: str):
 
-    f = open("api/projects/" + project_id + ".json")
+    f = open("backend/projects/" + project_id + ".json")
     surveys_list = json.load(f)["surveys"]
 
     surveys_content = []
 
     for s in surveys_list:
-        f = open("api/projects/surveys/" + s + ".json")
+        f = open("backend/projects/surveys/" + s + ".json")
         survey = json.load(f)
         surveys_content.append(survey)
 
